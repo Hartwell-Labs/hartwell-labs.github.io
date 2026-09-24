@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
 <title>Documentation — Hartwell Labs</title>
 <meta name="description" content="Installation and deployment guides for Hartwell Labs products: talus-process-monitor, Externum and the organization's engineering standards." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -132,12 +134,7 @@ README.md</pre>
   </div>
 </footer>
 
-<script>
-document.querySelectorAll(".cp").forEach(function(b){
-  b.addEventListener("click", function(){
-    navigator.clipboard.writeText(b.dataset.code).then(function(){ b.textContent="COPIED"; setTimeout(function(){ b.textContent="COPY"; }, 1400); });
-  });
-});
-</script>
+<!-- telemetry -->
+<script src="/assets/site.js" defer></script>
 </body>
 </html>

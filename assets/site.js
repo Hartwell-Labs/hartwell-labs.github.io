@@ -1,0 +1,1 @@
+document.querySelectorAll(".cp").forEach(function(b){b.addEventListener("click",function(){navigator.clipboard.writeText(b.dataset.code).then(function(){b.textContent="COPIED";setTimeout(function(){b.textContent="COPY";},1400);});});});

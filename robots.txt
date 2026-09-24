@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /challenge.js
+
+Sitemap: https://hartwell-labs.github.io/sitemap.xml
