@@ -2,11 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url><loc>https://hartwell-labs.github.io/</loc></url>
 <url><loc>https://hartwell-labs.github.io/products/</loc></url>
+<url><loc>https://hartwell-labs.github.io/catalog/</loc></url>
 <url><loc>https://hartwell-labs.github.io/docs/</loc></url>
 <url><loc>https://hartwell-labs.github.io/security/</loc></url>
 <url><loc>https://hartwell-labs.github.io/company/</loc></url>
 <url><loc>https://hartwell-labs.github.io/talus-process-monitor/</loc></url>
 <url><loc>https://hartwell-labs.github.io/externum/</loc></url>
 <url><loc>https://hartwell-labs.github.io/Aurora/</loc></url>
-<url><loc>https://hartwell-labs.github.io/catalog/</loc></url>
+<url><loc>https://hartwell-labs.github.io/quantum-shield/</loc></url>
+<url><loc>https://hartwell-labs.github.io/linux-aegis/</loc></url>
+<url><loc>https://hartwell-labs.github.io/fortis/</loc></url>
+<url><loc>https://hartwell-labs.github.io/labbridge/</loc></url>
+<url><loc>https://hartwell-labs.github.io/products/</loc></url>
+<url><loc>https://hartwell-labs.github.io/CyberForge/</loc></url>
+<url><loc>https://hartwell-labs.github.io/hack-the-lab/</loc></url>
 </urlset>
