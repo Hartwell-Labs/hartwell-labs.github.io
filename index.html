@@ -3,116 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Hartwell Labs — security infrastructure, built in the open</title>
-<meta name="description" content="Hartwell Labs is an independent engineering lab building eBPF threat detection, post-quantum cryptography and programming languages. MIT licensed, CI on everything." />
+<title>Hartwell Labs — infrastructure-grade open source</title>
+<meta name="description" content="Hartwell Labs is an independent engineering company building eBPF threat detection, post-quantum cryptography and programming languages. Open source, MIT licensed, CI on everything." />
 <meta property="og:title" content="Hartwell Labs" />
-<meta property="og:description" content="Independent engineering lab. Security systems, languages and tools — built in the open." />
+<meta property="og:description" content="Infrastructure-grade open source — security systems, languages and tools." />
 <meta property="og:type" content="website" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg: #ffffff;
-    --bg-subtle: #fafafa;
-    --border: #e5e7eb;
-    --txt: #0f172a;
-    --txt-2: #475569;
-    --txt-3: #94a3b8;
-    --accent: #4f46e5;
-    --accent-hover: #4338ca;
-    --accent-soft: #eef2ff;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-  body { background: var(--bg); color: var(--txt); font-family: "Inter", -apple-system, "Segoe UI", sans-serif; font-size: 16px; line-height: 1.6; }
-  a { color: inherit; }
-
-  .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-
-  /* ── header ── */
-  header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
-  .header-in { display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px; letter-spacing: -.01em; text-decoration: none; }
-  nav.main { display: flex; gap: 28px; }
-  nav.main a { font-size: 14px; color: var(--txt-2); text-decoration: none; font-weight: 500; }
-  nav.main a:hover { color: var(--txt); }
-  .header-cta { display: inline-flex; align-items: center; height: 36px; padding: 0 16px; border-radius: 8px; background: var(--txt); color: #fff; font-size: 13.5px; font-weight: 600; text-decoration: none; }
-  .header-cta:hover { background: #1e293b; }
-  @media (max-width: 640px) { nav.main { display: none; } }
-
-  /* ── hero ── */
-  .hero { padding: 96px 0 80px; max-width: 720px; }
-  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 5px 14px; margin-bottom: 28px; }
-  .eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
-  h1 { font-size: clamp(36px, 5.5vw, 56px); line-height: 1.08; letter-spacing: -.03em; font-weight: 700; }
-  h1 .dim { color: var(--txt-3); }
-  .hero p.lede { margin-top: 24px; font-size: 18px; line-height: 1.65; color: var(--txt-2); max-width: 600px; }
-  .hero-actions { margin-top: 36px; display: flex; gap: 12px; flex-wrap: wrap; }
-  .btn { display: inline-flex; align-items: center; height: 44px; padding: 0 22px; border-radius: 10px; font-size: 15px; font-weight: 600; text-decoration: none; transition: background .15s ease; }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-primary:hover { background: var(--accent-hover); }
-  .btn-secondary { border: 1px solid var(--border); color: var(--txt); }
-  .btn-secondary:hover { background: var(--bg-subtle); }
-
-  /* ── stats bar ── */
-  .stats { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg-subtle); }
-  .stats-in { display: grid; grid-template-columns: repeat(4, 1fr); }
-  .stat { padding: 28px 24px; }
-  .stat + .stat { border-left: 1px solid var(--border); }
-  .stat .n { font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
-  .stat .l { font-size: 13px; color: var(--txt-2); margin-top: 2px; }
-  @media (max-width: 720px) { .stats-in { grid-template-columns: 1fr 1fr; } .stat:nth-child(3) { border-left: none; } .stat:nth-child(n+3) { border-top: 1px solid var(--border); } }
-
-  /* ── sections ── */
-  section { padding: 88px 0; }
-  section + section { border-top: 1px solid var(--border); }
-  .section-head { max-width: 640px; margin-bottom: 48px; }
-  .kicker { font-size: 13px; font-weight: 600; color: var(--txt-3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
-  h2 { font-size: clamp(26px, 3.4vw, 34px); letter-spacing: -.02em; line-height: 1.15; font-weight: 700; }
-  .section-head p { margin-top: 14px; color: var(--txt-2); font-size: 16.5px; }
-
-  /* ── products ── */
-  .prod-group { margin-bottom: 40px; }
-  .prod-group:last-child { margin-bottom: 0; }
-  .prod-group > h3 { font-size: 14px; font-weight: 600; color: var(--txt-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 16px; }
-  .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-  .prod { display: block; border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; text-decoration: none; transition: border-color .15s ease, box-shadow .15s ease; background: var(--bg); }
-  .prod:hover { border-color: #c7d2fe; box-shadow: 0 4px 16px rgba(79,70,229,.08); }
-  .prod .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .prod h4 { font-size: 15.5px; font-weight: 600; letter-spacing: -.01em; }
-  .prod .lang { font-size: 11.5px; font-weight: 600; color: var(--txt-3); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; white-space: nowrap; }
-  .prod p { margin-top: 8px; font-size: 14px; line-height: 1.6; color: var(--txt-2); }
-
-  /* ── standards ── */
-  .rules { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .rule { padding: 28px 30px; background: var(--bg); }
-  .rule:nth-child(odd) { border-right: 1px solid var(--border); }
-  .rule:nth-child(n+3) { border-top: 1px solid var(--border); }
-  .rule .num { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 10px; }
-  .rule h4 { font-size: 16px; font-weight: 600; letter-spacing: -.01em; margin-bottom: 6px; }
-  .rule p { font-size: 14px; color: var(--txt-2); }
-  @media (max-width: 640px) { .rules { grid-template-columns: 1fr; } .rule:nth-child(odd) { border-right: none; } .rule:nth-child(n+2) { border-top: 1px solid var(--border); } }
-
-  /* ── security / contact ── */
-  .sec-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; }
-  @media (max-width: 760px) { .sec-grid { grid-template-columns: 1fr; } }
-  .sec-grid p { color: var(--txt-2); font-size: 15.5px; }
-  .contact-card { border: 1px solid var(--border); border-radius: 12px; padding: 26px 28px; background: var(--bg-subtle); }
-  .contact-card h4 { font-size: 14px; font-weight: 600; color: var(--txt-3); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; }
-  .contact-card a.mail { font-size: 16px; font-weight: 600; color: var(--accent); text-decoration: none; }
-  .contact-card a.mail:hover { text-decoration: underline; }
-  .contact-card .meta { margin-top: 14px; font-size: 13.5px; color: var(--txt-2); line-height: 1.7; }
-
-  /* ── footer ── */
-  footer { border-top: 1px solid var(--border); padding: 36px 0; }
-  .footer-in { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-  footer .f-logo { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; }
-  footer nav { display: flex; gap: 22px; }
-  footer nav a { font-size: 13.5px; color: var(--txt-2); text-decoration: none; }
-  footer nav a:hover { color: var(--txt); }
-  footer .fine { width: 100%; margin-top: 18px; font-size: 12.5px; color: var(--txt-3); }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
 
@@ -126,156 +25,124 @@
       Hartwell Labs
     </a>
     <nav class="main">
-      <a href="#products">Products</a>
-      <a href="#standards">Standards</a>
-      <a href="#security">Security</a>
+      <a href="/products.html">Products</a>
+      <a href="/docs.html">Docs</a>
+      <a href="/security.html">Security</a>
+      <a href="/company.html">Company</a>
     </nav>
     <a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a>
   </div>
 </header>
 
 <div class="container hero">
-  <div class="eyebrow">Independent engineering lab</div>
-  <h1>Security infrastructure, <span class="dim">built in the open.</span></h1>
-  <p class="lede">We build eBPF threat detection, post-quantum cryptography and programming languages — open source, MIT licensed, with continuous integration on everything we ship.</p>
+  <div class="eyebrow">Independent engineering company</div>
+  <h1>Infrastructure-grade <span class="dim">open source.</span></h1>
+  <p class="lede">We design and maintain security infrastructure and developer tools: eBPF threat detection, post-quantum cryptography and a self-hosted programming language. Open-source core, enterprise-grade engineering discipline.</p>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="#products">Explore products</a>
-    <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs">View source on GitHub</a>
+    <a class="btn btn-primary" href="/products.html">Explore products</a>
+    <a class="btn btn-secondary" href="/docs.html">Read the documentation</a>
   </div>
 </div>
 
 <div class="stats">
   <div class="container stats-in">
-    <div class="stat"><div class="n">10</div><div class="l">Open-source products</div></div>
-    <div class="stat"><div class="n">~280k/s</div><div class="l">Events processed by talus</div></div>
-    <div class="stat"><div class="n">400+</div><div class="l">Tests in Externum</div></div>
+    <div class="stat"><div class="n">10</div><div class="l">Public products</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">Container images on GHCR</div></div>
     <div class="stat"><div class="n">48h</div><div class="l">Security response SLA</div></div>
+    <div class="stat"><div class="n">400+</div><div class="l">Tests in Externum suite</div></div>
   </div>
 </div>
 
-<section id="products">
+<section id="flagship">
   <div class="container">
     <div class="section-head">
-      <div class="kicker">Products</div>
-      <h2>Tools we build and use ourselves.</h2>
-      <p>Every product is public, MIT licensed and built with CI. Release artifacts are signed where applicable.</p>
+      <div class="kicker">Flagship</div>
+      <h2>talus-process-monitor</h2>
+      <p>Behavioral ransomware detection and response for Linux. eBPF-based, ~280k events per second, seccomp and Landlock self-sandboxing, one static binary — no kernel modules.</p>
     </div>
-
-    <div class="prod-group">
-      <h3>Security infrastructure</h3>
-      <div class="prod-grid">
-        <a class="prod" href="https://github.com/Hartwell-Labs/talus-process-monitor">
-          <div class="row"><h4>talus-process-monitor</h4><span class="lang">Rust · eBPF</span></div>
-          <p>Behavioral ransomware detection and response for Linux. ~280k events/s, seccomp and Landlock self-sandboxing, single static binary.</p>
-        </a>
-        <a class="prod" href="https://github.com/Hartwell-Labs/quantum-shield">
-          <div class="row"><h4>quantum-shield</h4><span class="lang">Rust</span></div>
-          <p>Post-quantum file encryption using ML-KEM-768 key encapsulation and AES-256-GCM.</p>
-        </a>
-        <a class="prod" href="https://github.com/Hartwell-Labs/linux-aegis">
-          <div class="row"><h4>linux-aegis</h4><span class="lang">C</span></div>
-          <p>A Linux kernel security module (LSM) — enforcement where the attacks happen.</p>
-        </a>
-        <a class="prod" href="https://github.com/Hartwell-Labs/fortis">
-          <div class="row"><h4>fortis</h4><span class="lang">Rust · RISC-V</span></div>
-          <p>Chain-of-trust attestation for embedded systems.</p>
-        </a>
-      </div>
-    </div>
-
-    <div class="prod-group">
-      <h3>Developer tools</h3>
-      <div class="prod-grid">
-        <a class="prod" href="https://github.com/Hartwell-Labs/externum">
-          <div class="row"><h4>externum</h4><span class="lang">Self-hosted</span></div>
-          <p>A typed programming language compiling to readable Python, Bash and native EXBC bytecode. 400+ tests, browser REPL.</p>
-        </a>
-        <a class="prod" href="https://github.com/Hartwell-Labs/Aurora">
-          <div class="row"><h4>Aurora</h4><span class="lang">TypeScript</span></div>
-          <p>A complete operating system in the browser — kernel, window manager, virtual filesystem and apps. Zero dependencies.</p>
-        </a>
-      </div>
-    </div>
-
-    <div class="prod-group">
-      <h3>Ruby division</h3>
-      <div class="prod-grid">
-        <a class="prod" href="https://github.com/Hartwell-Labs/labbridge">
-          <div class="row"><h4>labbridge</h4><span class="lang">Ruby · Rust</span></div>
-          <p>Rust ⇄ Ruby bridge. Translate lab Rust to runnable Ruby and load Ruby plugins back into Rust via the LabPlugin trait.</p>
-        </a>
-        <a class="prod" href="https://github.com/Hartwell-Labs/products">
-          <div class="row"><h4>products</h4><span class="lang">Ruby · Sinatra</span></div>
-          <p>The Products Registry — a machine-readable index of our open-source products, packages and containers.</p>
-        </a>
-      </div>
-    </div>
-
-    <div class="prod-group">
-      <h3>Offensive security</h3>
-      <div class="prod-grid">
-        <a class="prod" href="https://github.com/Hartwell-Labs/CyberForge">
-          <div class="row"><h4>CyberForge</h4><span class="lang">Python</span></div>
-          <p>Recon, packet analysis and hash-cracking tools used in our own pentest labs.</p>
-        </a>
-        <a class="prod" href="https://github.com/Hartwell-Labs/hack-the-lab">
-          <div class="row"><h4>hack-the-lab</h4><span class="lang">Challenges</span></div>
-          <p>Break our products before someone else does. Challenges, CVE credits and a Hall of Fame.</p>
-        </a>
-      </div>
+    <div class="cmd"><code>pip install talus-process-monitor</code><button class="cp" data-code="pip install talus-process-monitor">COPY</button></div>
+    <div class="cmd"><code>docker pull ghcr.io/hartwell-labs/talus-process-monitor:latest</code><button class="cp" data-code="docker pull ghcr.io/hartwell-labs/talus-process-monitor:latest">COPY</button></div>
+    <div style="margin-top:22px; display:flex; gap:12px; flex-wrap:wrap;">
+      <a class="btn btn-primary" href="/docs.html#deployment">Deployment guide</a>
+      <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/talus-process-monitor">Source ↗</a>
     </div>
   </div>
 </section>
 
-<section id="standards">
+<section id="practices">
   <div class="container">
     <div class="section-head">
-      <div class="kicker">Engineering standards</div>
-      <h2>Four rules. Boring on purpose.</h2>
-      <p>That is what makes them keepable. talus additionally runs fuzzing, OpenSSF Scorecard and SLSA supply-chain provenance.</p>
+      <div class="kicker">How we ship</div>
+      <h2>Engineering practices, not promises.</h2>
+      <p>Every repository in the organization runs the same quality gates. The flagship additionally ships with supply-chain evidence.</p>
     </div>
-    <div class="rules">
-      <div class="rule"><div class="num">01</div><h4>Code over claims</h4><p>Every feature ships with tests and CI, or it doesn't ship.</p></div>
-      <div class="rule"><div class="num">02</div><h4>Visibility is defense</h4><p>You can't protect what you can't see — ask our eBPF hooks.</p></div>
-      <div class="rule"><div class="num">03</div><h4>Own your stack</h4><p>Zero dependencies where possible, auditable everywhere.</p></div>
-      <div class="rule"><div class="num">04</div><h4>Open by default</h4><p>MIT licensed, issues welcome, egos are not.</p></div>
+    <div class="prod-grid">
+      <div class="prod"><div class="row"><h4>CI on every push</h4></div><p>Builds, linters and test suites run on all active repositories. A feature without CI does not ship.</p></div>
+      <div class="prod"><div class="row"><h4>Static analysis &amp; fuzzing</h4></div><p>CodeQL across the org; continuous fuzzing on talus' eBPF pipeline.</p></div>
+      <div class="prod"><div class="row"><h4>Signed releases</h4></div><p>Release artifacts ship with build provenance and Sigstore-style attestation.</p></div>
+      <div class="prod"><div class="row"><h4>SBOM included</h4></div><p>Every talus release carries an SPDX software bill of materials — know exactly what you deploy.</p></div>
+      <div class="prod"><div class="row"><h4>OpenSSF Scorecard</h4></div><p>Supply-chain posture measured continuously, not advertised in slide decks.</p></div>
+      <div class="prod"><div class="row"><h4>Coordinated disclosure</h4></div><p>48-hour acknowledgment SLA, public hardening notes, Hall of Fame for reporters.</p></div>
     </div>
   </div>
 </section>
 
-<section id="security">
-  <div class="container sec-grid">
-    <div>
-      <div class="kicker">Security</div>
-      <h2>Found something? Tell us first.</h2>
-      <p style="margin-top:16px">We practice coordinated disclosure across all products. Reports are acknowledged within 48 hours, fixed on a best-effort schedule, and reporters are credited in each product's Hall of Fame — with their consent.</p>
-      <p style="margin-top:12px">Please avoid public disclosure before a fix is released. For sensitive details, we can provide an encrypted channel on request.</p>
-    </div>
-    <div class="contact-card">
-      <h4>Security contact</h4>
-      <a class="mail" href="mailto:bartosz.osiej2007@gmail.com">bartosz.osiej2007@gmail.com</a>
-      <div class="meta">Response SLA: 48 hours.<br>Credits: opt-in, Hall of Fame per product.<br>Encryption: available on request.</div>
+<section id="cta">
+  <div class="container" style="padding-bottom:80px;">
+    <div class="prod" style="display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between; padding:30px 34px;">
+      <div>
+        <h4 style="font-size:20px; letter-spacing:-.02em;">Build on Hartwell, or against it.</h4>
+        <p style="margin-top:6px; color:var(--txt-2); font-size:15px;">Use the products, read the source, or try to break them — we pay attention to all three.</p>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="/company.html">About the company</a>
+        <a class="btn btn-secondary" href="/security.html">Report a vulnerability</a>
+      </div>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="container footer-in">
-    <div class="f-logo">
-      <svg width="18" height="18" viewBox="0 0 46 46" aria-hidden="true">
-        <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
-      </svg>
-      Hartwell Labs
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:14px;">
+        <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg>
+        Hartwell Labs
+      </div>
+      <p class="about">Independent engineering company. Security systems, languages and tools — built in the open, MIT licensed.</p>
     </div>
-    <nav>
-      <a href="#products">Products</a>
-      <a href="#standards">Standards</a>
-      <a href="#security">Security</a>
-      <a href="https://github.com/Hartwell-Labs">GitHub</a>
-    </nav>
-    <div class="fine">© 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</div>
+    <div>
+      <h5>Products</h5>
+      <a href="/products.html">Catalog</a>
+      <a href="https://github.com/Hartwell-Labs/talus-process-monitor">talus-process-monitor</a>
+      <a href="https://github.com/Hartwell-Labs/externum">externum</a>
+      <a href="https://github.com/Hartwell-Labs/hack-the-lab">hack-the-lab</a>
+    </div>
+    <div>
+      <h5>Resources</h5>
+      <a href="/docs.html">Documentation</a>
+      <a href="https://github.com/Hartwell-Labs">GitHub organization</a>
+      <a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">Releases</a>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <a href="/company.html">About</a>
+      <a href="/security.html">Security &amp; disclosure</a>
+      <a href="/.well-known/security.txt">security.txt</a>
+    </div>
+  </div>
+  <div class="container f-fine">
+    <span>© 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
+    <span>Szczecin, Poland</span>
   </div>
 </footer>
 
+<script>
+document.querySelectorAll(".cp").forEach(function(b){
+  b.addEventListener("click", function(){
+    navigator.clipboard.writeText(b.dataset.code).then(function(){ b.textContent="COPIED"; setTimeout(function(){ b.textContent="COPY"; }, 1400); });
+  });
+});
+</script>
 </body>
 </html>

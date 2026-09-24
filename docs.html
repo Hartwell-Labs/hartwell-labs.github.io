@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation — Hartwell Labs</title>
+<meta name="description" content="Installation and deployment guides for Hartwell Labs products: talus-process-monitor, Externum and the organization's engineering standards." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+
+<header>
+  <div class="container header-in">
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+        <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
+        <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Hartwell Labs
+    </a>
+    <nav class="main">
+      <a href="/products.html">Products</a>
+      <a href="/docs.html" aria-current="page">Docs</a>
+      <a href="/security.html">Security</a>
+      <a href="/company.html">Company</a>
+    </nav>
+    <a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a>
+  </div>
+</header>
+
+<div class="container docs">
+
+  <aside class="docs-toc">
+    <div class="t">On this page</div>
+    <a href="#talus">talus-process-monitor</a>
+    <a href="#talus-pypi">— From PyPI</a>
+    <a href="#talus-docker">— Container image</a>
+    <a href="#talus-releases">— Release binaries</a>
+    <a href="#externum">Externum</a>
+    <a href="#standards">Engineering standards</a>
+    <a href="#supply-chain">Supply-chain posture</a>
+    <a href="#support">Support</a>
+  </aside>
+
+  <div class="docs-body">
+    <h2 id="talus">talus-process-monitor</h2>
+    <p>Behavioral ransomware detection and response for Linux. Current stable release: <span class="badge ok">v0.8.2</span> (2026-09-23). Available from PyPI, as a container image and as release binaries.</p>
+
+    <h3 id="talus-pypi">From PyPI</h3>
+    <p>Python package ships the monitor binary and bindings. Requires a Linux host with eBPF support (kernel 5.8+ recommended).</p>
+    <div class="cmd"><code>pip install talus-process-monitor</code><button class="cp" data-code="pip install talus-process-monitor">COPY</button></div>
+
+    <h3 id="talus-docker">Container image</h3>
+    <p>Public image on GitHub Container Registry:</p>
+    <div class="cmd"><code>docker pull ghcr.io/hartwell-labs/talus-process-monitor:latest</code><button class="cp" data-code="docker pull ghcr.io/hartwell-labs/talus-process-monitor:latest">COPY</button></div>
+    <p>Run flags, mount requirements and tuning (event thresholds, pause/kill response actions) are documented in the repository README and the <a href="https://bartoszosiej.github.io/talus-process-monitor/field-guide.html" style="color:var(--accent)">Field Guide</a>.</p>
+
+    <h3 id="talus-releases">Release binaries</h3>
+    <p>Every release ships a static binary with its SPDX SBOM and build attestation:</p>
+    <pre class="block"># release assets (example: v0.8.2)
+process-monitor        # static Linux binary
+sbom.spdx.json         # software bill of materials (SPDX)
+attestation.jsonl      # build provenance
+LICENSE
+README.md</pre>
+    <p>Downloads: <a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases" style="color:var(--accent)">GitHub Releases ↗</a></p>
+
+    <h2 id="externum">Externum</h2>
+    <p>A typed programming language compiling to readable Python, Bash and native EXBC bytecode. Current stable release: <span class="badge ok">v4.3.0</span> (2026-09-23).</p>
+    <div class="cmd"><code>pip install externum</code><button class="cp" data-code="pip install externum">COPY</button></div>
+    <p>Language tour, pipeline syntax and the browser REPL: <a href="https://github.com/Hartwell-Labs/externum" style="color:var(--accent)">repository docs ↗</a></p>
+
+    <h2 id="standards">Engineering standards</h2>
+    <p>These gates apply across the organization. They are enforced by CI, not by convention:</p>
+    <ul>
+      <li><b>Tests and CI on every push</b> — a feature that doesn't ship with CI doesn't ship.</li>
+      <li><b>CodeQL static analysis</b> on all active repositories.</li>
+      <li><b>Continuous fuzzing</b> on talus' eBPF pipeline.</li>
+      <li><b>Signed releases with provenance</b> — Sigstore-style attestation on release assets.</li>
+      <li><b>SBOM (SPDX)</b> attached to every talus release.</li>
+    </ul>
+
+    <h2 id="supply-chain">Supply-chain posture</h2>
+    <p>The flagship repository runs OpenSSF Scorecard and SLSA-style provenance continuously. Release assets are verifiable end-to-end: from source commit, through the build workflow, to the published binary and its attestation file.</p>
+    <pre class="block"># what you can verify on every talus release
+1. source commit     -> tag -> release (linked)
+2. build workflow    -> build-provenance.yml (public logs)
+3. attestation.jsonl -> matches the published binary
+4. sbom.spdx.json    -> full dependency inventory</pre>
+
+    <h2 id="support">Support</h2>
+    <p>Bug reports and feature requests go through each repository's GitHub Issues. Security-sensitive reports go to <a href="mailto:bartosz.osiej2007@gmail.com" style="color:var(--accent)">bartosz.osiej2007@gmail.com</a> — see the <a href="/security.html" style="color:var(--accent)">security policy</a> for the 48-hour SLA and disclosure process.</p>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:14px;">
+        <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg>
+        Hartwell Labs
+      </div>
+      <p class="about">Independent engineering company. Security systems, languages and tools — built in the open, MIT licensed.</p>
+    </div>
+    <div>
+      <h5>Products</h5>
+      <a href="/products.html">Catalog</a>
+      <a href="https://github.com/Hartwell-Labs/talus-process-monitor">talus-process-monitor</a>
+      <a href="https://github.com/Hartwell-Labs/externum">externum</a>
+      <a href="https://github.com/Hartwell-Labs/hack-the-lab">hack-the-lab</a>
+    </div>
+    <div>
+      <h5>Resources</h5>
+      <a href="/docs.html">Documentation</a>
+      <a href="https://github.com/Hartwell-Labs">GitHub organization</a>
+      <a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">Releases</a>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <a href="/company.html">About</a>
+      <a href="/security.html">Security &amp; disclosure</a>
+      <a href="/.well-known/security.txt">security.txt</a>
+    </div>
+  </div>
+  <div class="container f-fine">
+    <span>© 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
+    <span>Szczecin, Poland</span>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll(".cp").forEach(function(b){
+  b.addEventListener("click", function(){
+    navigator.clipboard.writeText(b.dataset.code).then(function(){ b.textContent="COPIED"; setTimeout(function(){ b.textContent="COPY"; }, 1400); });
+  });
+});
+</script>
+</body>
+</html>
