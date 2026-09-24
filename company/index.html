@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>Company — Hartwell Labs</title>
+<meta name="description" content="About Hartwell Labs: an independent engineering company building security systems, programming languages and tools in the open." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+
+<header>
+  <div class="container header-in">
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+        <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
+        <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Hartwell Labs
+    </a>
+    <nav class="main">
+      <a href="/products">Products</a>
+      <a href="/docs">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/company" aria-current="page">Company</a>
+    </nav>
+    <a class="header-cta" href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b713">GitHub ↗</a>
+  </div>
+</header>
+
+<div class="container hero" style="padding-bottom:56px;">
+  <div class="eyebrow">Company</div>
+  <h1>An engineering company, <span class="dim">not a content farm.</span></h1>
+  <p class="lede">Hartwell Labs builds security infrastructure and developer tools the way enterprises build them: with CI gates, supply-chain evidence and a security policy that means something. Everything we make is open source.</p>
+</div>
+
+<section style="padding-top:56px;">
+<div class="container">
+
+  <h2 style="font-size:24px; margin-bottom:12px;">What we do</h2>
+  <p style="color:var(--txt-2); max-width:760px;">We maintain ten public products across security infrastructure (eBPF detection, post-quantum crypto, kernel security, embedded attestation), developer tooling (a self-hosted typed language, a browser OS) and offensive security. We dogfood everything: the tools that secure our own systems are the tools we ship.</p>
+
+  <h2 style="font-size:24px; margin:44px 0 12px;">Timeline</h2>
+  <div class="tl" style="max-width:760px;">
+    <div class="tl-item"><div class="d">2026-09-23</div><div class="w"><b>talus v0.8.2 &amp; Externum v4.3.0.</b> <span>Parallel stable releases; talus ships with SBOM and build attestation.</span></div></div>
+    <div class="tl-item"><div class="d">2026-09</div><div class="w"><b>Article accepted on LinuxSecurity.</b> <span>Technical deep-dive on eBPF ransomware detection.</span></div></div>
+    <div class="tl-item"><div class="d">2026-09</div><div class="w"><b>Hartwell Labs organization launched.</b> <span>Unified home for all products: GitHub org, product registry, website.</span></div></div>
+    <div class="tl-item"><div class="d">2021–2026</div><div class="w"><b>Building in public.</b> <span>24 repositories with CI/CD, packages on PyPI and crates.io, upstream contributions to aya-rs.</span></div></div>
+  </div>
+
+  <h2 style="font-size:24px; margin:44px 0 12px;">How we work</h2>
+  <div class="rules" style="max-width:960px;">
+    <div class="rule"><div class="num">01</div><h4>Code over claims</h4><p>Every feature ships with tests and CI, or it doesn't ship.</p></div>
+    <div class="rule"><div class="num">02</div><h4>Visibility is defense</h4><p>You can't protect what you can't see — ask our eBPF hooks.</p></div>
+    <div class="rule"><div class="num">03</div><h4>Own your stack</h4><p>Zero dependencies where possible, auditable everywhere.</p></div>
+    <div class="rule"><div class="num">04</div><h4>Open by default</h4><p>MIT licensed, issues welcome, egos are not.</p></div>
+  </div>
+
+  <h2 style="font-size:24px; margin:44px 0 12px;">Team</h2>
+  <div class="team-grid" style="max-width:960px;">
+    <div class="member">
+      <div class="who">Bartosz Osiej</div>
+      <div class="role">Founder &amp; CEO · Systems engineering</div>
+      <p>Rust, eBPF, kernel internals and compilers. Author of talus-process-monitor and Externum; upstream contributor to aya-rs. Technical writer — published on LinuxSecurity.</p>
+      <a class="gh" href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30ca46937ddb35e73c61c65dbf">><span data-et="3daa6be0528327d729f05c50ce4aa10f29b950fb4e846394a41be4"></span></a>
+    </div>
+    <div class="member">
+      <div class="who">duds08422-max</div>
+      <div class="role">Ruby engineering · Bridges &amp; registry</div>
+      <p>Owns the Ruby division: LabBridge (Rust ⇄ Ruby plugin bridge) and the Products Registry. Cybersecurity and HackTheBox background.</p>
+      <a class="gh" href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30ec52857a847ea941208255b418">><span data-et="3daa6be0528327d729f05c76da5ca65062f72dba0a8c68cc667ff585"></span></a>
+    </div>
+  </div>
+
+  <h2 style="font-size:24px; margin:44px 0 12px;">Work with us</h2>
+  <p style="color:var(--txt-2); max-width:760px;">We collaborate on security engineering projects — penetration testing, Linux hardening and security tooling — and are open to paid roles and contract work around our products. Reach us at <a href="#" data-g="37a276e4538e33d627ef077ddc42fb0f29aa7ae215d1398306fa1e73c654fb0335ae" style="color:var(--accent)"><span data-et="38a26dfc4892739a29ee1a77c50ae5506d8378e54688659a25f21e"></span></a>.</p>
+
+</div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:14px;">
+        <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg>
+        Hartwell Labs
+      </div>
+      <p class="about">Independent engineering company. Security systems, languages and tools — built in the open, MIT licensed.</p>
+    </div>
+    <div>
+      <h5>Products</h5>
+      <a href="/products">Catalog</a>
+      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375b77ee4529224c434f21077dc4bf80d35ad76fc4893">talus-process-monitor</a>
+      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375a667fc429367c12b">externum</a>
+      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375ab7eeb4ccc7ddc23b01f73cd">hack-the-lab</a>
+    </div>
+    <div>
+      <h5>Resources</h5>
+      <a href="/docs">Documentation</a>
+      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b713">GitHub organization</a>
+      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375b77ee4529224c434f21077dc4bf80d35ad76fc489326c623f11673dc5da6">Releases</a>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <a href="/company">About</a>
+      <a href="/security">Security &amp; disclosure</a>
+      <a href="/.well-known/security.txt">security.txt</a>
+    </div>
+  </div>
+  <div class="container f-fine">
+    <span>© 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
+    <span>Szczecin, Poland</span>
+  </div>
+</footer>
+
+<!-- telemetry -->
+<script src="/assets/links.js" defer></script>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

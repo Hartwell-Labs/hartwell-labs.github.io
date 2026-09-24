@@ -1,139 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="referrer" content="strict-origin-when-cross-origin" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
-<title>Security — Hartwell Labs</title>
-<meta name="description" content="Hartwell Labs security policy: coordinated disclosure, response SLA, severity classification, supported versions and safe harbor for security researchers." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/assets/site.css" />
+<meta charset="UTF-8">
+<meta name="robots" content="noindex">
+<meta http-equiv="refresh" content="0; url=/security/">
+<link rel="canonical" href="/security/">
+<script>location.replace("/security/");</script>
+<title>Redirecting…</title>
 </head>
 <body>
-
-<header>
-  <div class="container header-in">
-    <a class="logo" href="/">
-      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
-        <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
-        <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      Hartwell Labs
-    </a>
-    <nav class="main">
-      <a href="/products.html">Products</a>
-      <a href="/docs.html">Docs</a>
-      <a href="/security.html" aria-current="page">Security</a>
-      <a href="/company.html">Company</a>
-    </nav>
-    <a class="header-cta" href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b713">GitHub ↗</a>
-  </div>
-</header>
-
-<div class="container hero" style="padding-bottom:56px;">
-  <div class="eyebrow">Security</div>
-  <h1>Found something? <span class="dim">Tell us first.</span></h1>
-  <p class="lede">We practice coordinated disclosure across all products. This page defines exactly what you can expect from us — response times, severity handling and legal safe harbor for researchers.</p>
-  <div class="hero-actions">
-    <a class="btn btn-primary" href="#" data-g="37a276e4538e33d627ef077ddc42fb0f29aa7ae215d1398306fa1e73c654fb0335ae20fb528363d125e94e41ca5ba01233b766ad15d17bd136f201668a0b944568f33abd65917bdb22e810668a0d91">Report a vulnerability</a>
-    <a class="btn btn-secondary" href="/.well-known/security.txt">security.txt</a>
-  </div>
-</div>
-
-<section style="padding-top:56px;">
-<div class="container">
-
-  <h2 style="font-size:24px; margin-bottom:12px;">How disclosure works</h2>
-  <p style="color:var(--txt-2); max-width:760px;">Send a report to the security contact below. Include a description, reproduction steps and affected product/version. We will:</p>
-  <div class="tl" style="max-width:760px;">
-    <div class="tl-item"><div class="d">48 hours</div><div class="w"><b>Acknowledgment.</b> <span>You receive a confirmation with a tracking reference.</span></div></div>
-    <div class="tl-item"><div class="d">Days 2–7</div><div class="w"><b>Triage &amp; severity.</b> <span>We reproduce, classify per the table below and agree on a coordination timeline with you.</span></div></div>
-    <div class="tl-item"><div class="d">Fix</div><div class="w"><b>Remediation.</b> <span>Patch developed, tested and released per the severity SLA. You get pre-release access to verify the fix.</span></div></div>
-    <div class="tl-item"><div class="d">Release</div><div class="w"><b>Public disclosure.</b> <span>Advisory published with credit (opt-in). Nothing is published before a fix ships, unless the vulnerability is already being exploited.</span></div></div>
-  </div>
-
-  <h2 style="font-size:24px; margin:44px 0 12px;">Severity &amp; response targets</h2>
-  <div class="table-wrap" style="max-width:860px;">
-  <table class="policy">
-    <thead><tr><th>Severity (CVSS 3.1)</th><th>Examples</th><th>Acknowledgment</th><th>Fix target</th></tr></thead>
-    <tbody>
-      <tr><td><span class="badge crit">Critical 9.0–10.0</span></td><td>RCE, auth bypass, signature-verified pipeline escape</td><td>48 hours</td><td>7 days</td></tr>
-      <tr><td><span class="badge warn">High 7.0–8.9</span></td><td>Privilege escalation, detection evasion by design</td><td>48 hours</td><td>30 days</td></tr>
-      <tr><td><span class="badge info">Medium 4.0–6.9</span></td><td>Info leaks, weak defaults in optional modes</td><td>48 hours</td><td>90 days</td></tr>
-      <tr><td><span class="badge ok">Low 0.1–3.9</span></td><td>Hardening opportunities, documentation gaps</td><td>48 hours</td><td>Best effort</td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h2 style="font-size:24px; margin:44px 0 12px;">Supported versions</h2>
-  <div class="table-wrap" style="max-width:860px;">
-  <table class="policy">
-    <thead><tr><th>Product</th><th>Supported line</th><th>Latest release</th><th>Security fixes</th></tr></thead>
-    <tbody>
-      <tr><td>talus-process-monitor</td><td>v0.8.x</td><td><a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375b77ee4529224c434f21077dc4bf80d35ad76fc489326c623f11673dc5da6" style="color:var(--accent)">v0.8.2</a> (2026-09-23)</td><td><span class="badge ok">Yes</span></td></tr>
-      <tr><td>Externum</td><td>v4.3.x</td><td><a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375a667fc429367c12bb20177c35db4133fb0" style="color:var(--accent)">v4.3.0</a> (2026-09-23)</td><td><span class="badge ok">Yes</span></td></tr>
-      <tr><td>All other products</td><td>latest</td><td>see releases page</td><td><span class="badge ok">Yes</span></td></tr>
-      <tr><td>Older releases</td><td>—</td><td>—</td><td><span class="badge crit">Unsupported</span></td></tr>
-    </tbody>
-  </table>
-  </div>
-
-  <h2 style="font-size:24px; margin:44px 0 12px;">Safe harbor</h2>
-  <p style="color:var(--txt-2); max-width:760px;">We consider security research conducted in good faith and in accordance with this policy to be authorized. We will not pursue legal action against researchers who: use only their own accounts and test data, avoid service degradation, give us reasonable time to remediate before public disclosure, and do not access data belonging to other users. If you are unsure whether your activity fits, contact us first — we will help you draw the line.</p>
-
-  <h2 style="font-size:24px; margin:44px 0 12px;">Hall of Fame</h2>
-  <p style="color:var(--txt-2); max-width:760px;">No external reports yet — the list is empty on purpose, not by omission. If you find a real issue in our products, this is where your name goes.</p>
-  <p style="color:var(--txt-2); max-width:760px;">Impatient? Our lab challenge now runs server-side at <a href="https://hartwell-labs.xo.je/challenge" target="_blank" rel="noopener" style="color:var(--accent)">hartwell-labs.xo.je/challenge</a> — clear it and claim your spot.</p>
-  <div class="prod-grid" style="margin-top:16px; max-width:860px;">
-    <div class="prod" style="border-style:dashed;">
-      <div class="row"><h4>Your name here</h4><span class="lang">opt-in credit</span></div>
-      <p>We credit only with your explicit consent — anonymous acknowledgment ("a friendly researcher") works just as well.</p>
-    </div>
-  </div>
-
-</div>
-</section>
-
-<footer>
-  <div class="container footer-grid">
-    <div>
-      <div class="logo" style="margin-bottom:14px;">
-        <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg>
-        Hartwell Labs
-      </div>
-      <p class="about">Independent engineering company. Security systems, languages and tools — built in the open, MIT licensed.</p>
-    </div>
-    <div>
-      <h5>Products</h5>
-      <a href="/products.html">Catalog</a>
-      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375b77ee4529224c434f21077dc4bf80d35ad76fc4893">talus-process-monitor</a>
-      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375a667fc429367c12b">externum</a>
-      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375ab7eeb4ccc7ddc23b01f73cd">hack-the-lab</a>
-    </div>
-    <div>
-      <h5>Resources</h5>
-      <a href="/docs.html">Documentation</a>
-      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b713">GitHub organization</a>
-      <a href="#" data-g="32b76bf854db269b21f4077ada5afb0335ae30c046937dc323f11f3fe359b71375b77ee4529224c434f21077dc4bf80d35ad76fc489326c623f11673dc5da6">Releases</a>
-    </div>
-    <div>
-      <h5>Company</h5>
-      <a href="/company.html">About</a>
-      <a href="/security.html">Security &amp; disclosure</a>
-      <a href="/.well-known/security.txt">security.txt</a>
-    </div>
-  </div>
-  <div class="container f-fine">
-    <span>© 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
-    <span>Szczecin, Poland</span>
-  </div>
-</footer>
-
-<!-- telemetry -->
-<script src="/assets/links.js" defer></script>
-<script src="/assets/site.js" defer></script>
+<p>This page moved to <a href="/security/">/security/</a>.</p>
 </body>
 </html>
