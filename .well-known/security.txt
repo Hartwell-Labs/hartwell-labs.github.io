@@ -2,5 +2,4 @@ Contact: mailto:bartosz.osiej2007@gmail.com
 Expires: 2027-09-24T00:00:00.000Z
 Preferred-Languages: en, pl
 Canonical: https://hartwell-labs.github.io/.well-known/security.txt
-Policy: https://hartwell-labs.github.io/security.html
-CSAF: https://hartwell-labs.github.io/security.html
+Policy: https://hartwell-labs.github.io/security
