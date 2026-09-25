@@ -1,0 +1,29 @@
+name: link-check
+
+on:
+  schedule:
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Link Checker (live site)
+        uses: lycheeverse/lychee-action@v1.10.0
+        with:
+          args: >-
+            --no-progress
+            --max-retries 2
+            --exclude 'fonts\.g(oogleapis|static)\.com'
+            -- 'https://hartwell-labs.github.io/'
+          fail: true
+      - name: Report
+        if: failure()
+        run: echo "::error::Broken links detected on the live site — see lychee output above."
