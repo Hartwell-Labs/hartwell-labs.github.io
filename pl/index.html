@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-bDE/rGD9B+HAX57pUW5NQK2b49R+DBbtyuZBoshk5VM='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>Hartwell Labs — Detekcja zagrożeń eBPF i infrastruktura bezpieczeństwa</title>
+<meta name="description" content="Hartwell Labs — niezależna firma inżynierska ze Szczecina: talus-process-monitor (behawioralna detekcja ransomware eBPF dla Linuksa), kryptografia postkwantowa, testy penetracyjne. Open source, licencja MIT, CI na wszystkim." />
+<link rel="canonical" href="https://hartwell-labs.pl/pl/" />
+<link rel="alternate" hreflang="pl" href="https://hartwell-labs.pl/pl/" />
+<link rel="alternate" hreflang="en" href="https://hartwell-labs.pl/" />
+<link rel="alternate" hreflang="x-default" href="https://hartwell-labs.pl/" />
+<meta property="og:site_name" content="Hartwell Labs" />
+<meta property="og:title" content="Hartwell Labs — infrastruktura klasy enterprise" />
+<meta property="og:description" content="Detekcja zagrożeń eBPF, kryptografia postkwantowa i self-hosted język programowania. Open source, licencja MIT." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hartwell-labs.pl/pl/" />
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="pl_PL" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Hartwell Labs — infrastruktura klasy enterprise" />
+<meta name="twitter:description" content="Detekcja zagrożeń eBPF, kryptografia postkwantowa i self-hosted język programowania. Open source, licencja MIT." />
+<meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/icon-192.png" />
+<link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+<header>
+<div class="container header-in">
+<a class="logo" href="/pl/">
+<svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+<path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
+<polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg> Hartwell Labs
+</a>
+<nav class="main">
+<a href="/products">Produkty</a>
+<a href="/docs">Dokumentacja</a>
+<a href="/security">Bezpieczeństwo</a>
+<a href="/company">Firma</a>
+</nav>
+<a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a>
+</div>
+</header>
+<div class="container hero">
+<div class="eyebrow">Niezależna firma inżynierska</div>
+<h1>Infrastruktura klasy enterprise. <span class="dim">Open source.</span></h1>
+<p class="lede">Projektujemy i utrzymujemy infrastrukturę bezpieczeństwa oraz narzędzia deweloperskie: detekcję zagrożeń eBPF, kryptografię postkwantową i self-hosted język programowania. Otwarty kod, dyscyplina inżynierska klasy enterprise.</p>
+<div class="hero-actions">
+<a class="btn btn-primary" href="/products">Poznaj produkty</a>
+<a class="btn btn-secondary" href="/docs">Przeczytaj dokumentację</a>
+</div>
+</div>
+<div class="stats">
+<div class="container stats-in">
+<div class="stat"><div class="n">10</div><div class="l">Publicznych produktów</div></div>
+<div class="stat"><div class="n">3</div><div class="l">Obrazy kontenerów na GHCR</div></div>
+<div class="stat"><div class="n">48h</div><div class="l">SLA reakcji bezpieczeństwa</div></div>
+<div class="stat"><div class="n">400+</div><div class="l">Testów w zestawie Externum</div></div>
+</div>
+</div>
+<section id="flagship">
+<div class="container">
+<div class="section-head">
+<div class="kicker">Flagowy produkt</div>
+<h2>talus-process-monitor</h2>
+<p>Behawioralna detekcja ransomware i response dla Linuksa. Oparta na eBPF, ~280 tys. zdarzeń na sekundę, samosandboxing seccomp i Landlock, jeden statyczny plik binarny — bez modułów jądra.</p>
+</div>
+<div class="cmd"><code>pip install talus-process-monitor</code><button class="cp" data-code="pip install talus-process-monitor">KOPIUJ</button></div>
+<div class="cmd"><code>docker pull ghcr.io/hartwell-labs/talus-process-monitor:latest</code><button class="cp" data-code="docker pull ghcr.io/hartwell-labs/talus-process-monitor:latest">KOPIUJ</button></div>
+<div style="margin-top:22px; display:flex; gap:12px; flex-wrap:wrap;">
+<a class="btn btn-primary" href="/docs#deployment">Poradnik wdrożenia</a>
+<a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/talus-process-monitor">Kod źródłowy ↗</a>
+</div>
+</div>
+</section>
+<section id="practices">
+<div class="container">
+<div class="section-head">
+<div class="kicker">Jak dostarczamy</div>
+<h2>Praktyki inżynierskie, nie obietnice.</h2>
+<p>Każde repozytorium w organizacji przechodzi te same bramki jakości. Produkt flagowy dodatkowo dostarcza dowody dla łańcucha dostaw.</p>
+</div>
+<div class="prod-grid">
+<div class="prod"><div class="row"><h4>CI przy każdym pushu</h4></div><p>Buildy, lintery i zestawy testów działają we wszystkich aktywnych repozytoriach. Funkcja bez CI nie wychodzi z drzewa.</p></div>
+<div class="prod"><div class="row"><h4>Analiza statyczna i fuzzing</h4></div><p>CodeQL w całej organizacji; ciągły fuzzing potoku eBPF w talusie.</p></div>
+<div class="prod"><div class="row"><h4>Podpisane wydania</h4></div><p>Artefakty wydań z dowodem pochodzenia builda i atestacją w stylu Sigstore.</p></div>
+<div class="prod"><div class="row"><h4>SBOM w zestawie</h4></div><p>Każde wydanie talus zawiera software bill of materials w formacie SPDX — wiedz dokładnie, co wdrażasz.</p></div>
+<div class="prod"><div class="row"><h4>OpenSSF Scorecard</h4></div><p>Postawa łańcucha dostaw mierzona ciągle, nie reklamowana w prezentacjach.</p></div>
+<div class="prod"><div class="row"><h4>Skoordynowane ujawnianie podatności</h4></div><p>SLA potwierdzenia 48h, publiczne notki hardeningowe, Hall of Fame dla zgłaszających.</p></div>
+</div>
+</div>
+</section>
+<section id="cta">
+<div class="container" style="padding-bottom:80px;">
+<div class="prod" style="display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between; padding:30px 34px;">
+<div>
+<h4 style="font-size:20px; letter-spacing:-.02em;">Zbuduj na Hartwell. Albo przeciwko nam.</h4>
+<p style="margin-top:6px; color:var(--txt-2); font-size:15px;">Używaj produktów, czytaj kod albo próbuj je złamać — na wszystkie trzy przypadki uważnie patrzymy.</p>
+</div>
+<div style="display:flex; gap:12px; flex-wrap:wrap;">
+<a class="btn btn-primary" href="/company">O firmie</a>
+<a class="btn btn-secondary" href="/security">Zgłoś podatność</a>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<div class="container footer-grid">
+<div>
+<div class="logo" style="margin-bottom:14px;">
+<svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg>
+Hartwell Labs
+</div>
+<p class="about">Niezależna firma inżynierska. Systemy bezpieczeństwa, języki i narzędzia — budowane w otwartym kodzie, licencja MIT.</p>
+</div>
+<div>
+<h5>Produkty</h5>
+<a href="/products">Katalog</a>
+<a href="/talus-process-monitor/">talus-process-monitor</a>
+<a href="/externum/">externum</a>
+<a href="/hack-the-lab/">hack-the-lab</a>
+</div>
+<div>
+<h5>Zasoby</h5>
+<a href="/docs">Dokumentacja</a>
+<a href="https://github.com/Hartwell-Labs">Organizacja GitHub</a>
+<a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">Wydania</a>
+</div>
+<div>
+<h5>Firma</h5>
+<a href="/company">O nas</a>
+<a href="/security">Bezpieczeństwo &amp; ujawnianie podatności</a>
+<a href="/.well-known/security.txt">security.txt</a>
+</div>
+</div>
+<div class="container f-fine">
+<span>© 2026 Hartwell Labs. Całe oprogramowanie wydawane na licencji MIT, chyba że zaznaczono inaczej.</span>
+<span>Szczecin, Polska</span>
+</div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/","logo":"https://hartwell-labs.pl/assets/icon-512.png","email":"contact@hartwell-labs.pl","address":{"@type":"PostalAddress","addressLocality":"Szczecin","addressCountry":"PL"},"founder":{"@type":"Person","name":"Bartosz Osiej","jobTitle":"Founder & CEO"},"sameAs":["https://github.com/Hartwell-Labs"]},{"@type":"WebSite","@id":"https://hartwell-labs.pl/#website","url":"https://hartwell-labs.pl/","name":"Hartwell Labs","publisher":{"@id":"https://hartwell-labs.pl/#org"},"inLanguage":"pl"},{"@type":"SoftwareApplication","@id":"https://hartwell-labs.pl/#talus","name":"talus-process-monitor","applicationCategory":"SecurityApplication","operatingSystem":"Linux","description":"Behawioralna detekcja ransomware i response dla Linuksa. Oparta na eBPF, ~280 tys. zdarzeń na sekundę, jeden statyczny plik binarny - bez modułów jądra.","url":"https://hartwell-labs.pl/talus-process-monitor/","publisher":{"@id":"https://hartwell-labs.pl/#org"},"license":"https://opensource.org/licenses/MIT"}]}</script>
+</body>
+</html>

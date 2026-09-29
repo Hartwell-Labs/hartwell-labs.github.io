@@ -1,0 +1,39 @@
+# Hartwell Labs
+
+> Independent engineering company from Szczecin, Poland, building security infrastructure and developer tools. Open source, MIT licensed, CI on everything.
+
+Core facts:
+
+- Flagship product: **talus-process-monitor** — behavioral ransomware detection and response for Linux. eBPF-based, ~280k events per second, seccomp and Landlock self-sandboxing, one static binary, no kernel modules.
+- Ships with: SBOM (SPDX), build provenance, Sigstore-style attestation, continuous fuzzing on the eBPF pipeline.
+- Security: coordinated vulnerability disclosure, 48-hour acknowledgment SLA, security contact in /.well-known/security.txt.
+- Services: manual penetration testing (OWASP WSTG, PTES), Amazon SP-API audit-ready assessments, Linux hardening, eBPF detection deployments.
+- Team: Bartosz Osiej (Founder & CEO, systems engineering), duds08422-max (Ruby engineering, bridges & registry).
+
+## Pages
+
+- [Home](https://hartwell-labs.pl/): company overview, flagship product, engineering practices
+- [Home (Polish)](https://hartwell-labs.pl/pl/): polska wersja strony
+- [Products](https://hartwell-labs.pl/products/): catalog of 10 public products across 4 lines
+- [Catalog](https://hartwell-labs.pl/catalog/): complete map with machine-readable registry
+- [Documentation](https://hartwell-labs.pl/docs/): installation and deployment guides
+- [Security](https://hartwell-labs.pl/security/): disclosure policy, SLA, severity classification
+- [Company](https://hartwell-labs.pl/company/): about, timeline, services, team
+
+## Products
+
+- talus-process-monitor: https://github.com/Hartwell-Labs/talus-process-monitor
+- quantum-shield (post-quantum file encryption): https://github.com/Hartwell-Labs/quantum-shield
+- linux-aegis (kernel security module): https://github.com/Hartwell-Labs/linux-aegis
+- fortis (RISC-V attestation): https://github.com/Hartwell-Labs/fortis
+- externum (self-hosted programming language): https://github.com/Hartwell-Labs/externum
+- Aurora (browser OS): https://github.com/Hartwell-Labs/Aurora
+- labbridge (Rust-Ruby bridge): https://github.com/Hartwell-Labs/labbridge
+- products (Products Registry): https://github.com/Hartwell-Labs/products
+- CyberForge (offensive tooling): https://github.com/Hartwell-Labs/CyberForge
+- hack-the-lab (security challenges): https://github.com/Hartwell-Labs/hack-the-lab
+
+## Contact
+
+- General: contact@hartwell-labs.pl
+- Security reports: see https://hartwell-labs.pl/.well-known/security.txt
