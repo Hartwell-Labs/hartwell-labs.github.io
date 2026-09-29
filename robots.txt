@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /challenge.js
 
-Sitemap: https://hartwell-labs.github.io/sitemap.xml
+Sitemap: https://hartwell-labs.pl/sitemap.xml
