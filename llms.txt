@@ -4,6 +4,7 @@
 
 Core facts:
 
+- Second flagship: **scryer-core** — lead intelligence & external attack surface (BZP/BIP ingestion, KSC/NIS2 scoring, passive DNS audit). Proprietary, self-hosted, security-first. Hub: https://hartwell-labs.pl/scryer-core/
 - Flagship product: **talus-process-monitor** — behavioral ransomware detection and response for Linux. eBPF-based, ~280k events per second, seccomp and Landlock self-sandboxing, one static binary, no kernel modules.
 - Ships with: SBOM (SPDX), build provenance, Sigstore-style attestation, continuous fuzzing on the eBPF pipeline.
 - Security: coordinated vulnerability disclosure, 48-hour acknowledgment SLA, security contact in /.well-known/security.txt.

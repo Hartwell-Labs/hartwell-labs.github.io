@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scryer — lead intelligence &amp; external attack surface | Hartwell Labs</title>
+<meta name="description" content="Scryer turns public data (BZP/BIP, passive DNS) into ranked leads with personalization ammunition and ready mail briefs. Self-hosted, audit-ready, security-first.">
+<link rel="icon" href="/assets/icon-512.png">
+<style>
+  :root{
+    --bg:#050505; --panel:#0a0a0d; --line:#22222a; --fg:#d6d6d6; --sub:#8b95a8;
+    --amber:#F5A623; --amber-dim:rgba(245,166,35,.14); --ok:#22c55e; --blood:#DA2C38;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font-family:Inter,system-ui,sans-serif;line-height:1.6}
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+  a{color:var(--amber);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(5,5,5,.92);backdrop-filter:blur(8px);z-index:10}
+  .head-in{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;max-width:980px;margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px;color:var(--fg);font-weight:700;letter-spacing:-.02em}
+  .brand:hover{text-decoration:none}
+  nav{display:flex;gap:20px;font-size:13px}
+  nav a{color:var(--sub)} nav a:hover{color:var(--amber);text-decoration:none}
+  .eyebrow{color:var(--amber);font-size:12px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:14px}
+  .hero{padding:72px 0 48px}
+  h1{font-size:clamp(30px,5vw,44px);letter-spacing:-.03em;line-height:1.15}
+  h1 .dim{color:var(--sub)}
+  .lede{margin-top:16px;font-size:17px;color:var(--sub);max-width:720px}
+  .cmds{margin-top:28px;display:grid;gap:10px}
+  .cmd{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+  .cmd code{flex:1;font-size:13.5px;color:var(--fg);overflow-x:auto;white-space:nowrap}
+  .cp{background:var(--amber-dim);border:1px solid rgba(245,166,35,.4);color:var(--amber);border-radius:6px;padding:5px 12px;font-size:11px;letter-spacing:.08em;cursor:pointer}
+  .cp:hover{background:rgba(245,166,35,.25)}
+  .btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:8px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--fg);transition:.15s}
+  .btn:hover{border-color:var(--amber);text-decoration:none}
+  .btn-amber{background:var(--amber);border-color:var(--amber);color:#050505}
+  .btn-amber:hover{background:#ffbf45}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px}
+  .card h3{font-size:15px;color:var(--amber);margin-bottom:8px;letter-spacing:.02em}
+  .card p{font-size:14px;color:var(--sub)}
+  .card .mono-tag{display:inline-block;margin-top:12px;font-size:11px;color:var(--sub);border:1px solid var(--line);border-radius:6px;padding:3px 8px}
+  section{padding:40px 0}
+  h2{font-size:24px;letter-spacing:-.02em;margin-bottom:20px}
+  h2 .dim{color:var(--sub)}
+  .tier{display:flex;gap:14px;align-items:baseline;border:1px solid var(--line);border-radius:12px;padding:18px 22px;background:var(--panel);margin-bottom:10px}
+  .tier .n{min-width:74px;font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .tier .d{font-size:14px;color:var(--sub)}
+  .tier.hot .n{color:var(--blood)} .tier.warm .n{color:var(--amber)} .tier.cold .n{color:var(--sub)}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;color:var(--sub);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.1em;padding:10px 12px;border-bottom:1px solid var(--line)}
+  td{padding:10px 12px;border-bottom:1px solid var(--line);color:var(--fg)}
+  .note{border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:0 10px 10px 0;padding:14px 18px;font-size:13.5px;color:var(--sub);background:var(--panel);margin-top:18px}
+  .lang-switch{display:flex;gap:8px}
+  .lang-switch button{background:none;border:1px solid var(--line);color:var(--sub);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer}
+  .lang-switch button.on{border-color:var(--amber);color:var(--amber)}
+  footer{border-top:1px solid var(--line);margin-top:40px;padding:28px 24px;color:var(--sub);font-size:13px}
+  footer a{color:var(--sub)}
+  .foot-in{max-width:980px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  @media(max-width:640px){nav{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div class="head-in">
+    <a class="brand" href="/">
+      <svg width="18" height="18" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#F5A623" stroke-width="3.4" stroke-linejoin="round"/></svg>
+      Hartwell Labs
+    </a>
+    <nav>
+      <a href="/talus-process-monitor/">Talus</a>
+      <a href="/externum/">Externum</a>
+      <a href="/catalog/">Catalog</a>
+      <a href="/security/">Security</a>
+    </nav>
+    <div class="lang-switch">
+      <button id="l-en" class="on" onclick="setLang('en')">EN</button>
+      <button id="l-pl" onclick="setLang('pl')">PL</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Lead intelligence · External attack surface · Self-hosted</div>
+    <h1>Scryer <span class="dim">— intelligence on your localhost.</span></h1>
+    <p class="lede">Scryer turns public data — BZP/BIP procurement and registry records, passive DNS — into ranked leads with personalization ammunition and ready mail briefs. Self-hosted, deterministic core, sha256-signed manifests, audit-ready.</p>
+    <p class="lede" style="margin-top:8px">Talus looks inside the host. <b style="color:var(--fg)">Scryer looks at your outside exposure.</b></p>
+    <div class="cmds">
+      <div class="cmd"><code>SCRYER_DB=leads.db scryer-core score seed/leads-demo.json</code><button class="cp" data-code="SCRYER_DB=leads.db scryer-core score seed/leads-demo.json">COPY</button></div>
+      <div class="cmd"><code>SCRYER_DB=leads.db scryer-core briefs seed/leads-demo.json briefs/</code><button class="cp" data-code="SCRYER_DB=leads.db scryer-core briefs seed/leads-demo.json briefs/">COPY</button></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap">
+      <a class="btn btn-amber" href="https://github.com/duds08422-max/scryer-core">Source &amp; docs ↗</a>
+      <a class="btn" href="mailto:contact@hartwell-labs.pl?subject=Scryer%20—%20demo%20%2F%20licencja">Request demo / licensing</a>
+    </div>
+  </div>
+
+  <section id="capabilities">
+    <h2>Capabilities <span class="dim">— code over claims.</span></h2>
+    <div class="grid">
+      <div class="card"><h3>BZP / BIP ingestion</h3><p>Procurement &amp; public-registry records parsed into a typed ontology: entities, domains, tenders, hooks.</p><span class="mono-tag">deterministic core</span></div>
+      <div class="card"><h3>KSC / NIS2 scoring</h3><p>Transparent, audit-ready scoring: sector weight, self-registration hooks, active tenders, verified email. HOT/WARM/COLD tiers.</p><span class="mono-tag">HOT ≥15 pts</span></div>
+      <div class="card"><h3>Passive DNS audit</h3><p>MX + SPF + DMARC + A per lead domain — via own minimal DNS client. No scanning of third parties, ever, without authorization.</p><span class="mono-tag">dnsmini</span></div>
+      <div class="card"><h3>Campaign export</h3><p>CSV ready for Brevo import, one markdown brief per lead, JSON snapshot with sha256 manifest — audit-ready output.</p><span class="mono-tag">sha256 manifest</span></div>
+      <div class="card"><h3>Live console</h3><p>Query API + graph view + attack-surface view on the local ontology. Binds to 127.0.0.1 by default.</p><span class="mono-tag">axum · SQLite</span></div>
+      <div class="card"><h3>Security-first</h3><p>Bearer auth on the API, no telemetry, gated mail sending, deterministic and reproducible output.</p><span class="mono-tag">localhost by default</span></div>
+    </div>
+  </section>
+
+  <section id="pipeline">
+    <h2>Pipeline</h2>
+    <div class="note mono">LOAD → VALIDATE → DEDUPE → SCORE → ENRICH (passive DNS) → RANK → CSV + BRIEFS + SNAPSHOT</div>
+    <p style="color:var(--sub);font-size:14px;margin-top:12px">Deterministic core: same input → same output, sha256 manifest over the snapshot. One Rust binary, no cloud, no telemetry — data never leaves the operator's machine.</p>
+  </section>
+
+  <section id="tiers">
+    <h2>Scoring tiers</h2>
+    <div class="tier hot"><div class="n">HOT</div><div class="d">≥ 15 pts — first wave: personal, domain-specific briefs with DNS findings</div></div>
+    <div class="tier warm"><div class="n">WARM</div><div class="d">10–14 pts — second wave: sector-tailored value proposition</div></div>
+    <div class="tier cold"><div class="n">COLD</div><div class="d">&lt; 10 pts — nurture: newsletter, case studies, keep-warm</div></div>
+    <table style="margin-top:22px">
+      <tr><th>Signal</th><th>Points</th><th>Source</th><th>Amunition</th></tr>
+      <tr><td>Sector: health / water / energy (KSC USK)</td><td>9–10</td><td>BIP sector parse</td><td>USK obligation angle</td></tr>
+      <tr><td>Hook: KSC self-registration ≤7 days</td><td>+5</td><td>KSC registry</td><td>compliance deadline</td></tr>
+      <tr><td>Hook: active tender (BZP)</td><td>+4</td><td>BZP</td><td>live procurement</td></tr>
+      <tr><td>Verified email / MX / SPF / DMARC findings</td><td>+3–6</td><td>passive DNS audit</td><td>spoofing exposure angle</td></tr>
+    </table>
+    <div class="note">Scoring is transparent by design — every point has a named source. Auditors and customers can verify the ranking, not trust it.</div>
+  </section>
+
+  <section id="licensing">
+    <h2>Licensing &amp; access</h2>
+    <p style="color:var(--sub);font-size:14.5px">Scryer is proprietary, intelligence-grade tooling for public entities (CSIRT / IK), critical-infrastructure operators and enterprise. The core is not open source.</p>
+    <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap">
+      <a class="btn btn-amber" href="mailto:contact@hartwell-labs.pl?subject=Scryer%20licensing">contact@hartwell-labs.pl</a>
+      <a class="btn" href="/security/">Security &amp; disclosure</a>
+    </div>
+  </section>
+
+  <section id="pl-section" hidden>
+    <h2>Scryer po polsku</h2>
+    <div class="note">
+      <b>Scryer</b> — polski odpowiednik platform intelligence, hostowany lokalnie: dane publiczne (BZP/BIP, pasywny DNS) zamienia w ranking leadów z amunicją personalizacyjną i gotowymi briefami mailowymi. Rdzeń deterministyczny, manifest sha256, zero chmury, zero telemetrii. Talus patrzy do środka hosta — <b>Scryer patrzy na ekspozycję zewnętrzną</b>. Licencja proprietary; kontakt: contact@hartwell-labs.pl.
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="foot-in">
+    <span>© 2026 Hartwell Labs · Szczecin, Poland</span>
+    <span><a href="/">hartwell-labs.pl</a> · <a href="/catalog/">catalog</a> · <a href="https://github.com/duds08422-max/scryer-core">source ↗</a></span>
+  </div>
+</footer>
+
+<script>
+function copyB(btn){navigator.clipboard.writeText(btn.dataset.code);btn.textContent="COPIED";setTimeout(function(){btn.textContent="COPY";},1500);}
+function setLang(l){document.getElementById("pl-section").hidden=(l==="en");document.getElementById("l-en").classList.toggle("on",l==="en");document.getElementById("l-pl").classList.toggle("on",l==="pl");}
+document.querySelectorAll(".cp").forEach(function(b){b.onclick=function(){copyB(b);};});
+</script>
+</body>
+</html>
