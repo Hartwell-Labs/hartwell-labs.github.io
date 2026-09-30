@@ -105,7 +105,8 @@
       <div class="card"><h3>KSC / NIS2 scoring</h3><p>Transparent, audit-ready scoring: sector weight, self-registration hooks, active tenders, verified email. HOT/WARM/COLD tiers.</p><span class="mono-tag">HOT ≥15 pts</span></div>
       <div class="card"><h3>Passive DNS audit</h3><p>MX + SPF + DMARC + A per lead domain — via own minimal DNS client. No scanning of third parties, ever, without authorization.</p><span class="mono-tag">dnsmini</span></div>
       <div class="card"><h3>Campaign export</h3><p>CSV ready for Brevo import, one markdown brief per lead, JSON snapshot with sha256 manifest — audit-ready output.</p><span class="mono-tag">sha256 manifest</span></div>
-      <div class="card"><h3>Live console</h3><p>Query API + graph view + attack-surface view on the local ontology. Binds to 127.0.0.1 by default.</p><span class="mono-tag">axum · SQLite</span></div>
+      <div class="card"><h3>Link analysis</h3><p>Relationship graph (org↔domain↔person) with components, bridges (single points of failure), shortest paths — plus <strong>shared-infrastructure hubs</strong>: two orgs on the same MX/NS/IP get connected automatically (passive DNS inference, no LLM).</p><span class="mono-tag">graphx · bridges · timeline</span></div>
+      <div class="card"><h3>Live console</h3><p>Query API + graph view (bridge highlighting) + attack-surface view + event timeline on the local ontology. Binds to 127.0.0.1 by default.</p><span class="mono-tag">axum · SQLite</span></div>
       <div class="card"><h3>Security-first</h3><p>Bearer auth on the API, no telemetry, gated mail sending, deterministic and reproducible output.</p><span class="mono-tag">localhost by default</span></div>
     </div>
   </section>
