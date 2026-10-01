@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hartwell-mail",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "account_id": "29ee063c29d9e8f27a8863fadcaa9073",
+
+  "send_email": [{ "name": "EMAIL" }],
+
+  "email_routing": {
+    "enabled": true
+  },
+
+  "kv_namespaces": [
+    { "binding": "KV", "id": "42e2acc4f13a461fae55a6dc59ed2800" }
+  ],
+
+  "routes": [
+    { "pattern": "mail.hartwell-labs.pl", "custom_domain": true }
+  ],
+
+  "vars": {
+    "FROM_NAME": "Hartwell Labs"
+  }
+}
