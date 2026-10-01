@@ -4,23 +4,23 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-1vCSU8xRkfebVesGXeDnAjb3QBYDi3uFwXfbLiHssL8='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
-<title>scryer-core — internal intelligence platform | Hartwell Labs | Hartwell Labs</title>
-<meta name="description" content="Hartwell Labs' internal intelligence platform: public-procurement ingestion, KSC/NIS2 risk scoring and campaign export. Proprietary, access on request." />
-<link rel="canonical" href="https://hartwell-labs.pl/scryer-core/" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-FWj1FEFjuYtFKb+OuYmF2MoUPMcTuIxIXyihBsURpGo='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>CyberForge — 4 Rust security tools (recon, web, hash, packets) | Hartwell Labs</title>
+<meta name="description" content="Four Rust security tools — port scanner, web scanner, hash cracker, packet analyzer. Tokio async core, used in our own pentest labs." />
+<link rel="canonical" href="https://hartwell-labs.pl/CyberForge/" />
 <meta property="og:site_name" content="Hartwell Labs" />
-<meta property="og:title" content="scryer-core — internal intelligence platform | Hartwell Labs" />
-<meta property="og:description" content="Hartwell Labs' internal intelligence platform: public-procurement ingestion, KSC/NIS2 risk scoring and campaign export. Proprietary, access on request." />
+<meta property="og:title" content="CyberForge — 4 Rust security tools (recon, web, hash, packets)" />
+<meta property="og:description" content="Four Rust security tools — port scanner, web scanner, hash cracker, packet analyzer. Tokio async core, used in our own pentest labs." />
 <meta property="og:type" content="website" />
-<meta property="og:url" content="https://hartwell-labs.pl/scryer-core/" />
+<meta property="og:url" content="https://hartwell-labs.pl/CyberForge/" />
 <meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="scryer-core — internal intelligence platform | Hartwell Labs — Hartwell Labs" />
-<meta name="twitter:description" content="Hartwell Labs' internal intelligence platform: public-procurement ingestion, KSC/NIS2 risk scoring and campaign export. Proprietary, access on request." />
+<meta name="twitter:title" content="CyberForge — 4 Rust security tools (recon, web, hash, packets) — Hartwell Labs" />
+<meta name="twitter:description" content="Four Rust security tools — port scanner, web scanner, hash cracker, packet analyzer. Tokio async core, used in our own pentest labs." />
 <meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"scryer-core","operatingSystem":"Linux, macOS","applicationCategory":"BusinessApplication","featureList":"Hartwell Labs' internal intelligence platform: public-procurement ingestion, KSC/NIS2 risk scoring and campaign export. Proprietary, access on request.","author":{"@type":"Organization","name":"Hartwell Labs","url":"https://hartwell-labs.pl/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CyberForge","operatingSystem":"Linux, macOS","applicationCategory":"SecurityApplication","featureList":"Four Rust security tools \u2014 port scanner, web scanner, hash cracker, packet analyzer. Tokio async core, used in our own pentest labs.","author":{"@type":"Organization","name":"Hartwell Labs","url":"https://hartwell-labs.pl/"}}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -33,44 +33,45 @@
 </head> <body> <header> <div class="container header-in"> <a class="logo" href="/"> <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"> <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/> <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/> </svg> Hartwell Labs </a> <nav class="main"> <a href="/products">Products</a> <a href="/docs">Docs</a> <a href="/security">Security</a> <a href="/company">Company</a> </nav> <a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a> </div> </header>
 
 <div class="container hero" style="padding-bottom:56px;">
-  <div class="eyebrow">Intelligence platform &middot; Rust · Proprietary</div>
-  <h1>Lead intelligence, <span class="dim">built in-house.</span></h1>
-  <p class="lede">scryer-core is our internal intelligence platform: public-procurement ingestion, passive-DNS external attack surface mapping, KSC/NIS2-informed risk scoring and campaign-ready export with mail briefs. Proprietary — access on request for partners and clients.</p>
-  <div class="hero-actions"><a class="btn btn-primary" href="mailto:important@hartwell-labs.pl?subject=Scryer%20Core%20%E2%80%94%20access%20request">Request access</a>
-    <a class="btn btn-secondary" href="/company">About Hartwell Labs</a></div>
+  <div class="eyebrow">Offensive security &middot; Rust</div>
+  <h1>Four security tools. <span class="dim">One async core.</span></h1>
+  <p class="lede">CyberForge is four Rust security tools — port scanner, web scanner, hash cracker and packet analyzer — on a Tokio async core, dogfooded in our own pentest labs.</p>
+  <div class="hero-actions"><a class="btn btn-primary" href="https://github.com/Hartwell-Labs/CyberForge">Source on GitHub ↗</a>
+    <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/CyberForge/releases">Releases</a>
+    <a class="btn btn-secondary" href="/products">Full catalog</a></div>
 </div>
 
 <div class="stats">
-  <div class="container stats-in"><div class="stat"><div class="n">Ingestion</div><div class="l">public procurement feeds</div></div>
-    <div class="stat"><div class="n">KSC · NIS2</div><div class="l">risk scoring</div></div>
-    <div class="stat"><div class="n">Export</div><div class="l">campaign-ready data</div></div>
-    <div class="stat"><div class="n">Proprietary</div><div class="l">Hartwell Labs internal</div></div></div>
+  <div class="container stats-in"><div class="stat"><div class="n">4 tools</div><div class="l">recon → cracking</div></div>
+    <div class="stat"><div class="n">Tokio</div><div class="l">async core</div></div>
+    <div class="stat"><div class="n">Rust</div><div class="l">memory-safe by construction</div></div>
+    <div class="stat"><div class="n">Dogfooded</div><div class="l">our own pentest labs</div></div></div>
 </div>
 
 <section id="why">
   <div class="container">
     <div class="section-head">
-      <div class="kicker">Why scryer-core</div>
+      <div class="kicker">Why CyberForge</div>
       <h2>What it does, concretely.</h2>
     </div>
-    <div class="prod-grid"><div class="prod"><div class="row"><h4>Ingestion</h4></div>
-        <p>Continuous ingestion of public-procurement feeds — watch the tenders that matter, automatically.</p></div>
-      <div class="prod"><div class="row"><h4>Risk scoring</h4></div>
-        <p>KSC/NIS2-informed scoring puts the highest-risk organizations at the top of the queue.</p></div>
-      <div class="prod"><div class="row"><h4>Campaign export</h4></div>
-        <p>Campaign-ready output with per-lead mail briefs feeds our outreach tooling — no manual list wrangling.</p></div>
-      <div class="prod"><div class="row"><h4>Attack surface map</h4></div>
-        <p>Passive DNS audit maps the external attack surface of every organization — context for outreach and for security reviews.</p></div></div>
+    <div class="prod-grid"><div class="prod"><div class="row"><h4>Recon to cracking</h4></div>
+        <p>Port scan, enumerate the web surface, analyze packets, crack hashes — one toolkit.</p></div>
+      <div class="prod"><div class="row"><h4>Async by design</h4></div>
+        <p>Tokio-powered: high concurrency without thread-pool tuning.</p></div>
+      <div class="prod"><div class="row"><h4>The tools we use</h4></div>
+        <p>Not a demo — the same tooling runs in Hartwell Labs engagements.</p></div></div>
   </div>
 </section>
 
 <section id="start" style="border-top:1px solid var(--border);">
   <div class="container">
     <div class="section-head">
-      <div class="kicker">Access</div>
-      <h2>Proprietary &mdash; access on request.</h2>
-      <p>scryer-core powers Hartwell Labs internal GTM and client engagements. We grant source access to partners under NDA &mdash; write to <a href="mailto:important@hartwell-labs.pl" style="color:var(--accent)">important@hartwell-labs.pl</a>.</p>
+      <div class="kicker">Start</div>
+      <h2>Clone and build.</h2>
     </div>
+    <div class="cmd"><code>git clone https://github.com/Hartwell-Labs/CyberForge</code><button class="cp" data-code="git clone https://github.com/Hartwell-Labs/CyberForge">COPY</button></div>
+    <div class="cmd"><code>cd CyberForge && cargo build --release</code><button class="cp" data-code="cd CyberForge && cargo build --release">COPY</button></div>
+    <p style="margin-top:16px; color:var(--txt-2); font-size:14.5px;">Full documentation, examples and CI configuration live in the <a href="https://github.com/Hartwell-Labs/CyberForge" style="color:var(--accent)">repository ↗</a>.</p>
   </div>
 </section>
 
@@ -107,7 +108,7 @@
       <h5>Resources</h5>
       <a href="/docs">Documentation</a>
       <a href="https://github.com/Hartwell-Labs">GitHub organization</a>
-      <a href="https://github.com/Hartwell-Labs/scryer-core/releases">Releases</a>
+      <a href="https://github.com/Hartwell-Labs/CyberForge/releases">Releases</a>
     </div>
     <div>
       <h5>Company</h5>
