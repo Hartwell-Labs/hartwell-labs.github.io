@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; base-uri 'none'; form-action https://buy.polar.sh; frame-ancestors 'none'" />
+<title>Talus — Ransomware Detection &amp; Response for Linux | Hartwell Labs</title>
+<meta name="description" content="Behavioral ransomware detection with instant response for Linux server fleets. eBPF, no kernel modules, no telemetry, self-hosted. $50 per node, one year of updates. From Hartwell Labs." />
+<link rel="canonical" href="https://hartwell-labs.pl/talus.html" />
+<meta property="og:title" content="Talus — Ransomware Detection & Response for Linux" />
+<meta property="og:description" content="eBPF behavioral detection to SIGKILL in the same second. Self-hosted, no kernel modules, $50/node." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hartwell-labs.pl/talus.html" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Talus (talus-process-monitor)","applicationCategory":"SecurityApplication","operatingSystem":"Linux","offers":{"@type":"Offer","price":"50.00","priceCurrency":"USD","url":"https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK"},"author":{"@type":"Organization","name":"Hartwell Labs"}}
+</script>
+<style>
+:root{--bg:#0b0e11;--panel:#12161b;--line:#232a31;--ink:#e6e9ec;--dim:#98a2ad;--acc:#4ee38a;--acc2:#8ab4ff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px}
+header{border-bottom:1px solid var(--line);padding:20px 0}
+header .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.5px}
+.brand span{color:var(--acc)}
+nav a{color:var(--dim);text-decoration:none;margin-left:18px;font-size:14px}
+nav a:hover{color:var(--ink)}
+.hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(26px,4.5vw,40px);line-height:1.15;letter-spacing:-.5px}
+.hero p.sub{color:var(--dim);margin-top:14px;max-width:56ch}
+.pill{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:999px;font-size:12px;padding:3px 10px;margin-bottom:18px;letter-spacing:.5px}
+.cta{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
+.btn{display:inline-block;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:700;font-size:15px;border:1px solid var(--line)}
+.btn.primary{background:var(--acc);color:#06210f;border-color:var(--acc)}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.ghost{color:var(--ink)}
+.btn.ghost:hover{border-color:var(--dim)}
+.price{margin-top:10px;color:var(--dim);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:40px 0}
+.grid article{background:var(--panel);padding:22px}
+@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.grid h2{font-size:15px;color:var(--acc2);margin-bottom:10px;letter-spacing:.3px}
+.grid p{color:var(--dim);font-size:14px}
+section{padding:34px 0;border-bottom:1px solid var(--line)}
+h2.s{font-size:20px;margin-bottom:14px}
+.term{background:#07090b;border:1px solid var(--line);border-radius:6px;padding:18px 20px;font-size:14px;line-height:1.7;overflow-x:auto}
+.term .p{color:var(--acc)}
+.term .c{color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
+td,th{border:1px solid var(--line);padding:9px 12px;text-align:left}
+th{color:var(--acc2);font-weight:600;background:var(--panel)}
+td{color:var(--dim)}
+td:first-child{color:var(--ink)}
+.fact{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+.fact span{border:1px solid var(--line);border-radius:6px;padding:8px 14px;color:var(--dim);font-size:13px;background:var(--panel)}
+.fact b{color:var(--acc)}
+footer{padding:30px 0;color:var(--dim);font-size:13px}
+footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">Hartwell<span> Labs</span></div>
+    <nav>
+      <a href="https://hartwell-labs.pl/">Home</a>
+      <a href="https://github.com/BartoszOsiej/talus-process-monitor">GitHub</a>
+      <a href="https://dev.to/bartoszosiej/killing-ransomware-from-inside-the-kernel-writing-the-response-engine-for-an-ebpf-monitor-in-rust-5gfi">Engineering log</a>
+      <a href="security.html">Security</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="pill">eBPF &middot; Rust &middot; self-hosted &middot; zero telemetry</span>
+    <h1>Ransomware detection that answers with a kill signal, not an email alert.</h1>
+    <p class="sub">Talus hooks syscall tracepoints in the Linux kernel, scores behavioral
+    open-rates per process in real time, and terminates the encryptor with SIGKILL in the
+    same second &mdash; guardrailed so it never kills the host.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK">Buy Talus Enterprise &mdash; $50/node</a>
+      <a class="btn ghost" href="https://github.com/BartoszOsiej/talus-process-monitor">View source &amp; docs</a>
+    </div>
+    <p class="price">$50 per node &middot; one year of updates &middot; license key delivered instantly on checkout &middot; VAT invoice via Polar.</p>
+    <div class="fact">
+      <span><b>280k</b> events/s single core</span>
+      <span><b>7.6%</b> CPU sustained load</span>
+      <span><b>&lt;1s</b> alert-to-SIGKILL</span>
+      <span><b>188</b> tests, CI on every commit</span>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="grid">
+    <article>
+      <h2>Detect: behavior, not signatures</h2>
+      <p>Mass file-open patterns, canary reads, mass deletes and exfil spikes &mdash;
+      scored per process in 1-second windows. Signature-free, catches brand-new strains.</p>
+    </article>
+    <article>
+      <h2>Respond: SIGKILL in the same second</h2>
+      <p>When the verdict fires, the offending process is killed immediately.
+      Guardrails, whitelists, canary verification &mdash; fast without being reckless.</p>
+    </article>
+    <article>
+      <h2>Own your data</h2>
+      <p>Self-hosted, single static binary, embedded eBPF object. No cloud dashboard,
+      no telemetry, no subscription walls. Your servers, your logs.</p>
+    </article>
+  </div>
+
+  <section>
+    <h2 class="s">Sixty-second start</h2>
+    <div class="term">
+<span class="p">$</span> pip install talus-process-monitor<br>
+<span class="p">$</span> talus-monitor install<br>
+<span class="p">$</span> sudo talus monitor --web 10.0.0.5:8443 &nbsp;<span class="c"># dashboard, REST API, WebSocket</span><br>
+<span class="c">&nbsp;&nbsp;&nbsp;&nbsp;or: sudo talus --web 10.0.0.5:8443&nbsp;&nbsp;&nbsp;&nbsp;(v0.8.3: top-level flags)</span><br>
+<span class="p">$</span> talus-monitor selftest --canary &nbsp;<span class="c"># end-to-end detection proof</span>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="s">What you get</h2>
+    <table>
+      <tr><th>Component</th><th>License</th></tr>
+      <tr><td>Detection engine (eBPF, behavioral scoring)</td><td>MIT &mdash; free, open source</td></tr>
+      <tr><td>Web dashboard, REST API, WebSocket stream</td><td>$50/node, 12 months of updates</td></tr>
+      <tr><td>Auto-kill response engine with guardrails</td><td>$50/node, 12 months of updates</td></tr>
+      <tr><td>SIEM forwarding (RFC5424/CEF), Kafka, ClickHouse, MemGraph</td><td>$50/node, 12 months of updates</td></tr>
+      <tr><td>Email support</td><td>48h business-day response</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <h2 class="s">For MSPs &amp; vendors</h2>
+    <p style="color:var(--dim)">Buying for clients? Batch prepaid keys at the $50 floor, your
+    margin above, price your way. Write to
+    <a style="color:var(--acc2)" href="mailto:important@hartwell-labs.pl">important@hartwell-labs.pl</a>
+    for a reseller order form. Net-30 available on direct invoice.</p>
+  </section>
+
+  <section>
+    <h2 class="s">Proof, not promises</h2>
+    <div class="term">
+<span class="c"># canary self-test: simulated ransomware burst, real verdict</span><br>
+<span class="p">$</span> talus-monitor selftest --canary<br>
+[talus] loading embedded eBPF object (414336 bytes)<br>
+[talus] eBPF object: embedded, tracepoints attached<br>
+[talus] canary: 500 opens queued in /tmp/.talus-canary<br>
+[talus] ALERT pid 4021 (canary) opens=64 window=1s<br>
+[talus] verdict: BEHAVIOURAL OPEN-RATE EXCEEDED<br>
+[talus] response: SIGKILL issued (response mode enabled)<br>
+<span class="c"># </span><span class="c">detection to kill in under one second, on one machine</span>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap">
+    Hartwell Labs &middot; Szczecin, Poland &middot; <a href="mailto:important@hartwell-labs.pl">important@hartwell-labs.pl</a>
+    &middot; <a href="https://hartwell-labs.pl/security.html">security.txt</a>
+  </div>
+</footer>
+</body>
+</html>
