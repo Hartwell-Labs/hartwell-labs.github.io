@@ -4,166 +4,205 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; base-uri 'none'; form-action https://buy.polar.sh; frame-ancestors 'none'" />
-<title>Talus — Ransomware Detection &amp; Response for Linux | Hartwell Labs</title>
-<meta name="description" content="Behavioral ransomware detection with instant response for Linux server fleets. eBPF, no kernel modules, no telemetry, self-hosted. $50 per node, one year of updates. From Hartwell Labs." />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-vpzFaIKDhnUlejX5/I0xNXSteEDiSQ/IqxAwHXxTkRY='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action https://buy.polar.sh; frame-ancestors 'none'" />
+<title>talu&#115;-process-monitor — Behavioral ransomware detection &amp; response for Linux | Hartwell Labs</title>
+<meta name="description" content="Behavioral ransomware detection with instant response for Linux server fleets. eBPF-based, ~280k events per second, seccomp and Landlock self-sandboxing, one static binary, no kernel modules. $50 per node, one year of updates." />
 <link rel="canonical" href="https://hartwell-labs.pl/talus.html" />
-<meta property="og:title" content="Talus — Ransomware Detection & Response for Linux" />
-<meta property="og:description" content="eBPF behavioral detection to SIGKILL in the same second. Self-hosted, no kernel modules, $50/node." />
+<meta property="og:site_name" content="Hartwell Labs" />
+<meta property="og:title" content="talu&#115;-process-monitor — detection to response in the same second" />
+<meta property="og:description" content="eBPF behavioral ransomware detection for Linux fleets. $50/node, self-hosted, no telemetry." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://hartwell-labs.pl/talus.html" />
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Talus (talus-process-monitor)","applicationCategory":"SecurityApplication","operatingSystem":"Linux","offers":{"@type":"Offer","price":"50.00","priceCurrency":"USD","url":"https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK"},"author":{"@type":"Organization","name":"Hartwell Labs"}}
-</script>
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="talu&#115;-process-monitor — Hartwell Labs" />
+<meta name="twitter:description" content="eBPF behavioral ransomware detection for Linux fleets. $50/node, self-hosted." />
+<meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"talus-process-monitor","operatingSystem":"Linux","applicationCategory":"SecurityApplication","offers":{"@type":"Offer","price":"50.00","priceCurrency":"USD","url":"https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK"},"author":{"@type":"Organization","name":"Hartwell Labs","url":"https://hartwell-labs.pl/"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/icon-192.png" />
+<link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
 <style>
-:root{--bg:#0b0e11;--panel:#12161b;--line:#232a31;--ink:#e6e9ec;--dim:#98a2ad;--acc:#4ee38a;--acc2:#8ab4ff}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--ink);font:16px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-.wrap{max-width:960px;margin:0 auto;padding:0 24px}
-header{border-bottom:1px solid var(--line);padding:20px 0}
-header .wrap{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.brand{font-weight:700;letter-spacing:.5px}
-.brand span{color:var(--acc)}
-nav a{color:var(--dim);text-decoration:none;margin-left:18px;font-size:14px}
-nav a:hover{color:var(--ink)}
-.hero{padding:56px 0 40px;border-bottom:1px solid var(--line)}
-h1{font-size:clamp(26px,4.5vw,40px);line-height:1.15;letter-spacing:-.5px}
-.hero p.sub{color:var(--dim);margin-top:14px;max-width:56ch}
-.pill{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:999px;font-size:12px;padding:3px 10px;margin-bottom:18px;letter-spacing:.5px}
-.cta{display:flex;gap:14px;margin-top:26px;flex-wrap:wrap}
-.btn{display:inline-block;padding:12px 22px;border-radius:6px;text-decoration:none;font-weight:700;font-size:15px;border:1px solid var(--line)}
-.btn.primary{background:var(--acc);color:#06210f;border-color:var(--acc)}
-.btn.primary:hover{filter:brightness(1.08)}
-.btn.ghost{color:var(--ink)}
-.btn.ghost:hover{border-color:var(--dim)}
-.price{margin-top:10px;color:var(--dim);font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:40px 0}
-.grid article{background:var(--panel);padding:22px}
-@media(max-width:720px){.grid{grid-template-columns:1fr}}
-.grid h2{font-size:15px;color:var(--acc2);margin-bottom:10px;letter-spacing:.3px}
-.grid p{color:var(--dim);font-size:14px}
-section{padding:34px 0;border-bottom:1px solid var(--line)}
-h2.s{font-size:20px;margin-bottom:14px}
-.term{background:#07090b;border:1px solid var(--line);border-radius:6px;padding:18px 20px;font-size:14px;line-height:1.7;overflow-x:auto}
-.term .p{color:var(--acc)}
-.term .c{color:var(--dim)}
-table{width:100%;border-collapse:collapse;font-size:14px;margin-top:6px}
-td,th{border:1px solid var(--line);padding:9px 12px;text-align:left}
-th{color:var(--acc2);font-weight:600;background:var(--panel)}
-td{color:var(--dim)}
-td:first-child{color:var(--ink)}
-.fact{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-.fact span{border:1px solid var(--line);border-radius:6px;padding:8px 14px;color:var(--dim);font-size:13px;background:var(--panel)}
-.fact b{color:var(--acc)}
-footer{padding:30px 0;color:var(--dim);font-size:13px}
-footer a{color:var(--dim)}
+/* product page extensions on top of site.css */
+.pricing { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-subtle); }
+.pricing .head { padding: 26px 30px 0; }
+.pricing .amount { font-size: 40px; font-weight: 700; letter-spacing: -.03em; }
+.pricing .amount small { font-size: 15px; color: var(--txt-2); font-weight: 500; }
+.pricing ul { list-style: none; padding: 18px 30px 26px; }
+.pricing li { padding: 7px 0 7px 26px; position: relative; color: var(--txt-2); font-size: 14.5px; }
+.pricing li::before { content: "\2713"; position: absolute; left: 2px; color: var(--green); font-weight: 700; }
+.spec td:first-child { color: var(--txt-2); width: 38%; }
+.spec td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 14.5px; }
+.spec tr:last-child td { border-bottom: none; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+@media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } }
 </style>
-</head>
-<body>
-<header>
-  <div class="wrap">
-    <div class="brand">Hartwell<span> Labs</span></div>
-    <nav>
-      <a href="https://hartwell-labs.pl/">Home</a>
-      <a href="https://github.com/BartoszOsiej/talus-process-monitor">GitHub</a>
-      <a href="https://dev.to/bartoszosiej/killing-ransomware-from-inside-the-kernel-writing-the-response-engine-for-an-ebpf-monitor-in-rust-5gfi">Engineering log</a>
-      <a href="security.html">Security</a>
-    </nav>
-  </div>
-</header>
+</head> <body> <header> <div class="container header-in"> <a class="logo" href="/"> <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"> <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/> <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/> </svg> Hartwell Labs </a> <nav class="main"> <a href="/products">Products</a> <a href="/docs">Docs</a> <a href="/security">Security</a> <a href="/company">Company</a> </nav> <a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a> </div> </header>
 
-<div class="hero">
-  <div class="wrap">
-    <span class="pill">eBPF &middot; Rust &middot; self-hosted &middot; zero telemetry</span>
-    <h1>Ransomware detection that answers with a kill signal, not an email alert.</h1>
-    <p class="sub">Talus hooks syscall tracepoints in the Linux kernel, scores behavioral
-    open-rates per process in real time, and terminates the encryptor with SIGKILL in the
-    same second &mdash; guardrailed so it never kills the host.</p>
-    <div class="cta">
-      <a class="btn primary" href="https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK">Buy Talus Enterprise &mdash; $50/node</a>
-      <a class="btn ghost" href="https://github.com/BartoszOsiej/talus-process-monitor">View source &amp; docs</a>
-    </div>
-    <p class="price">$50 per node &middot; one year of updates &middot; license key delivered instantly on checkout &middot; VAT invoice via Polar.</p>
-    <div class="fact">
-      <span><b>280k</b> events/s single core</span>
-      <span><b>7.6%</b> CPU sustained load</span>
-      <span><b>&lt;1s</b> alert-to-SIGKILL</span>
-      <span><b>188</b> tests, CI on every commit</span>
-    </div>
+<div class="container hero" style="padding-bottom:56px;">
+  <div class="eyebrow">Flagship &middot; Rust &middot; eBPF</div>
+  <h1>Behavioral ransomware detection that answers with <span class="dim">a kill signal.</span></h1>
+  <p class="lede">talu&#115;-process-monitor hooks syscall tracepoints in the Linux kernel, scores
+  per-process open-rates in one-second windows and terminates the encryptor with SIGKILL &mdash;
+  guardrailed, whitelist-aware, and never at the cost of the host. One static binary. No kernel
+  modules. No telemetry.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK">Buy Enterprise &mdash; $50/node</a>
+    <a class="btn btn-secondary" href="/docs#talus">Deployment guide</a>
+    <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/talus-process-monitor">Source ↗</a>
+  </div>
+  <p style="margin-top:14px; color:var(--txt-3); font-size:13.5px;">$50 per node &middot; 12 months of updates &middot; license key delivered on checkout &middot; VAT invoice via Polar</p>
+</div>
+
+<div class="stats">
+  <div class="container stats-in">
+    <div class="stat"><div class="n">~280k</div><div class="l">events per second, single core</div></div>
+    <div class="stat"><div class="n">7.6%</div><div class="l">sustained CPU under synthetic load</div></div>
+    <div class="stat"><div class="n">&lt;1s</div><div class="l">verdict to SIGKILL, same second</div></div>
+    <div class="stat"><div class="n">188</div><div class="l">tests in the CI suite, every push</div></div>
   </div>
 </div>
 
-<div class="wrap">
-  <div class="grid">
-    <article>
-      <h2>Detect: behavior, not signatures</h2>
-      <p>Mass file-open patterns, canary reads, mass deletes and exfil spikes &mdash;
-      scored per process in 1-second windows. Signature-free, catches brand-new strains.</p>
-    </article>
-    <article>
-      <h2>Respond: SIGKILL in the same second</h2>
-      <p>When the verdict fires, the offending process is killed immediately.
-      Guardrails, whitelists, canary verification &mdash; fast without being reckless.</p>
-    </article>
-    <article>
-      <h2>Own your data</h2>
-      <p>Self-hosted, single static binary, embedded eBPF object. No cloud dashboard,
-      no telemetry, no subscription walls. Your servers, your logs.</p>
-    </article>
+<section id="capabilities">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">What it does</div>
+      <h2>Three layers, one binary.</h2>
+      <p>Detection is the easy half. Talus ships the half nobody writes up: the response path.</p>
+    </div>
+    <div class="prod-grid">
+      <div class="prod"><div class="row"><h4>Detect: behavior, not signatures</h4></div>
+        <p>Mass file-opens scored per process in 1s windows; canary reads, mass-delete and
+        exfiltration-spike detectors. Signature-free &mdash; catches strains nobody has named yet.</p></div>
+      <div class="prod"><div class="row"><h4>Respond: SIGKILL in the same second</h4></div>
+        <p>When the verdict fires, the offending process is killed immediately. Guardrails,
+        per-path whitelists and canary verification keep it fast without being reckless.</p></div>
+      <div class="prod"><div class="row"><h4>Contain: Landlock &amp; seccomp self-sandboxing</h4></div>
+        <p>The agent sandboxes itself before it starts watching: no kernel modules, no writable
+        footprint outside its own directory, verified by its own tests.</p></div>
+      <div class="prod"><div class="row"><h4>Ship: SIEM, Kafka, ClickHouse, MemGraph</h4></div>
+        <p>Forward alerts as RFC5424 or CEF, stream raw events to Kafka, persist to ClickHouse,
+        explore process lineage in MemGraph. Self-hosted, your infrastructure.</p></div>
+    </div>
   </div>
+</section>
 
-  <section>
-    <h2 class="s">Sixty-second start</h2>
-    <div class="term">
-<span class="p">$</span> pip install talus-process-monitor<br>
-<span class="p">$</span> talus-monitor install<br>
-<span class="p">$</span> sudo talus monitor --web 10.0.0.5:8443 &nbsp;<span class="c"># dashboard, REST API, WebSocket</span><br>
-<span class="c">&nbsp;&nbsp;&nbsp;&nbsp;or: sudo talus --web 10.0.0.5:8443&nbsp;&nbsp;&nbsp;&nbsp;(v0.8.3: top-level flags)</span><br>
-<span class="p">$</span> talus-monitor selftest --canary &nbsp;<span class="c"># end-to-end detection proof</span>
+<section id="start" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Sixty-second start</div>
+      <h2>From pip to live dashboard.</h2>
     </div>
-  </section>
+    <div class="cmd"><code>pip install talus-process-monitor</code><button class="cp" data-code="pip install talus-process-monitor">COPY</button></div>
+    <div class="cmd"><code>talus-monitor install</code><button class="cp" data-code="talus-monitor install">COPY</button></div>
+    <div class="cmd"><code>sudo talus --web 10.0.0.5:8443</code><button class="cp" data-code="sudo talus --web 10.0.0.5:8443">COPY</button></div>
+    <div class="cmd"><code>talus-monitor selftest --canary</code><button class="cp" data-code="talus-monitor selftest --canary">COPY</button></div>
+    <p style="margin-top:16px; color:var(--txt-2); font-size:14.5px;">The canary self-test simulates a ransomware burst with harmless file operations and
+    prints the real verdict &mdash; detection proof on your hardware in under a minute.
+    Full flags and tuning: <a href="/docs#talus" style="color:var(--accent)">/docs</a>.</p>
+  </div>
+</section>
 
-  <section>
-    <h2 class="s">What you get</h2>
-    <table>
-      <tr><th>Component</th><th>License</th></tr>
-      <tr><td>Detection engine (eBPF, behavioral scoring)</td><td>MIT &mdash; free, open source</td></tr>
-      <tr><td>Web dashboard, REST API, WebSocket stream</td><td>$50/node, 12 months of updates</td></tr>
-      <tr><td>Auto-kill response engine with guardrails</td><td>$50/node, 12 months of updates</td></tr>
-      <tr><td>SIEM forwarding (RFC5424/CEF), Kafka, ClickHouse, MemGraph</td><td>$50/node, 12 months of updates</td></tr>
-      <tr><td>Email support</td><td>48h business-day response</td></tr>
-    </table>
-  </section>
-
-  <section>
-    <h2 class="s">For MSPs &amp; vendors</h2>
-    <p style="color:var(--dim)">Buying for clients? Batch prepaid keys at the $50 floor, your
-    margin above, price your way. Write to
-    <a style="color:var(--acc2)" href="mailto:important@hartwell-labs.pl">important@hartwell-labs.pl</a>
-    for a reseller order form. Net-30 available on direct invoice.</p>
-  </section>
-
-  <section>
-    <h2 class="s">Proof, not promises</h2>
-    <div class="term">
-<span class="c"># canary self-test: simulated ransomware burst, real verdict</span><br>
-<span class="p">$</span> talus-monitor selftest --canary<br>
-[talus] loading embedded eBPF object (414336 bytes)<br>
-[talus] eBPF object: embedded, tracepoints attached<br>
-[talus] canary: 500 opens queued in /tmp/.talus-canary<br>
-[talus] ALERT pid 4021 (canary) opens=64 window=1s<br>
-[talus] verdict: BEHAVIOURAL OPEN-RATE EXCEEDED<br>
-[talus] response: SIGKILL issued (response mode enabled)<br>
-<span class="c"># </span><span class="c">detection to kill in under one second, on one machine</span>
+<section id="pricing" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Pricing</div>
+      <h2>Priced like a tool, not like a platform.</h2>
     </div>
-  </section>
-</div>
+    <div class="two-col">
+      <div class="pricing">
+        <div class="head">
+          <div class="amount">$50<small> / node / year</small></div>
+          <p style="color:var(--txt-2); font-size:14.5px; margin-top:6px;">Enterprise tier &mdash; one host, one year of updates.</p>
+        </div>
+        <ul>
+          <li>Web dashboard, REST API, WebSocket event stream</li>
+          <li>Auto-kill response engine with guardrails</li>
+          <li>SIEM forwarding (RFC5424 / CEF), Kafka, ClickHouse, MemGraph</li>
+          <li>License key delivered instantly on checkout</li>
+          <li>Email support &mdash; 48h business-day response</li>
+          <li>Detection engine stays MIT, forever</li>
+        </ul>
+        <div style="padding:0 30px 30px;"><a class="btn btn-primary" style="width:100%; justify-content:center;" href="https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK">Checkout &mdash; $50</a></div>
+      </div>
+      <div>
+        <h3 style="font-size:16px; margin-bottom:10px;">Component licensing</h3>
+        <table class="spec">
+          <tr><td>Detection engine (eBPF, scoring, sweep detectors)</td><td>MIT &mdash; free</td></tr>
+          <tr><td>Dashboard, REST API, WebSocket</td><td>$50/node</td></tr>
+          <tr><td>Auto-kill response path</td><td>$50/node</td></tr>
+          <tr><td>SIEM / Kafka / ClickHouse / MemGraph sinks</td><td>$50/node</td></tr>
+          <tr><td>Source</td><td>Public, MIT</td></tr>
+        </table>
+        <h3 style="font-size:16px; margin:26px 0 10px;">MSPs &amp; resellers</h3>
+        <p style="color:var(--txt-2); font-size:14.5px;">Batch prepaid keys at the $50 floor, your margin above, your pricing.
+        Write to <a href="mailto:important@hartwell-labs.pl" style="color:var(--accent)">important@hartwell-labs.pl</a>
+        for the vendor order form &mdash; net-30 available on direct invoice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trust" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Supply chain</div>
+      <h2>Verifiable end-to-end.</h2>
+      <p>Every release ships with an SBOM and build attestation; provenance is continuous, not advertised in slide decks.</p>
+    </div>
+    <div class="prod-grid">
+      <div class="prod"><div class="row"><h4>SBOM (SPDX)</h4></div><p>Full dependency inventory attached to every release asset.</p></div>
+      <div class="prod"><div class="row"><h4>Build attestation</h4></div><p>Sigstore-style provenance linking source commit to published binary.</p></div>
+      <div class="prod"><div class="row"><h4>OpenSSF Scorecard</h4></div><p>Supply-chain posture measured continuously on the flagship repository.</p></div>
+    </div>
+    <div style="margin-top:26px; display:flex; gap:12px; flex-wrap:wrap;">
+      <a class="btn btn-primary" href="/docs#supply-chain">Verify a release</a>
+      <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">Releases ↗</a>
+    </div>
+  </div>
+</section>
 
 <footer>
-  <div class="wrap">
-    Hartwell Labs &middot; Szczecin, Poland &middot; <a href="mailto:important@hartwell-labs.pl">important@hartwell-labs.pl</a>
-    &middot; <a href="https://hartwell-labs.pl/security.html">security.txt</a>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:14px;">
+        <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg> Hartwell Labs
+      </div>
+      <p class="about">Independent engineering company. Security systems, languages and tools &mdash; built in the open, MIT licensed.</p>
+    </div>
+    <div>
+      <h5>Products</h5>
+      <a href="/products">Catalog</a>
+      <a href="/talus-process-monitor/">talu&#115;-process-monitor</a>
+      <a href="/externum/">externum</a>
+      <a href="/hack-the-lab/">hack-the-lab</a>
+    </div>
+    <div>
+      <h5>Resources</h5>
+      <a href="/docs">Documentation</a>
+      <a href="https://github.com/Hartwell-Labs">GitHub organization</a>
+      <a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">Releases</a>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <a href="/company">About</a>
+      <a href="/security">Security &amp; disclosure</a>
+      <a href="/.well-known/security.txt">security.txt</a>
+    </div>
+  </div>
+  <div class="container f-fine">
+    <span>&copy; 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
+    <span>Szczecin, Poland</span>
   </div>
 </footer>
+<script src="/assets/site.js" defer></script>
 </body>
 </html>
