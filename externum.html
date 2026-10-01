@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-8qetyYgLYDw+KENQxk6Obg/+ixMCUSqCki0JVqSua5g='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>externum — a typed language that compiles to Python, Bash and native bytecode | Hartwell Labs</title>
+<meta name="description" content="externum is a typed programming language compiling to readable Python, Bash and native EXBC bytecode. Pipelines, pattern matching, browser REPL. MIT licensed, 400+ tests, CI on every push." />
+<link rel="canonical" href="https://hartwell-labs.pl/externum.html" />
+<meta property="og:site_name" content="Hartwell Labs" />
+<meta property="og:title" content="externum — typed language, three backends" />
+<meta property="og:description" content="A typed programming language compiling to readable Python, Bash and native EXBC bytecode. Pipelines, pattern matching, browser REPL. MIT licensed." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hartwell-labs.pl/externum.html" />
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="externum — Hartwell Labs" />
+<meta name="twitter:description" content="A typed programming language compiling to readable Python, Bash and native EXBC bytecode. MIT licensed." />
+<meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"externum","operatingSystem":"Linux, macOS","applicationCategory":"DeveloperApplication","featureList":"Typed language compiling to readable Python, Bash and native EXBC bytecode; pipelines; pattern matching; browser REPL","author":{"@type":"Organization","name":"Hartwell Labs","url":"https://hartwell-labs.pl/"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/icon-192.png" />
+<link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head> <body> <header> <div class="container header-in"> <a class="logo" href="/"> <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"> <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/> <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/> </svg> Hartwell Labs </a> <nav class="main"> <a href="/products">Products</a> <a href="/docs">Docs</a> <a href="/security">Security</a> <a href="/company">Company</a> </nav> <a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a> </div> </header>
+
+<div class="container hero" style="padding-bottom:56px;">
+  <div class="eyebrow">Developer tools &middot; typed language</div>
+  <h1>One typed source. <span class="dim">Readable Python, Bash and native bytecode.</span></h1>
+  <p class="lede">externum compiles a typed programming language to readable Python, Bash and native
+  EXBC bytecode &mdash; with pipelines, pattern matching and a browser REPL. Everything is
+  self-hosted, MIT licensed, and tested: 400+ tests run on every push.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="https://pypi.org/project/externum/">Install from PyPI</a>
+    <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/externum">Source &amp; language tour ↗</a>
+    <a class="btn btn-secondary" href="/docs#externum">Documentation</a>
+  </div>
+  <p style="margin-top:14px; color:var(--txt-3); font-size:13.5px;">Stable release v4.3.0 (2026-09-23) &middot; pip install externum &middot; MIT license</p>
+</div>
+
+<div class="stats">
+  <div class="container stats-in">
+    <div class="stat"><div class="n">3</div><div class="l">backends: Python, Bash, EXBC</div></div>
+    <div class="stat"><div class="n">400+</div><div class="l">tests in the CI suite</div></div>
+    <div class="stat"><div class="n">v4.3.0</div><div class="l">current stable release</div></div>
+    <div class="stat"><div class="n">REPL</div><div class="l">in the browser, zero setup</div></div>
+  </div>
+</div>
+
+<section id="why">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Why externum</div>
+      <h2>Types where scripts have none.</h2>
+      <p>Write typed, readable programs that compile to the runtimes you already have &mdash;
+      no new VM to babysit, no runtime dependencies beyond what you target.</p>
+    </div>
+    <div class="prod-grid">
+      <div class="prod"><div class="row"><h4>Typed, then readable output</h4></div>
+        <p>The compiler emits code a human would have written &mdash; inspect the generated
+        Python or Bash before running it. No black-box blobs.</p></div>
+      <div class="prod"><div class="row"><h4>Pipelines &amp; pattern matching</h4></div>
+        <p>First-class pipeline syntax and pattern matching in the language core, not a library.</p></div>
+      <div class="prod"><div class="row"><h4>Browser REPL</h4></div>
+        <p>Try the language in the browser &mdash; no install, no account, nothing leaves your machine.</p></div>
+      <div class="prod"><div class="row"><h4>Self-hosted, MIT</h4></div>
+        <p>Full source open, CI on every push, release assets with SBOM &mdash; the same
+        engineering standards as the rest of Hartwell Labs.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="start" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Start</div>
+      <h2>Install and go.</h2>
+    </div>
+    <div class="cmd"><code>pip install externum</code><button class="cp" data-code="pip install externum">COPY</button></div>
+    <div class="cmd"><code>externum --help</code><button class="cp" data-code="externum --help">COPY</button></div>
+    <p style="margin-top:16px; color:var(--txt-2); font-size:14.5px;">Language tour, pipeline syntax and the browser REPL:
+    <a href="https://github.com/Hartwell-Labs/externum" style="color:var(--accent)">repository docs ↗</a>.
+    Package page: <a href="https://pypi.org/project/externum/" style="color:var(--accent)">pypi.org/project/externum</a>.</p>
+  </div>
+</section>
+
+<section id="standard" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Same discipline as everything we ship</div>
+      <h2>CI on every push.</h2>
+      <p>Tests, CodeQL static analysis and signed release assets with SBOM &mdash; enforced by
+      the organization-wide gates, for externum exactly as for talus.</p>
+    </div>
+    <div style="margin-top:8px; display:flex; gap:12px; flex-wrap:wrap;">
+      <a class="btn btn-primary" href="/docs#externum">externum docs</a>
+      <a class="btn btn-secondary" href="/docs#standards">Engineering standards</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:14px;">
+        <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg> Hartwell Labs
+      </div>
+      <p class="about">Independent engineering company. Security systems, languages and tools &mdash; built in the open, MIT licensed.</p>
+    </div>
+    <div>
+      <h5>Products</h5>
+      <a href="/products">Catalog</a>
+      <a href="/talus.html">talu&#115;-process-monitor</a>
+      <a href="/externum.html">externum</a>
+      <a href="/hack-the-lab/">hack-the-lab</a>
+    </div>
+    <div>
+      <h5>Resources</h5>
+      <a href="/docs">Documentation</a>
+      <a href="https://github.com/Hartwell-Labs">GitHub organization</a>
+      <a href="https://github.com/Hartwell-Labs/externum">externum repository</a>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <a href="/company">About</a>
+      <a href="/security">Security &amp; disclosure</a>
+      <a href="/.well-known/security.txt">security.txt</a>
+    </div>
+  </div>
+  <div class="container f-fine">
+    <span>&copy; 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
+    <span>Szczecin, Poland</span>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
