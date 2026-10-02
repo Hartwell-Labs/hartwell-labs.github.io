@@ -18,6 +18,7 @@ Core facts:
 - [Products](https://hartwell-labs.pl/products/): 10 public products + 1 proprietary platform, across 6 lines
 - [Catalog](https://hartwell-labs.pl/catalog/): complete map with machine-readable registry
 - [Documentation](https://hartwell-labs.pl/docs/): installation and deployment guides
+- [Talus Field Guide](https://hartwell-labs.pl/talus-process-monitor/field-guide.html): deployment modes, installation, threshold tuning, MeMLP, enterprise wiring and the alert runbook
 - [Security](https://hartwell-labs.pl/security/): disclosure policy, SLA, severity classification
 - [Company](https://hartwell-labs.pl/company/): about, timeline, services, team
 
