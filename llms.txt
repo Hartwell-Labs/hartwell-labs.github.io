@@ -15,7 +15,7 @@ Core facts:
 
 - [Home](https://hartwell-labs.pl/): company overview, flagship product, engineering practices
 - [Home (Polish)](https://hartwell-labs.pl/pl/): polska wersja strony
-- [Products](https://hartwell-labs.pl/products/): catalog of 10 public products across 4 lines
+- [Products](https://hartwell-labs.pl/products/): 10 public products + 1 proprietary platform, across 6 lines
 - [Catalog](https://hartwell-labs.pl/catalog/): complete map with machine-readable registry
 - [Documentation](https://hartwell-labs.pl/docs/): installation and deployment guides
 - [Security](https://hartwell-labs.pl/security/): disclosure policy, SLA, severity classification
@@ -33,6 +33,7 @@ Core facts:
 - products (Products Registry): https://github.com/Hartwell-Labs/products
 - CyberForge (offensive tooling): https://github.com/Hartwell-Labs/CyberForge
 - hack-the-lab (security challenges): https://github.com/Hartwell-Labs/hack-the-lab
+- scryer-core (proprietary intelligence platform, access on request): https://hartwell-labs.pl/scryer-core/
 
 ## Contact
 

@@ -59,12 +59,17 @@ h2 { font-size: clamp(25px, 3.2vw, 32px); letter-spacing: -.02em; line-height: 1
 
 /* product cards */
 .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-.prod { display: block; border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; text-decoration: none; transition: border-color .15s ease, box-shadow .15s ease; background: var(--bg); }
+.prod { display: block; position: relative; border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; text-decoration: none; transition: border-color .15s ease, box-shadow .15s ease; background: var(--bg); }
 .prod:hover { border-color: #c7d2fe; box-shadow: 0 4px 16px rgba(79,70,229,.08); }
 .prod .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .prod h4 { font-size: 15.5px; font-weight: 600; letter-spacing: -.01em; }
 .prod .lang { font-size: 11.5px; font-weight: 600; color: var(--txt-3); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; white-space: nowrap; }
 .prod p { margin-top: 8px; font-size: 14px; line-height: 1.6; color: var(--txt-2); }
+.prod .card-link { display: block; color: inherit; text-decoration: none; }
+.prod .card-link::after { content: ""; position: absolute; inset: 0; border-radius: 12px; }
+.prod .prod-links { position: relative; z-index: 1; margin-top: 12px; }
+.prod .prod-links .src { font-size: 12.5px; font-weight: 600; color: var(--accent); text-decoration: none; }
+.prod .prod-links .src:hover { text-decoration: underline; }
 .group-title { font-size: 13.5px; font-weight: 600; color: var(--txt-3); text-transform: uppercase; letter-spacing: .07em; margin: 34px 0 14px; }
 .group-title:first-child { margin-top: 0; }
 
