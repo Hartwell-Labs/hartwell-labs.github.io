@@ -21,4 +21,5 @@
 <url><loc>https://hartwell-labs.pl/hack-the-lab/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 <url><loc>https://hartwell-labs.pl/talus.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
 <url><loc>https://hartwell-labs.pl/externum.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hartwell-labs.pl/report/gov-ranking/</loc><lastmod>2026-10-03</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>
