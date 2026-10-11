@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-bDE/rGD9B+HAX57pUW5NQK2b49R+DBbtyuZBoshk5VM='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>Externum — nowy polski język programowania | Hartwell Labs</title>
+<meta name="description" content="Externum to nowy polski język programowania kompilujący do czytelnego Pythona, Bash i natywnego bytecode EXBC. Pipeline'y, pattern matching, REPL w przeglądarce, 400+ testów. Open source, licencja MIT." />
+<meta name="keywords" content="nowy polski język programowania, język programowania, Externum, kompilator, transpiler Python Bash, bytecode, Rust, open source" />
+<link rel="canonical" href="https://hartwell-labs.pl/pl/externum/" />
+<link rel="alternate" hreflang="pl" href="https://hartwell-labs.pl/pl/externum/" />
+<link rel="alternate" hreflang="en" href="https://hartwell-labs.pl/externum/" />
+<link rel="alternate" hreflang="x-default" href="https://hartwell-labs.pl/externum/" />
+<meta property="og:site_name" content="Hartwell Labs" />
+<meta property="og:title" content="Externum — nowy polski język programowania" />
+<meta property="og:description" content="Nowy polski język programowania: kompiluje do czytelnego Pythona, Bash i natywnego bytecode EXBC. Pipeline'y, pattern matching, REPL w przeglądarce. MIT." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://hartwell-labs.pl/pl/externum/" />
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="pl_PL" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Externum — nowy polski język programowania" />
+<meta name="twitter:description" content="Nowy polski język programowania kompilujący do Pythona, Bash i bytecode EXBC. Open source, MIT." />
+<meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/icon-192.png" />
+<link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+<header>
+<div class="container header-in">
+<a class="logo" href="/pl/">
+<svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+<path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
+<polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg> Hartwell Labs
+</a>
+<nav class="main">
+<a href="/products">Produkty</a> <a href="/catalog">Katalog</a>
+<a href="/docs">Dokumentacja</a>
+<a href="/security">Bezpieczeństwo</a>
+<a href="/company">Firma</a>
+</nav>
+<a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a>
+</div>
+</header>
+<div class="container hero">
+<div class="eyebrow">Język programowania &middot; Rust · MIT</div>
+<h1>Externum — <span class="dim">nowy polski język programowania.</span></h1>
+<p class="lede">Externum to nowy polski język programowania, który kompiluje do czytelnego Pythona, Bash oraz natywnego bytecode EXBC. Ma pipeline'y, pattern matching i REPL w przeglądarce. Napisany w Rust, open source na licencji MIT, z ponad 400 testami w zestawie i CI na każdym pushu.</p>
+<div class="hero-actions">
+<a class="btn btn-primary" href="https://github.com/Hartwell-Labs/externum">Kod źródłowy ↗</a>
+<a class="btn btn-secondary" href="/docs">Dokumentacja</a>
+</div>
+</div>
+<section id="why">
+<div class="container">
+<div class="section-head">
+<div class="kicker">Dlaczego Externum</div>
+<h2>Polski język programowania, który nie zamyka Cię w swoim ekosystemie.</h2>
+<p>Zamiast kolejnej izolowanej wyspy, Externum transpiluje do kodu, który już masz na produkcji — czytelnego Pythona i Bash — albo do własnego bytecode EXBC, gdy potrzebujesz wydajności i braku zależności runtime.</p>
+</div>
+<div class="prod-grid">
+<div class="prod"><div class="row"><h4>Transpilacja do Pythona i Bash</h4></div><p>Twój kod staje się czytelnym Pythonem lub skryptem Bash — łatwy audyt, brak lock-inu.</p></div>
+<div class="prod"><div class="row"><h4>Natywny bytecode EXBC</h4></div><p>Własny format wykonywalny dla środowisk bez interpretera Pythona.</p></div>
+<div class="prod"><div class="row"><h4>Pipeline'y i pattern matching</h4></div><p>Składnia zbudowana pod strumienie danych i przetwarzanie systemowe.</p></div>
+<div class="prod"><div class="row"><h4>REPL w przeglądarce</h4></div><p>Wypróbuj język bez instalacji — od razu w przeglądarce.</p></div>
+<div class="prod"><div class="row"><h4>Statically typed</h4></div><p>Typy wykrywane na etapie kompilacji, nie w produkcji.</p></div>
+<div class="prod"><div class="row"><h4>400+ testów, CI</h4></div><p>Każdy push przechodzi pełny zestaw testów i analizę statyczną.</p></div>
+</div>
+</div>
+</section>
+<section id="cta">
+<div class="container" style="padding-bottom:80px;">
+<div class="prod" style="display:flex; flex-wrap:wrap; gap:24px; align-items:center; justify-content:space-between; padding:30px 34px;">
+<div>
+<h4 style="font-size:20px; letter-spacing:-.02em;">Zbuduj coś nowego w polskim języku.</h4>
+<p style="margin-top:6px; color:var(--txt-2); font-size:15px;">Externum jest open source (MIT). Zacznij od repozytorium albo przeczytaj dokumentację.</p>
+</div>
+<div style="display:flex; gap:12px; flex-wrap:wrap;">
+<a class="btn btn-primary" href="https://github.com/Hartwell-Labs/externum">Repozytorium ↗</a>
+<a class="btn btn-secondary" href="/company">O firmie</a>
+</div>
+</div>
+</div>
+</section>
+<footer>
+<div class="container footer-grid">
+<div>
+<div class="logo" style="margin-bottom:14px;">
+<svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg>
+Hartwell Labs
+</div>
+<p class="about">Niezależna firma inżynierska. Systemy bezpieczeństwa, języki i narzędzia — budowane w otwartym kodzie, licencja MIT.</p>
+</div>
+<div>
+<h5>Produkty</h5>
+<a href="/products">Produkty</a>
+<a href="/talus-process-monitor/">talus-process-monitor</a>
+<a href="/pl/externum/">externum</a>
+<a href="/hack-the-lab/">hack-the-lab</a>
+</div>
+<div>
+<h5>Zasoby</h5>
+<a href="/docs">Dokumentacja</a>
+<a href="https://github.com/Hartwell-Labs">Organizacja GitHub</a>
+<a href="https://github.com/Hartwell-Labs/externum">Kod źródłowy Externum</a>
+</div>
+<div>
+<h5>Firma</h5>
+<a href="/company">O nas</a>
+<a href="/security">Bezpieczeństwo &amp; ujawnianie podatności</a>
+<a href="/.well-known/security.txt">security.txt</a> <a href="/privacy/">Privacy policy</a>
+</div>
+</div>
+<div class="container f-fine">
+<span>© 2026 Hartwell Labs. Całe oprogramowanie wydawane na licencji MIT, chyba że zaznaczono inaczej.</span>
+<span>Szczecin, Polska</span>
+</div>
+</footer>
+<script src="/assets/site.js" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/","logo":"https://hartwell-labs.pl/assets/icon-512.png","email":"contact@hartwell-labs.pl","address":{"@type":"PostalAddress","addressLocality":"Szczecin","addressCountry":"PL"},"sameAs":["https://github.com/Hartwell-Labs","https://github.com/BartoszOsiej","https://mastodon.social/@bartoszosiej","https://dev.to/bartoszosiej"]},{"@type":"SoftwareApplication","@id":"https://hartwell-labs.pl/pl/externum/#app","name":"Externum","alternateName":"Externum — nowy polski język programowania","applicationCategory":"DeveloperApplication","operatingSystem":"Linux, macOS, Windows","inLanguage":"pl","description":"Externum to nowy polski język programowania kompilujący do czytelnego Pythona, Bash i natywnego bytecode EXBC. Pipeline'y, pattern matching, REPL w przeglądarce, 400+ testów.","url":"https://hartwell-labs.pl/pl/externum/","sameAs":"https://github.com/Hartwell-Labs/externum","author":{"@id":"https://hartwell-labs.pl/#org"},"license":"https://opensource.org/licenses/MIT","offers":{"@type":"Offer","price":"0","priceCurrency":"PLN"}}]}</script>
+</body>
+</html>
