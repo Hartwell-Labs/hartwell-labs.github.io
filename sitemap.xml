@@ -15,7 +15,9 @@
 <url><loc>https://hartwell-labs.pl/externum/</loc><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="en" href="https://hartwell-labs.pl/externum/"/><xhtml:link rel="alternate" hreflang="pl" href="https://hartwell-labs.pl/pl/externum/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://hartwell-labs.pl/externum/"/></url>
 <url><loc>https://hartwell-labs.pl/pl/talus-process-monitor/</loc><lastmod>2026-10-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="pl" href="https://hartwell-labs.pl/pl/talus-process-monitor/"/><xhtml:link rel="alternate" hreflang="en" href="https://hartwell-labs.pl/talus-process-monitor/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://hartwell-labs.pl/talus-process-monitor/"/></url>
 <url><loc>https://hartwell-labs.pl/pl/externum/</loc><lastmod>2026-10-11</lastmod><changefreq>weekly</changefreq><priority>0.8</priority><xhtml:link rel="alternate" hreflang="pl" href="https://hartwell-labs.pl/pl/externum/"/><xhtml:link rel="alternate" hreflang="en" href="https://hartwell-labs.pl/externum/"/><xhtml:link rel="alternate" hreflang="x-default" href="https://hartwell-labs.pl/externum/"/></url>
-<url><loc>https://hartwell-labs.pl/Aurora/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://hartwell-labs.pl/labtrace/</loc><lastmod>2026-10-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://hartwell-labs.pl/photoscrub/</loc><lastmod>2026-10-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://hartwell-labs.pl/trustnode/</loc><lastmod>2026-10-15</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://hartwell-labs.pl/quantum-shield/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://hartwell-labs.pl/linux-aegis/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://hartwell-labs.pl/fortis/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>

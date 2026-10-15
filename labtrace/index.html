@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-p0vklvSMKkjnbnsbXGZgKYCg9qJMgiUkDurn7G6vhN0='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>labtrace — forensic timeline reconstruction for Linux audit telemetry | Hartwell Labs</title>
+<meta name="description" content="LabTrace turns a raw auditd JSONL event stream into ranked incident reports: rule signals LT001-LT010, taint tracking across process chains, full process chains. Zero agent required." />
+<link rel="canonical" href="https://hartwell-labs.pl/labtrace/" />
+<meta property="og:title" content="labtrace — forensic timeline reconstruction" />
+<meta property="og:description" content="Rules find suspicious events. Taint analysis connects them. Ranked incident reports with full process chains — zero agent required." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hartwell-labs.pl/labtrace/" />
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head> <body> <header> <div class="container header-in">
+  <a class="logo" href="/"> <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Hartwell Labs </a>
+  <nav class="main"> <a href="/products">Products</a> <a href="/catalog">Catalog</a> <a href="/docs">Docs</a> <a href="/security">Security</a> <a href="/company">Company</a> </nav>
+  <a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub &#8617;</a>
+ </div> </header>
+ <div class="container hero">
+   <div class="eyebrow">Security infrastructure &middot; Rust</div>
+   <h1>From 500 log lines to <span class="dim">one incident.</span></h1>
+   <p class="lede">labtrace reconstructs a forensic timeline from raw Linux audit telemetry and correlates events across processes. Rules find the signals, taint analysis connects them, and you get ranked incident reports with the full process chain — with no agent installed on the host.</p>
+   <div class="hero-actions">
+     <a class="btn btn-primary" href="https://github.com/Hartwell-Labs/labtrace">Source on GitHub &#8617;</a>
+     <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/labtrace/releases">Releases</a>
+     <a class="btn btn-secondary" href="/products">Full catalog</a>
+   </div>
+ </div>
+ <div class="stats"><div class="container stats-in">
+  <div class="stat"><div class="n">LT001–LT010</div><div class="l">single-event rule signals</div></div>
+  <div class="stat"><div class="n">2 passes</div><div class="l">rules, then taint propagation</div></div>
+  <div class="stat"><div class="n">0</div><div class="l">agents required on the host</div></div>
+  <div class="stat"><div class="n">JSONL</div><div class="l">auditd event stream in, reports out</div></div>
+ </div></div>
+ <section id="why"><div class="container">
+  <div class="section-head"><div class="kicker">Why</div>
+   <h2>The gap between a SIEM and an incident.</h2>
+   <p>SIEMs show you events. Auditors need incidents. The distance between &ldquo;500 suspicious log lines&rdquo; and &ldquo;this SSH session stole cloud credentials, shipped them to a raw IP, installed persistence and created a backdoor account&rdquo; is manual, slow, and exactly what an incident responder has no time for. labtrace closes that gap in two passes.</p></div>
+  <div class="prod-grid">
+   <div class="prod"><div class="row"><h4>Pass 1 — rules</h4></div><p>LT001&ndash;LT010 mark single events on their own: reverse-shell primitives, key material access, cloud credential stores, persistence writes, log truncation, database dumps and sensitive archives.</p></div>
+   <div class="prod"><div class="row"><h4>Pass 2 — taint</h4></div><p>Sensitive data (SSH keys, cloud tokens, cookies, DB dumps) is marked at the source and propagated through file writes, exec arguments and child processes. A finding is promoted to an incident when taint reaches a sink: an outbound connection or an archive.</p></div>
+   <div class="prod"><div class="row"><h4>Correlation</h4></div><p>Findings that share a process chain collapse into one incident. A chain confirmed by a taint flow gets its severity raised. Lone low-severity noise is dropped instead of reported.</p></div>
+  </div>
+ </div></section>
+ <section id="start"><div class="container">
+  <div class="section-head"><div class="kicker">Install</div>
+   <h2>Build from source, or containerise.</h2>
+   <p>It is a static Rust binary that consumes an event stream; there is nothing to install on the machines you analyse.</p></div>
+  <div class="cmd"><code>cargo install --path .</code><button class="cp" data-code="cargo install --path .">COPY</button></div>
+  <div class="cmd"><code>docker build -t labtrace .</code><button class="cp" data-code="docker build -t labtrace .">COPY</button></div>
+  <p style="margin-top:18px">Usage and the full rule catalogue live in the <a href="https://github.com/Hartwell-Labs/labtrace" style="color:var(--accent)">repository README</a>.</p>
+ </div></section>
+ <section id="standard"><div class="container">
+  <div class="section-head"><div class="kicker">Same discipline as everything we ship</div>
+   <h2>Open, auditable, reproducible.</h2>
+   <p>The rules are public and versioned, so an incident report can be checked against the exact logic that produced it.</p></div>
+ </div></section>
+ <footer> <div class="container footer-grid">
+  <div> <div class="logo" style="margin-bottom:14px;"> <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg> Hartwell Labs </div>
+  <p class="about">Independent engineering company. Security systems, languages and tools &mdash; built in the open, MIT licensed.</p></div>
+  <div> <h5>Products</h5> <a href="/products">Products</a> <a href="/talus-process-monitor/">talus-process-monitor</a> <a href="/externum/">externum</a> </div>
+  <div> <h5>Resources</h5> <a href="/docs">Documentation</a> <a href="https://github.com/Hartwell-Labs">GitHub organization</a> </div>
+  <div> <h5>Company</h5> <a href="/company">About</a> <a href="/security">Security &amp; disclosure</a> <a href="/privacy/">Privacy policy</a> </div>
+ </div>
+ <div class="container f-fine"> <span>© 2026 Hartwell Labs. All software released under the MIT license unless stated otherwise.</span> <span>Szczecin, Poland</span> </div>
+ </footer>
+ <script src="/assets/site.js" defer></script>
+</body> </html>

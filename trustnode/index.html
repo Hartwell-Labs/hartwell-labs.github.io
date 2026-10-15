@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-p0vklvSMKkjnbnsbXGZgKYCg9qJMgiUkDurn7G6vhN0='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>TrustNode — a Solana-like validator written from scratch in Rust | Hartwell Labs</title>
+<meta name="description" content="TrustNode is a Solana-style validator built from scratch in Rust: PoH clock, Tower BFT consensus, Sealevel-style parallel execution, Turbine propagation with Reed-Solomon erasure coding, CRDS gossip over real UDP, fee-priority mempool, 228 tests, MIT." />
+<link rel="canonical" href="https://hartwell-labs.pl/trustnode/" />
+<meta property="og:title" content="TrustNode — a Solana-like validator from scratch" />
+<meta property="og:description" content="Not a wrapper, not a fork. Every line written from scratch to understand how Solana actually works. 12 crates, 228 tests, MIT." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hartwell-labs.pl/trustnode/" />
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head> <body> <header> <div class="container header-in">
+  <a class="logo" href="/"> <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg> Hartwell Labs </a>
+  <nav class="main"> <a href="/products">Products</a> <a href="/catalog">Catalog</a> <a href="/docs">Docs</a> <a href="/security">Security</a> <a href="/company">Company</a> </nav>
+  <a class="header-cta" href="https://github.com/BartoszOsiej/TrustNode">GitHub &#8617;</a>
+ </div> </header>
+ <div class="container hero">
+   <div class="eyebrow">Trusted compute &middot; Rust</div>
+   <h1>Built to understand, <span class="dim">not to fork.</span></h1>
+   <p class="lede">A Solana-style validator written from scratch in Rust: proof-of-history clock, Tower BFT consensus, Sealevel-style parallel execution, Turbine propagation with real Reed&#8211;Solomon erasure coding, CRDS gossip over UDP, a fee-priority mempool and an SBF-inspired program executor. Not a wrapper. Not a fork. Every line mine.</p>
+   <div class="hero-actions">
+     <a class="btn btn-primary" href="https://github.com/BartoszOsiej/TrustNode">Source on GitHub &#8617;</a>
+     <a class="btn btn-secondary" href="https://wiki.hartwell-labs.pl/projects/solana-validator">Documentation</a>
+   </div>
+ </div>
+ <div class="stats"><div class="container stats-in">
+  <div class="stat"><div class="n">12</div><div class="l">crates in the Cargo workspace</div></div>
+  <div class="stat"><div class="n">228</div><div class="l">tests, all public</div></div>
+  <div class="stat"><div class="n">~1M</div><div class="l">PoH hashes per second</div></div>
+  <div class="stat"><div class="n">MIT</div><div class="l">licensed, fully public</div></div>
+ </div></div>
+ <section id="stack"><div class="container">
+  <div class="section-head"><div class="kicker">What is inside</div>
+   <h2>Eleven subsystems, all real.</h2>
+   <p>Every cryptographic path is implemented, not stubbed: transactions are Ed25519-verified, votes are signed before they touch state, gossip messages that fail verification are counted and dropped without a reply.</p></div>
+  <div class="prod-grid">
+   <div class="prod"><div class="row"><h4>Proof of History</h4></div><p>A verifiable delay function: N sequential SHA-256 hashes per tick. Verification re-hashes N times and checks the result matches.</p></div>
+   <div class="prod"><div class="row"><h4>Tower BFT</h4></div><p>Fork choice with lockouts — every vote on the same fork doubles the lockout, so switching forks gets expensive. Finality at two-thirds supermajority.</p></div>
+   <div class="prod"><div class="row"><h4>Sealevel-style scheduler</h4></div><p>Conflict analysis over read/write account sets. Disjoint transactions batch together; write conflicts serialise. Slot-based with a compute budget.</p></div>
+   <div class="prod"><div class="row"><h4>Turbine + Reed&#8211;Solomon</h4></div><p>Systematic RS over GF(256): any k of n shards reconstruct the block exactly, or the decoder returns None. Shreds are signed and verified on receipt.</p></div>
+   <div class="prod"><div class="row"><h4>CRDS gossip</h4></div><p>Cluster Replicated Data Store with versioning, timeouts, push/pull and ping/pong &mdash; every outgoing message signed.</p></div>
+   <div class="prod"><div class="row"><h4>Accounts DB</h4></div><p>Append-only store with a DashMap index for O(1) lookups and a Merkle tree over state for a verifiable state root.</p></div>
+   <div class="prod"><div class="row"><h4>Fee-priority mempool</h4></div><p>Transaction fees are charged against the real accounts DB even when an instruction later fails &mdash; because that is Solana semantics.</p></div>
+   <div class="prod"><div class="row"><h4>Program executor</h4></div><p>A unified native dispatcher with a System program (real SOL transfers, account creation) and an SPL-like Token program. No SBF runtime, so an unsupported program fails honestly instead of faking an Ok.</p></div>
+   <div class="prod"><div class="row"><h4>JSON-RPC 2.0</h4></div><p>Account queries over a real server, backed by the same state the consensus path commits to.</p></div>
+  </div>
+ </div></section>
+ <section id="start"><div class="container">
+  <div class="section-head"><div class="kicker">Run it</div>
+   <h2>Tests first, then the node.</h2>
+   <p>228 tests across the workspace, <code>cargo clippy -D warnings</code>, <code>cargo audit</code> with zero advisories, and CI on Linux and macOS with <code>--locked</code>, plus CodeQL and the OpenSSF Scorecard.</p></div>
+  <div class="cmd"><code>cargo test --workspace</code><button class="cp" data-code="cargo test --workspace">COPY</button></div>
+  <div class="cmd"><code>cargo bench -- --bench</code><button class="cp" data-code="cargo bench -- --bench">COPY</button></div>
+ </div></section>
+ <section id="honest"><div class="container">
+  <div class="section-head"><div class="kicker">What it is not</div>
+   <h2>Research-grade, on purpose.</h2>
+   <p>No SBF runtime, no QUIC (the transport is real UDP), no snapshot loading, and nothing tuned for production throughput. It has never run on mainnet and we do not claim it has &mdash; the README says plainly: do not use it for real transactions or staking. What it demonstrates is that the architecture can be held in one head, end to end.</p></div>
+ </div></section>
+ <footer> <div class="container footer-grid">
+  <div> <div class="logo" style="margin-bottom:14px;"> <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg> Hartwell Labs </div>
+  <p class="about">Independent engineering company. Security systems, languages and tools &mdash; built in the open, MIT licensed.</p></div>
+  <div> <h5>Products</h5> <a href="/products">Products</a> <a href="/talus-process-monitor/">talus-process-monitor</a> <a href="/externum/">externum</a> </div>
+  <div> <h5>Resources</h5> <a href="/docs">Documentation</a> <a href="https://wiki.hartwell-labs.pl/projects/solana-validator">Wiki page</a> </div>
+  <div> <h5>Company</h5> <a href="/company">About</a> <a href="/security">Security &amp; disclosure</a> <a href="/privacy/">Privacy policy</a> </div>
+ </div>
+ <div class="container f-fine"> <span>© 2026 Hartwell Labs. TrustNode is MIT licensed and fully public; research-grade, not for mainnet use.</span> <span>Szczecin, Poland</span> </div>
+ </footer>
+ <script src="/assets/site.js" defer></script>
+</body> </html>

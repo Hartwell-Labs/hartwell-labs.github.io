@@ -1,42 +1,89 @@
 # Hartwell Labs
 
-> Independent engineering company from Szczecin, Poland, building security infrastructure and developer tools. Open source, MIT licensed, CI on everything.
+> Independent engineering company from Szczecin, Poland. Security infrastructure,
+> developer tools and one proprietary intelligence platform. Open source, MIT licensed.
 
-Core facts:
+Generated 2026-10-15 from the site source. Every page below has a markdown twin:
+append `.md` to any page URL, or grab everything at once from `/llms-full.txt`.
 
-- Second flagship: **scryer-core** — lead intelligence & external attack surface (BZP/BIP ingestion, KSC/NIS2 scoring, passive DNS audit). Proprietary, self-hosted, security-first. Hub: https://hartwell-labs.pl/scryer-core/
-- Flagship product: **talus-process-monitor** — behavioral ransomware detection and response for Linux. eBPF-based, ~280k events per second, seccomp and Landlock self-sandboxing, one static binary, no kernel modules.
-- Ships with: SBOM (SPDX), build provenance, Sigstore-style attestation, continuous fuzzing on the eBPF pipeline.
-- Security: coordinated vulnerability disclosure, 48-hour acknowledgment SLA, security contact in /.well-known/security.txt.
-- Services: manual penetration testing (OWASP WSTG, PTES), Amazon SP-API audit-ready assessments, Linux hardening, eBPF detection deployments.
-- Team: Bartosz Osiej (Founder & CEO, systems engineering), duds08422-max (Ruby engineering, bridges & registry).
+**Machine-readable profile for AI systems** (factual, no marketing): https://hartwell-labs.pl/llms.json
 
 ## Pages
 
-- [Home](https://hartwell-labs.pl/): company overview, flagship product, engineering practices
-- [Home (Polish)](https://hartwell-labs.pl/pl/): polska wersja strony
-- [Products](https://hartwell-labs.pl/products/): 10 public products + 1 proprietary platform, across 6 lines
-- [Catalog](https://hartwell-labs.pl/catalog/): complete map with machine-readable registry
-- [Documentation](https://hartwell-labs.pl/docs/): installation and deployment guides
-- [Talus Field Guide](https://hartwell-labs.pl/talus-process-monitor/field-guide.html): deployment modes, installation, threshold tuning, MeMLP, enterprise wiring and the alert runbook
-- [Security](https://hartwell-labs.pl/security/): disclosure policy, SLA, severity classification
-- [Company](https://hartwell-labs.pl/company/): about, timeline, services, team
+### Products
 
-## Products
+- [CyberForge — 4 Rust security tools (recon, web, hash, packets) | Hartwell Labs](https://hartwell-labs.pl/CyberForge/): Four security tools. One async core.
+  - markdown: `https://hartwell-labs.pl/CyberForge.md`
+- [externum — a typed language that compiles to Python, Bash and native bytecode | Hartwell Labs](https://hartwell-labs.pl/externum/): One typed source. Readable Python, Bash and native bytecode.
+  - markdown: `https://hartwell-labs.pl/externum.md`
+- [fortis — RISC-V chain-of-trust attestation for embedded systems | Hartwell Labs](https://hartwell-labs.pl/fortis/): Verifiable boot chains for embedded systems.
+  - markdown: `https://hartwell-labs.pl/fortis.md`
+- [labbridge — Rust ⇄ Ruby bridge for Hartwell Labs programs | Hartwell Labs](https://hartwell-labs.pl/labbridge/): Rust ⇄ Ruby, without rewriting either.
+  - markdown: `https://hartwell-labs.pl/labbridge.md`
+- [labtrace — forensic timeline reconstruction for Linux audit telemetry | Hartwell Labs](https://hartwell-labs.pl/labtrace/): From 500 log lines to one incident.
+  - markdown: `https://hartwell-labs.pl/labtrace.md`
+- [linux-aegis — stackable Linux Security Module (LSM) | Hartwell Labs](https://hartwell-labs.pl/linux-aegis/): Policy enforcement where attacks happen.
+  - markdown: `https://hartwell-labs.pl/linux-aegis.md`
+- [photoscrub — see what your photos leak, then remove it | Hartwell Labs](https://hartwell-labs.pl/photoscrub/): See what your photos leak. Then remove it.
+  - markdown: `https://hartwell-labs.pl/photoscrub.md`
+- [Externum — nowy polski język programowania | Hartwell Labs](https://hartwell-labs.pl/pl/externum/): Externum — nowy polski język programowania.
+  - markdown: `https://hartwell-labs.pl/pl/externum.md`
+- [Talus — anty-ransomware dla Linuksa (eBPF) | Hartwell Labs](https://hartwell-labs.pl/pl/talus-process-monitor/): Talus — anty-ransomware dla Linuksa.
+  - markdown: `https://hartwell-labs.pl/pl/talus-process-monitor.md`
+- [quantum-shield — post-quantum file encryption (ML-KEM-768 + AES-256-GCM) | Hartwell Labs](https://hartwell-labs.pl/quantum-shield/): Files encrypted for the post-quantum era.
+  - markdown: `https://hartwell-labs.pl/quantum-shield.md`
+- [2,229 US government domains checked - SPF, DMARC, CAA as published](https://hartwell-labs.pl/report/gov-ranking.html): 2,229 US government domains, checked from the outside
+  - markdown: `https://hartwell-labs.pl/report/gov-ranking.md`
+- [scryer-core — internal intelligence platform | Hartwell Labs](https://hartwell-labs.pl/scryer-core/): Lead intelligence, built in-house.
+  - markdown: `https://hartwell-labs.pl/scryer-core.md`
+- [talus-process-monitor — Behavioral ransomware detection & response for Linux | Hartwell Labs](https://hartwell-labs.pl/talus-process-monitor/): Behavioral ransomware detection that answers with a kill signal.
+  - markdown: `https://hartwell-labs.pl/talus-process-monitor.md`
+- [TrustNode — a Solana-like validator written from scratch in Rust | Hartwell Labs](https://hartwell-labs.pl/trustnode/): Built to understand, not to fork.
+  - markdown: `https://hartwell-labs.pl/trustnode.md`
 
-- talus-process-monitor: https://github.com/Hartwell-Labs/talus-process-monitor
-- quantum-shield (post-quantum file encryption): https://github.com/Hartwell-Labs/quantum-shield
-- linux-aegis (kernel security module): https://github.com/Hartwell-Labs/linux-aegis
-- fortis (RISC-V attestation): https://github.com/Hartwell-Labs/fortis
-- externum (self-hosted programming language): https://github.com/Hartwell-Labs/externum
-- Aurora (browser OS): https://github.com/Hartwell-Labs/Aurora
-- labbridge (Rust-Ruby bridge): https://github.com/Hartwell-Labs/labbridge
-- products (Products Registry): https://github.com/Hartwell-Labs/products
-- CyberForge (offensive tooling): https://github.com/Hartwell-Labs/CyberForge
-- hack-the-lab (security challenges): https://github.com/Hartwell-Labs/hack-the-lab
-- scryer-core (proprietary intelligence platform, access on request): https://hartwell-labs.pl/scryer-core/
+### Site
 
-## Contact
+- [Hartwell Labs — eBPF Threat Detection & Security Infrastructure](https://hartwell-labs.pl/): Infrastructure-grade open source.
+  - markdown: `https://hartwell-labs.pl/index.md`
+- [Hartwell Labs — Detekcja zagrożeń eBPF i infrastruktura bezpieczeństwa](https://hartwell-labs.pl/pl/): Infrastruktura klasy enterprise. Open source.
+  - markdown: `https://hartwell-labs.pl/pl.md`
 
-- General: contact@hartwell-labs.pl
-- Security reports: see https://hartwell-labs.pl/.well-known/security.txt
+### Catalog
+
+- [Product Catalog — eBPF Security, PQC & Dev Tools | Hartwell Labs](https://hartwell-labs.pl/catalog/): Everything, in one place.
+  - markdown: `https://hartwell-labs.pl/catalog.md`
+- [Products — eBPF Threat Detection & Security Tools | Hartwell Labs](https://hartwell-labs.pl/products/): Products.
+  - markdown: `https://hartwell-labs.pl/products.md`
+
+### Documentation
+
+- [Documentation — Talus, Externum & Deployment Guides | Hartwell Labs](https://hartwell-labs.pl/docs/): One wiki. Every product.
+  - markdown: `https://hartwell-labs.pl/docs.md`
+
+### Guides
+
+- [Talus Field Guide — deployment & tuning playbook | Hartwell Labs](https://hartwell-labs.pl/talus-process-monitor/field-guide.html): Talus Field Guide
+  - markdown: `https://hartwell-labs.pl/talus-process-monitor/field-guide.md`
+
+### Company
+
+- [About Hartwell Labs — eBPF Security Engineering, Szczecin PL](https://hartwell-labs.pl/company/): An engineering company, not a content farm.
+  - markdown: `https://hartwell-labs.pl/company.md`
+
+### Security
+
+- [Security & Coordinated Disclosure (CVD) — Hartwell Labs](https://hartwell-labs.pl/security/): Found something? Tell us first.
+  - markdown: `https://hartwell-labs.pl/security.md`
+
+### Reports
+
+- [2,229 US government domains checked - SPF, DMARC, CAA as published](https://hartwell-labs.pl/report/gov-ranking/): 2,229 US government domains, checked from the outside
+  - markdown: `https://hartwell-labs.pl/report/gov-ranking.md`
+- [US county & K-12 DNS posture 700 domains — Hartwell Labs](https://hartwell-labs.pl/report/): 700 US county domains,one TXT record from safe.
+  - markdown: `https://hartwell-labs.pl/report.md`
+
+### Legal
+
+- [Privacy Policy — Data We Collect & Your Rights | Hartwell Labs](https://hartwell-labs.pl/privacy/): Privacy Policy
+  - markdown: `https://hartwell-labs.pl/privacy.md`
+
