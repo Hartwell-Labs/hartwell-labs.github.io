@@ -32,10 +32,13 @@ Every product of the lab with exactly two destinations: the corporate product we
 | talus-process-monitor | Security infrastructure | /talus-process-monitor | GitHub ↗ |
 | scryer-core | Intelligence platform | /scryer-core | GitHub ↗ |
 | externum | Developer tools | /externum | GitHub ↗ |
+| TrustNode | Trusted compute | /trustnode | GitHub ↗ |
+| photoscrub | Privacy tooling | /photoscrub | GitHub ↗ |
 | Aurora | Operating systems | /Aurora | GitHub ↗ |
 | quantum-shield | Security infrastructure | /quantum-shield | GitHub ↗ |
 | linux-aegis | Security infrastructure | /linux-aegis | GitHub ↗ |
 | fortis | Security infrastructure | /fortis | GitHub ↗ |
+| labtrace | Security infrastructure | /labtrace | GitHub ↗ |
 | labbridge | Ruby division | /labbridge | GitHub ↗ |
 | products (Registry API) | Ruby division | /products | GitHub ↗ |
 | CyberForge | Offensive security | /CyberForge | GitHub ↗ |
@@ -96,7 +99,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 
 ### 4. Interactive elements
 
-- 12 linków-kotwic do sekcji na tej samej stronie (`#id`).
+- 15 linków-kotwic do sekcji na tej samej stronie (`#id`).
 - 1 linków zewnętrznych (GitHub, PyPI, crates.io, sklepy) — otwierane w tej samej karcie.
 - Brak formularzy, brak JS zależności poza `assets/site.js` i `challenge.js`.
 - `challenge.js` jest skryptem łupieżczym — nie ładuj go przy renderowaniu.
