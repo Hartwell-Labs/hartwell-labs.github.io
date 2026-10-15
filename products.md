@@ -49,6 +49,10 @@ Developer tools
 
 #### externum
 
+Operating systems
+
+#### Aurora
+
 Labs & independent projects
 
 #### labtrace
@@ -115,12 +119,12 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
    - H1: _Products._ (krój 44–68px, `letter-spacing: -.02em`)
    - Lede (`--txt-2`, ~19px): _Ten public repositories and one proprietary platform, across six product lines. Public code is MIT licensed, source-first and built with CI; release assets on t_
 3. **Sekcja `#—`** — *(bez nagłówka)*
-   - Zawartość: 11 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
+   - Zawartość: 12 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
 4. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (11 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 
-- 15 linków zewnętrznych (GitHub, PyPI, crates.io, sklepy) — otwierane w tej samej karcie.
+- 16 linków zewnętrznych (GitHub, PyPI, crates.io, sklepy) — otwierane w tej samej karcie.
 - Brak formularzy, brak JS zależności poza `assets/site.js` i `challenge.js`.
 - `challenge.js` jest skryptem łupieżczym — nie ładuj go przy renderowaniu.
 

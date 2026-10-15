@@ -12,6 +12,8 @@ append `.md` to any page URL, or grab everything at once from `/llms-full.txt`.
 
 ### Products
 
+- [Aurora — a complete operating system in the browser | Hartwell Labs](https://hartwell-labs.pl/Aurora/): A complete OS in your browser tab.
+  - markdown: `https://hartwell-labs.pl/Aurora.md`
 - [CyberForge — 4 Rust security tools (recon, web, hash, packets) | Hartwell Labs](https://hartwell-labs.pl/CyberForge/): Four security tools. One async core.
   - markdown: `https://hartwell-labs.pl/CyberForge.md`
 - [externum — a typed language that compiles to Python, Bash and native bytecode | Hartwell Labs](https://hartwell-labs.pl/externum/): One typed source. Readable Python, Bash and native bytecode.
