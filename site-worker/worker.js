@@ -1,3 +1,16 @@
+/**
+ * hartwell-site — cienki proxy przed GitHub Pages.
+ *
+ * Ten plik robi dwie rzeczy: serwuje pliki z raw.githubusercontent.com i —
+ * co wazniejsze — dowozi naglowki bezpieczenstwa na kazda odpowiedz.
+ * Przed zmiana strona firmy bezpieczenstwa nie miala zadnego CSP, HSTS ani
+ * nosniff, co na domenie takiej jak ta jest pierwsza rzecz, na ktora patrzy
+ * kazdy analityk i kazdy skaner reputacyjny.
+ *
+ * CSP jest celowo restrykcyjny: skrypt tylko z wlasnej domeny, zadne ramki,
+ * zadna zawosc osadzana. Jedyne wyjatki to Google Fonts i Cloudflare
+ * Insights, bo bez nich strona wyglada inaczej niz powinna.
+ */
 const RAW_BASE = "https://raw.githubusercontent.com/Hartwell-Labs/hartwell-labs.github.io/main";
 const APEX = "hartwell-labs.pl";
 
@@ -34,6 +47,43 @@ function typeFor(p) {
   return TYPES[extOf(p)] || "application/octet-stream";
 }
 
+/* ------------------------------------------------------------ naglowki
+   Budujemy je raz i doklejamy do kazdej odpowiedzi — takze 404 i
+   przekierowania. Pominieta odpowiedz to odpowiedz bez ochrony, a 404
+   na domenie firmy bezpieczenstwa to najgorszy mozliwy komunikat. */
+const CSP = [
+  "default-src 'none'",
+  "script-src 'self'",
+  "script-src-attr 'none'",
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+  "font-src 'self' https://fonts.gstatic.com data:",
+  "img-src 'self' data: https:",
+  "connect-src 'self' https://static.cloudflareinsights.com",
+  "manifest-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
+const SECURITY_HEADERS = {
+  "content-security-policy": CSP,
+  "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+  "x-content-type-options": "nosniff",
+  "referrer-policy": "strict-origin-when-cross-origin",
+  "permissions-policy": "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), interest-cohort=()",
+  "cross-origin-opener-policy": "same-origin",
+  "x-frame-options": "DENY",
+};
+
+function secure(res) {
+  if (res.headers.get("content-security-policy")) return res;
+  const h = new Headers(res.headers);
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) h.set(k, v);
+  return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
+}
+
 function notFound() {
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -44,7 +94,7 @@ function notFound() {
 <title>404 &middot; Hartwell Labs</title>
 <style>
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-background:#0b0d12;color:#d7dce5;font:16px/1.6 ui-sans-serif,system-ui,sans-serif}
+ background:#0b0d12;color:#d7dce5;font:16px/1.6 ui-sans-serif,system-ui,sans-serif}
 main{text-align:center;padding:40px}
 h1{font-size:64px;margin:0;color:#7aa2f7}
 p{color:#8b93a7}
@@ -76,9 +126,12 @@ async function serveFile(request, path, ctx) {
   if (!body) return null;
   const headers = new Headers();
   headers.set("content-type", typeFor(path));
-  headers.set("cache-control", "public, max-age=600");
+  // HTML musi byc walidowany, inaczej zmiana na GitHub Pages bywa widoczna
+  // dopiero po godzinie i przy okazji wyglada jak wpadka.
+  const isHtml = extOf(path) === ".html" || extOf(path) === ".htm";
+  headers.set("cache-control", isHtml ? "public, max-age=300, must-revalidate" : "public, max-age=600");
   const res = new Response(request.method === "HEAD" ? null : body.body, { status: 200, headers });
-  if (request.method === "GET") ctx.waitUntil(caches.default.put(request, res.clone()));
+  if (request.method === "GET") ctx.waitUntil(caches.default.put(request, secure(res.clone())));
   return res;
 }
 
@@ -88,40 +141,39 @@ export default {
 
     if (url.hostname === `www.${APEX}`) {
       url.hostname = APEX;
-      return Response.redirect(url.toString(), 301);
+      return secure(Response.redirect(url.toString(), 301));
     }
 
     if (request.method !== "GET" && request.method !== "HEAD") {
-      return new Response("Method Not Allowed", { status: 405 });
+      return secure(new Response("Method Not Allowed", { status: 405, headers: { allow: "GET, HEAD" } }));
     }
-
-    const cached = await caches.default.match(request);
-    if (cached) return cached;
 
     const path = url.pathname;
     const last = path.split("/").pop();
     const hasExt = last.includes(".");
 
+    const cached = await caches.default.match(request);
+    if (cached) return secure(cached);
+
     if (path.endsWith("/")) {
       const res = await serveFile(request, path + "index.html", ctx);
-      return res || notFound();
+      return secure(res || notFound());
     }
 
     if (hasExt) {
       const res = await serveFile(request, path, ctx);
-      return res || notFound();
+      return secure(res || notFound());
     }
 
     const asHtml = await serveFile(request, path + ".html", ctx);
-    if (asHtml) return asHtml;
+    if (asHtml) return secure(asHtml);
 
     const dirIndex = await rawGet(path + "/index.html");
     if (dirIndex) {
       url.pathname = path + "/";
-      const res = Response.redirect(url.toString(), 301);
-      return res;
+      return secure(Response.redirect(url.toString(), 301));
     }
 
-    return notFound();
+    return secure(notFound());
   },
 };
