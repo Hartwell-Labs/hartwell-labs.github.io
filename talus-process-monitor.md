@@ -26,7 +26,7 @@ generator: tools/build-ai-pages.py
 
 talus-process-monitor hooks syscall tracepoints in the Linux kernel, scores per-process open-rates in one-second windows and terminates the encryptor with SIGKILL — guardrailed, whitelist-aware, and never at the cost of the host. One static binary. No kernel modules. No telemetry.
 
-[Buy Enterprise — $50/node](https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK) → [Deployment guide](https://hartwell-labs.pl/docs#talus) → [Source ↗](https://github.com/Hartwell-Labs/talus-process-monitor)
+[Buy Enterprise — $50/node](https://buy.stripe.com/4gMaEY2JYae4ekV2np2Fa02) → [Deployment guide](https://hartwell-labs.pl/docs#talus) → [Source ↗](https://github.com/Hartwell-Labs/talus-process-monitor)
 
 $50 per node · 12 months of updates · license key delivered instantly on checkout · VAT invoice via Polar · or request a quote by email
 
@@ -186,7 +186,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
    - Eyebrow (kicker, `--txt-3`, wersaliki): _Flagship · Rust · eBPF_
    - H1: _Behavioral ransomware detection that answers with a kill signal._ (krój 44–68px, `letter-spacing: -.02em`)
    - Lede (`--txt-2`, ~19px): _talus-process-monitor hooks syscall tracepoints in the Linux kernel, scores per-process open-rates in one-second windows and terminates the encryptor with SIGKI_
-   - przycisk główny: **Buy Enterprise — $50/node** → `https://buy.polar.sh/polar_cl_E577BTilme4dnUFsfbG0aE4qo7QILaugmEjsA0oajKK`
+   - przycisk główny: **Buy Enterprise — $50/node** → `https://buy.stripe.com/4gMaEY2JYae4ekV2np2Fa02`
    - przycisk drugorzędny: **Deployment guide** → `https://hartwell-labs.pl/docs#talus`
    - przycisk drugorzędny: **Source ↗** → `https://github.com/Hartwell-Labs/talus-process-monitor`
    - link: **request a quote by email** → `mailto:contact@hartwell-labs.pl?subject=Talus%20Enterprise%20quote%20%E2%80%94%20%2450%2Fnode&body=Nodes%3A%0AHostnames%2FIP%3A%0AWhat%20you%20want%20detected%3A%0AProcurement%20process%3A%0A`
