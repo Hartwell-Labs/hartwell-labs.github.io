@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<!--
+  connect-src is pinned to the licence server and nowhere else: the page
+  sends only the checkout session id, which is already in the URL the customer
+  arrived with, and it must not leak to any third party.
+  form-action is pinned to the activation server so the activation form can
+  never be repurposed to post data somewhere else.
+-->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; img-src 'self' data:; manifest-src 'self'; connect-src https://lic.hartwell-labs.pl; base-uri 'none'; form-action https://lic.hartwell-labs.pl; frame-ancestors 'none'" />
+<title>Payment received &middot; Talus Enterprise | Hartwell Labs</title>
+<meta name="description" content="Your Talus Process Monitor Enterprise licence is being issued. Download the binary, activate your key, and you are running." />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/icon-192.png" />
+<link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+<style>
+.steps { counter-reset: s; list-style: none; padding: 0; margin: 0; }
+.steps li { counter-increment: s; position: relative; padding: 0 0 22px 46px; }
+.steps li::before {
+  content: counter(s);
+  position: absolute; left: 0; top: -2px;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  color: var(--txt-1); font: 600 13px/28px Inter, system-ui, sans-serif; text-align: center;
+}
+.steps li:not(:last-child)::after {
+  content: ""; position: absolute; left: 14px; top: 30px; bottom: 4px; width: 1px; background: var(--border);
+}
+.steps h3 { margin: 2px 0 6px; font-size: 16px; }
+.steps p { margin: 0; color: var(--txt-2); font-size: 14.5px; line-height: 1.62; }
+code, kbd { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .92em;
+  background: var(--bg-subtle); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; }
+.status { border: 1px solid var(--border); border-radius: 14px; background: var(--bg-subtle); padding: 26px 30px; }
+.status.ok { border-color: var(--green); }
+.status h2 { margin: 0 0 8px; font-size: 21px; letter-spacing: -.01em; }
+.status p { margin: 0 0 14px; color: var(--txt-2); font-size: 14.5px; line-height: 1.62; }
+.status .row { display: flex; flex-wrap: wrap; gap: 10px 26px; font-size: 13px; color: var(--txt-3);
+  border-top: 1px solid var(--border); margin-top: 18px; padding-top: 16px; }
+.status .row b { color: var(--txt-1); font-weight: 600; }
+.fallback { margin-top: 26px; border: 1px solid var(--border); border-radius: 14px; padding: 24px 30px; }
+.fallback h3 { margin: 0 0 10px; font-size: 16px; }
+.fallback p { color: var(--txt-2); font-size: 14.5px; line-height: 1.62; margin: 0 0 12px; }
+a.mail { color: var(--accent, #6366f1); }
+@media (max-width: 640px) { .status, .fallback { padding: 20px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="container header-in">
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+        <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
+        <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg> Hartwell Labs
+    </a>
+    <nav class="main">
+      <a href="/products">Products</a>
+      <a href="/docs">Docs</a>
+      <a href="/security">Security</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding:54px 0 80px; max-width:760px;">
+
+  <div id="state-pending" class="status">
+    <h2>Confirming your payment&hellip;</h2>
+    <p>One moment &mdash; we are asking Stripe for the status of this order.</p>
+  </div>
+
+  <div id="state-unknown" class="status" hidden>
+    <h2>We could not match this link to a payment</h2>
+    <p>
+      Either the link is incomplete, or the payment has not finished settling yet.
+      If you were charged, the licence key still reaches you by email &mdash; see below.
+    </p>
+  </div>
+
+  <div id="state-ok" hidden>
+    <div class="status ok">
+      <h2>Payment received. Your licence key is on its way.</h2>
+      <p>
+        We send one email with the key <b id="mail-to">&mdash;</b>. It usually arrives within a
+        minute. If it has not arrived after ten, check spam, then use the fallback below.
+      </p>
+      <div class="row">
+        <span>Order <b id="s-id">&mdash;</b></span>
+        <span>Status <b id="s-status">&mdash;</b></span>
+        <span>Renews <b>1 year from today</b></span>
+      </div>
+    </div>
+
+    <div class="fallback">
+      <h3>No email after ten minutes?</h3>
+      <p>
+        Write to <a class="mail" href="mailto:kontakt@hartwell-labs.pl">kontakt@hartwell-labs.pl</a>
+        quoting the order id above. We resend the key by hand &mdash; usually the same day.
+      </p>
+      <p style="margin:0">
+        <a class="btn btn-secondary" href="/talus">Back to Talus</a>
+      </p>
+    </div>
+
+    <div style="margin-top:44px">
+      <div class="eyebrow">Next</div>
+      <h2 style="font-size:26px; letter-spacing:-.02em; margin:8px 0 22px">From key to running agent</h2>
+      <ol class="steps">
+        <li>
+          <h3>Download the binary</h3>
+          <p>
+            One static ELF for x86_64 and aarch64, from the
+            <a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">releases page</a>.
+            No kernel modules, no agent to install separately.
+          </p>
+        </li>
+        <li>
+          <h3>Activate</h3>
+          <p>
+            Run <code>talus-monitor activate</code> and paste the key from the email.
+            The key binds to this machine and activates on this node.
+          </p>
+        </li>
+        <li>
+          <h3>Watch</h3>
+          <p>
+            <code>talus-monitor run</code> starts the eBPF probes. The dashboard and REST API come
+            up on the port you chose during activation.
+          </p>
+        </li>
+      </ol>
+      <p style="margin-top:26px">
+        <a class="btn btn-primary" href="/docs">Deployment guide</a>
+        <a class="btn btn-secondary" href="/talus">Product page</a>
+      </p>
+    </div>
+  </div>
+
+  <div id="state-none" class="status" hidden>
+    <h2>Nothing to confirm &mdash; this is the manual path</h2>
+    <p>
+      You reached this page directly, without a payment link. If you have already paid, the key
+      comes by email. If you are here to buy:
+    </p>
+    <p style="margin:0">
+      <a class="btn btn-primary" href="https://buy.stripe.com/4gMaEY2JYae4ekV2np2Fa02">Buy Talus Enterprise &middot; 200 PLN</a>
+    </p>
+  </div>
+
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  var LIC = 'https://lic.hartwell-labs.pl';
+  var params = new URLSearchParams(window.location.search);
+  var sessionId = (params.get('session_id') || '').trim();
+
+  function show(id) {
+    ['pending', 'ok', 'unknown', 'none'].forEach(function (k) {
+      var el = document.getElementById('state-' + k);
+      if (!el) return;
+      if (k === id) el.removeAttribute('hidden');
+      else el.setAttribute('hidden', '');
+    });
+  }
+
+  // Plain text assignment only. session_id and the server's own strings are
+  // inserted with textContent, never innerHTML, so a crafted id cannot inject
+  // markup into this page.
+  function text(id, value) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+
+  if (!/^cs_[A-Za-z0-9_]{8,}$/.test(sessionId)) {
+    show('none');
+    return;
+  }
+
+  show('pending');
+
+  fetch(LIC + '/api/v1/checkout-session/' + encodeURIComponent(sessionId), {
+    headers: { accept: 'application/json' },
+    credentials: 'omit',
+    referrerPolicy: 'no-referrer',
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data || data.success !== true || data.payment_status !== 'paid') {
+        show('unknown');
+        return;
+      }
+      text('s-id', data.subscription_id || sessionId);
+      text('s-status', data.status === 'complete' ? 'complete' : String(data.status || '—'));
+      if (data.customer_email) text('mail-to', data.customer_email);
+      show('ok');
+    })
+    .catch(function () {
+      // A network failure must not imply a failed payment — say so honestly
+      // instead of telling the customer to do anything drastic.
+      show('unknown');
+    });
+})();
+</script>
+</body>
+</html>
