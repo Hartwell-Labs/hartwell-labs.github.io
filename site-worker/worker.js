@@ -92,6 +92,13 @@ function notFound() {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <title>404 &middot; Hartwell Labs</title>
+<meta name="theme-color" content="#0a0e14">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
+<link rel="manifest" href="/assets/site.webmanifest">
 <style>
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
  background:#0b0d12;color:#d7dce5;font:16px/1.6 ui-sans-serif,system-ui,sans-serif}
@@ -115,8 +122,17 @@ a{color:#7aa2f7}
   });
 }
 
+// Outbound fetches to raw.githubusercontent are cached by the edge under
+// raw's own max-age, and a zone purge does not reach them — so a commit could
+// sit unpublished for however long that TTL was. BUILD_ID is evaluated once
+// per deploy, which puts a fresh value in the subrequest URL and makes every
+// deploy take effect on the first request instead of after the cache lapses.
+const BUILD_ID = Date.now().toString(36);
+
 async function rawGet(path) {
-  const res = await fetch(encodeURI(RAW_BASE + path), { headers: { accept: "*/*" } });
+  const sep = path.includes("?") ? "&" : "?";
+  const url = encodeURI(RAW_BASE + path) + sep + "__b=" + BUILD_ID;
+  const res = await fetch(url, { headers: { accept: "*/*" } });
   if (!res.ok) return null;
   return res;
 }
@@ -131,8 +147,19 @@ async function serveFile(request, path, ctx) {
   const isHtml = extOf(path) === ".html" || extOf(path) === ".htm";
   headers.set("cache-control", isHtml ? "public, max-age=300, must-revalidate" : "public, max-age=600");
   const res = new Response(request.method === "HEAD" ? null : body.body, { status: 200, headers });
-  if (request.method === "GET") ctx.waitUntil(caches.default.put(request, secure(res.clone())));
+  if (request.method === "GET") ctx.waitUntil(caches.default.put(cacheKey(request), secure(res.clone())));
   return res;
+}
+
+// Cache entries were keyed on the inbound request, which made every edit wait
+// out max-age before it appeared — and zone purge_cache does not touch the
+// Workers Cache API, so there was no way to force it. Tying the key to
+// BUILD_ID means a deploy orphans every previous entry automatically instead
+// of serving it, and the version never has to be bumped by hand.
+function cacheKey(request) {
+  const url = new URL(request.url);
+  url.searchParams.set("__cv", BUILD_ID);
+  return new Request(url.toString(), { method: "GET" });
 }
 
 export default {
@@ -152,7 +179,7 @@ export default {
     const last = path.split("/").pop();
     const hasExt = last.includes(".");
 
-    const cached = await caches.default.match(request);
+    const cached = await caches.default.match(cacheKey(request));
     if (cached) return secure(cached);
 
     if (path.endsWith("/")) {
