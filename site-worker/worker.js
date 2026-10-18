@@ -129,6 +129,39 @@ a{color:#7aa2f7}
 // deploy take effect on the first request instead of after the cache lapses.
 const BUILD_ID = Date.now().toString(36);
 
+/**
+ * Product documentation lives in the product's own repository, not in the site
+ * repository. Eleven of them publish GitHub Pages, each already configured with
+ * the custom domain of its product page — so Pages was serving
+ * hartwell-labs.pl/<slug>/<path> and this worker answered 404 in front of it,
+ * because it only ever looked in the site repository.
+ *
+ * TEST_REPORT.md, EULA.txt, AUDIT-VERIFY-FP-DIAGNOSIS.md: written, published,
+ * unreachable. This maps a path prefix onto the repository that actually holds
+ * it, so the address the repos were already configured for resolves.
+ *
+ * The site repository still wins wherever both have a file: a product's page on
+ * this site is a landing page, and it should keep being served from one place.
+ */
+const PRODUCT_PAGES = {
+  "talus-process-monitor": ["talus-process-monitor", "master", "docs"],
+  "externum": ["externum", "main", ""],
+  "Aurora": ["Aurora", "main", ""],
+  "CyberForge": ["CyberForge", "main", ""],
+  "fortis": ["fortis", "master", ""],
+  "linux-aegis": ["linux-aegis", "main", ""],
+  "products": ["products", "main", ""],
+  "labbridge": ["labbridge", "main", ""],
+  "quantum-shield": ["quantum-shield", "main", "docs"],
+  "hack-the-lab": ["hack-the-lab", "main", ""],
+};
+
+async function repoGet(repo, branch, dir, path) {
+  const base = `https://raw.githubusercontent.com/Hartwell-Labs/${repo}/${branch}/${dir}`;
+  const sep = path.includes("?") ? "&" : "?";
+  return fetch(encodeURI(base + path) + sep + "__b=" + BUILD_ID, { headers: { accept: "*/*" } });
+}
+
 async function rawGet(path) {
   const sep = path.includes("?") ? "&" : "?";
   const url = encodeURI(RAW_BASE + path) + sep + "__b=" + BUILD_ID;
@@ -139,7 +172,28 @@ async function rawGet(path) {
 
 async function serveFile(request, path, ctx) {
   const body = await rawGet(path);
-  if (!body) return null;
+  if (body) return respond(request, path, body, ctx);
+
+  // Not in the site repository. If the first path segment names a product that
+  // publishes its own Pages, try there before giving up — that is where
+  // TEST_REPORT.md, EULA.txt and the audit notes actually live.
+  const seg = path.split("/").filter(Boolean)[0];
+  const entry = seg && PRODUCT_PAGES[seg];
+  if (entry) {
+    const [repo, branch, dir] = entry;
+    const rest = path.slice(seg.length + 1) || "index.html";
+    const prefix = dir ? dir + "/" : "";
+    const res = await repoGet(repo, branch, prefix, rest);
+    if (res.ok) return respond(request, path, res, ctx);
+    if (rest !== "index.html") {
+      const asIndex = await repoGet(repo, branch, prefix, rest + "/index.html");
+      if (asIndex.ok) return respond(request, path, asIndex, ctx);
+    }
+  }
+  return null;
+}
+
+function respond(request, path, body, ctx) {
   const headers = new Headers();
   headers.set("content-type", typeFor(path));
   // HTML musi byc walidowany, inaczej zmiana na GitHub Pages bywa widoczna
