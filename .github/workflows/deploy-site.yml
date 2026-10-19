@@ -1,19 +1,15 @@
 name: Deploy the site
 
-# Triggered by the repository_dispatch webhook, not by a push.
-#
 # The site repository is not the site. The site is the Cloudflare Worker in
 # site-worker/, and deploying it meant a workstation, a login and a manual
 # wrangler command. That made every copy edit a separate chore somebody had to
 # remember, which is a good way to ship a stale page and not find out until a
 # visitor reports it.
-#
-# It listens only for the dispatch the webhook sends on a push to main, so a
-# fork cannot trigger a deploy by pushing to it.
 
 on:
-  repository_dispatch:
-    types: [deploy-site]
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
