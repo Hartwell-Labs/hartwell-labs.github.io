@@ -1,0 +1,5 @@
+name = "hartwell-notify"
+main = "notify-worker.js"
+compatibility_date = "2026-10-01"
+account_id = "29ee063c29d9e8f27a8863fadcaa9073"
+observability = { enabled = true }
