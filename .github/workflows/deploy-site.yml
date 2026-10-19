@@ -1,0 +1,51 @@
+name: Deploy the site
+
+# Triggered by the repository_dispatch webhook, not by a push.
+#
+# The site repository is not the site. The site is the Cloudflare Worker in
+# site-worker/, and deploying it meant a workstation, a login and a manual
+# wrangler command. That made every copy edit a separate chore somebody had to
+# remember, which is a good way to ship a stale page and not find out until a
+# visitor reports it.
+#
+# It listens only for the dispatch the webhook sends on a push to main, so a
+# fork cannot trigger a deploy by pushing to it.
+
+on:
+  repository_dispatch:
+    types: [deploy-site]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-site
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy the Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 29ee063c29d9e8f27a8863fadcaa9073
+        working-directory: site-worker
+        run: |
+          npx --yes wrangler@4 deploy
+          echo "Deployed $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      # A deploy that breaks the site is a deploy that has to be undone. The
+      # Worker is the only thing serving hartwell-labs.pl, so a syntax error in
+      # it takes the whole site down rather than one page.
+      - name: Smoke test the apex
+        run: |
+          for i in $(seq 1 10); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' https://hartwell-labs.pl/ || echo 000)
+            [ "$code" = "200" ] && echo "apex OK" && exit 0
+            sleep 6
+          done
+          echo "apex did not come back after deploy"
+          exit 1
