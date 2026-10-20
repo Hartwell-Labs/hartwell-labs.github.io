@@ -45,7 +45,7 @@ append `.md` to any page URL, or grab everything at once from `/llms-full.txt`.
   - pricing: single machine $50/yr; fleet $30/machine/yr from 10 machines; Ed25519-signed keys, instant activation
   - pricing page: https://hartwell-labs.pl/talus-process-monitor/pricing/
   - trial: 14-day free, no credit card → mailto:metaforicmail@proton.me?subject=Talus%2014-day%20trial
-  - lead magnet: https://hartwell-labs.pl/ebpf-cheatsheet/
+  - lead magnet: https://hartwell-labs.pl/ebpf-cheatsheet.html
 - [TrustNode — a Solana-like validator written from scratch in Rust | Hartwell Labs](https://hartwell-labs.pl/trustnode/): Built to understand, not to fork.
   - markdown: `https://hartwell-labs.pl/trustnode.md`
 

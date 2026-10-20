@@ -32,5 +32,5 @@
 <url><loc>https://hartwell-labs.pl/talus-process-monitor/talus-vs-falco.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://hartwell-labs.pl/talus-process-monitor/talus-vs-tetragon.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 <url><loc>https://hartwell-labs.pl/talus-process-monitor/talus-vs-bpftrace.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-<url><loc>https://hartwell-labs.pl/ebpf-cheatsheet/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://hartwell-labs.pl/ebpf-cheatsheet.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
