@@ -1,6 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /challenge.js
+Disallow: /admin
+Disallow: /api/
 
 # AI crawlers - intentionally allowed (content is public, MIT-licensed)
 User-agent: GPTBot
