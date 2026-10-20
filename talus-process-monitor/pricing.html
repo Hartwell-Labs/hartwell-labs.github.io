@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Talus Process Monitor pricing. Single server $50/yr, fleet $30/node/year (min 3 nodes). PLN + USD. Annual subscription, cancel anytime. Buy and activate in 5 minutes.">
+<meta name="description" content="Talus Process Monitor pricing. Single server $50/yr, fleet $30/node/year (min 10 nodes). PLN + USD. Annual subscription, cancel anytime. Buy and activate in 5 minutes.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://hartwell-labs.pl/talus-process-monitor/pricing.html">
 <title>Talus Pricing — $50/year single, $30/node/year fleet</title>
@@ -11,12 +11,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Hartwell Labs">
 <meta property="og:title" content="Talus Pricing — $50/year single, $30/node/year fleet">
-<meta property="og:description" content="Single server $50/yr, fleet $30/node/yr (min 3 nodes). PLN + USD. Annual subscription, cancel anytime.">
+<meta property="og:description" content="Single server $50/yr, fleet $30/node/yr (min 10 nodes). PLN + USD. Annual subscription, cancel anytime.">
 <meta property="og:url" content="https://hartwell-labs.pl/talus-process-monitor/pricing.html">
 <meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Talus Pricing — $50/year single, $30/node/year fleet">
-<meta name="twitter:description" content="Single server $50/yr, fleet $30/node/yr (min 3 nodes). PLN + USD. Annual subscription.">
+<meta name="twitter:description" content="Single server $50/yr, fleet $30/node/yr (min 10 nodes). PLN + USD. Annual subscription.">
 <meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png">
 <meta name="theme-color" content="#0a0e14">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,7 +28,7 @@
 <link rel="manifest" href="/assets/site.webmanifest">
 <link rel="stylesheet" href="/assets/site.css">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Product","name":"Talus Process Monitor","description":"eBPF-powered real-time ransomware detection for Linux servers and fleets","url":"https://hartwell-labs.pl/talus-process-monitor/","offers":[{"@type":"Offer","name":"Single Server License","price":"50","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://hartwell-labs.pl/talus-process-monitor/pricing.html"},{"@type":"Offer","name":"Fleet License","price":"30","priceCurrency":"USD","priceSpecification":{"minQuantity":3},"availability":"https://schema.org/InStock","url":"https://hartwell-labs.pl/talus-process-monitor/pricing.html"}],"publisher":{"@type":"Organization","name":"Hartwell Labs","url":"https://hartwell-labs.pl"}}
+{"@context":"https://schema.org","@type":"Product","name":"Talus Process Monitor","description":"eBPF-powered real-time ransomware detection for Linux servers and fleets","url":"https://hartwell-labs.pl/talus-process-monitor/","offers":[{"@type":"Offer","name":"Single Server License","price":"50","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://hartwell-labs.pl/talus-process-monitor/pricing.html"},{"@type":"Offer","name":"Fleet License","price":"30","priceCurrency":"USD","priceSpecification":{"minQuantity":10},"availability":"https://schema.org/InStock","url":"https://hartwell-labs.pl/talus-process-monitor/pricing.html"}],"publisher":{"@type":"Organization","name":"Hartwell Labs","url":"https://hartwell-labs.pl"}}
 </script>
 <style>
 :root{/* light theme, reuse site.css vars */}
@@ -71,8 +71,8 @@
     <thead><tr><th style="text-align:left">Plan</th><th>Single</th><th>Fleet</th></tr></thead>
     <tbody>
       <tr><td>Price per year</td><td>$50 / 200&nbsp;PLN</td><td>$30 / 117&nbsp;PLN per node</td></tr>
-      <tr><td>Min. quantity</td><td>1</td><td>3 nodes</td></tr>
-      <tr><td>Billed as</td><td>one machine</td><td>annual subscription, min $90</td></tr>
+      <tr><td>Min. quantity</td><td>1</td><td>10 nodes</td></tr>
+      <tr><td>Billed as</td><td>one machine</td><td>annual subscription, min $300</td></tr>
       <tr><td>Same features</td><td colspan="2">✅ web dashboard, REST API, SIGKILL auto-response, SIEM sinks, fleet view</td></tr>
       <tr><td>License delivery</td><td colspan="2">Ed25519 key by email on Stripe payment — instant</td></tr>
       <tr><td>Support</td><td colspan="2">Email, 48h business-day SLA</td></tr>
@@ -98,9 +98,9 @@
 
   <div class="fleet-calc">
     <label for="fleet-nodes" style="display:block;font-weight:600;margin-bottom:8px">Fleet license — nodes</label>
-    <input type="range" id="fleet-nodes" min="3" max="500" value="3" oninput="calcFleet()">
+    <input type="range" id="fleet-nodes" min="10" max="500" value="10" oninput="calcFleet()">
     <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--txt-2)">
-      <span>3 nodes</span><span>500 nodes</span></div>
+      <span>10 nodes</span><span>500 nodes</span></div>
     <div style="margin-top:10px"><span class="big-price" id="fleet-total">$30<span>/year</span></span> <span style="color:var(--txt-2);font-size:14px">($30 <span class="node">/node</span>)</span></div>
     <div style="margin-top:10px"><span class="big-price" id="fleet-total-pln">117 zł<span>/year</span></span> <span style="color:var(--txt-2);font-size:14px">(117 zł <span class="node">/node</span>)</span></div>
     <button type="button" class="btn btn-primary buy-btn" style="margin-top:14px;width:100%"
@@ -134,7 +134,7 @@
     calcFleet();
   }
   window.calcFleet = function(){
-    var n=parseInt(document.getElementById('fleet-nodes').value)||3;
+    var n=parseInt(document.getElementById('fleet-nodes').value)||10;
     var usd=30*n, pln=117*n;
     document.getElementById('fleet-total').innerHTML = usd + '<span>/year</span>';
     document.getElementById('fleet-total-pln').innerHTML = pln + ' zł<span>/year</span>';
@@ -154,7 +154,7 @@
       .catch(function(){btn.disabled=false; if(fb){window.location.href=fb;} else {btn.textContent='Retry';}});
   };
   document.querySelectorAll('button[data-tier]').forEach(function(b){
-    b.addEventListener('click', function(e){ e.preventDefault(); buy(b.getAttribute('data-tier'), b.dataset.tier==='fleet'? (parseInt(document.getElementById('fleet-nodes').value)||3): undefined);});
+    b.addEventListener('click', function(e){ e.preventDefault(); buy(b.getAttribute('data-tier'), b.dataset.tier==='fleet'? (parseInt(document.getElementById('fleet-nodes').value)||10): undefined);});
   });
 })();
 </script>

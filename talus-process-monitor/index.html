@@ -195,7 +195,7 @@
     <div class="faq">
       <details><summary>How is Talus different from Falco or Tetragon?</summary><p>Talus is built for standalone Linux servers, not Kubernetes. No sidecars, no cluster, no Helm charts — deploy one binary and monitor.</p></details>
       <details><summary>What are the system requirements?</summary><p>Linux kernel 5.8+ with BTF enabled. Ubuntu 20.04+, Debian 11+, RHEL 8+, Arch. Root for eBPF attachment. Minimal RAM/CPU overhead.</p></details>
-      <details><summary>How does licensing work?</summary><p>Single: one server, $50 / 200 PLN per year. Fleet: per-node, minimum 3 nodes ($30 / 117 PLN per node/year). Annual subscription, instant activation, cancel anytime.</p></details>
+      <details><summary>How does licensing work?</summary><p>Single: one server, $50 / 200 PLN per year. Fleet: per-node, minimum 10 nodes ($30 / 117 PLN per node/year). Annual subscription, instant activation, cancel anytime.</p></details>
       <details><summary>Can I try before buying?</summary><p>Yes — a 30-day Enterprise trial starts automatically on first run, no credit card. Need longer? <a href="mailto:metaforicmail@proton.me?subject=Talus%20extended%20trial" style="color:var(--accent)">Ask for 14 more days</a>.</p></details>
       <details><summary>Is my data sent to the cloud?</summary><p>No. Talus runs entirely on your servers. The optional fleet dashboard aggregates from your own nodes — no third-party servers.</p></details>
       <details><summary>What payment methods do you accept?</summary><p>Stripe checkout — card payments globally, priced in USD or PLN.</p></details>
@@ -210,7 +210,7 @@
   "mainEntity":[
     {"@type":"Question","name":"How is Talus different from Falco or Tetragon?","acceptedAnswer":{"@type":"Answer","text":"Talus is built for standalone Linux servers, not Kubernetes. No sidecars, no cluster, no Helm."}},
     {"@type":"Question","name":"What are the system requirements?","acceptedAnswer":{"@type":"Answer","text":"Linux kernel 5.8+ with BTF. Ubuntu 20.04+, Debian 11+, RHEL 8+, Arch. Root for eBPF attachment."}},
-    {"@type":"Question","name":"How does licensing work?","acceptedAnswer":{"@type":"Answer","text":"Single: $50/200 PLN per year one server. Fleet: $30/117 PLN per node, min 3 nodes. Annual, cancel anytime."}},
+    {"@type":"Question","name":"How does licensing work?","acceptedAnswer":{"@type":"Answer","text":"Single: $50/200 PLN per year one server. Fleet: $30/117 PLN per node, min 10 nodes. Annual, cancel anytime."}},
     {"@type":"Question","name":"Can I try before buying?","acceptedAnswer":{"@type":"Answer","text":"30-day Enterprise trial starts on first run, no card. Extended trial on request."}},
     {"@type":"Question","name":"Is my data sent to the cloud?","acceptedAnswer":{"@type":"Answer","text":"No. Talus runs entirely on your servers. No third-party servers."}}
   ]
@@ -435,12 +435,12 @@
       });
   }
 
-  // Wire pricing buttons (single + fleet). Fleet uses a sensible default of 3 nodes.
+  // Wire pricing buttons (single + fleet). Fleet uses a sensible default of 10 nodes.
   function wire(btn, tier) {
     btn.addEventListener('click', function (e) {
       e.preventDefault();
       window.event = e; // buy() reads event.target
-      buy(tier, tier === 'fleet' ? 3 : undefined);
+      buy(tier, tier === 'fleet' ? 10 : undefined);
     });
   }
   document.querySelectorAll('button.buy-btn').forEach(function (b) {
