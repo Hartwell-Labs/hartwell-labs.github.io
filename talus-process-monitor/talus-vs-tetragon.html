@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Talus vs Tetragon: Tetragon needs Cilium + Kubernetes; Talus is a standalone eBPF binary for Linux servers. No sidecars required.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hartwell-labs.pl/talus-process-monitor/talus-vs-tetragon.html">
+<title>Talus vs Tetragon — standalone eBPF vs Cilium/K8s</title>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Hartwell Labs">
+<meta property="og:title" content="Talus vs Tetragon — standalone eBPF vs Cilium/K8s">
+<meta property="og:description" content="Tetragon = Cilium + Kubernetes eBPF security. Talus = standalone binary for individual Linux servers, no CNI required.">
+<meta property="og:url" content="https://hartwell-labs.pl/talus-process-monitor/talus-vs-tetragon.html">
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Talus vs Tetragon">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Why not just use Tetragon?","acceptedAnswer":{"@type":"Answer","text":"Tetragon is part of the Cilium CNI; it installs into Kubernetes and depends on the Cilium agent and Hubble. If you monitor standalone Linux servers or a small non-K8s fleet, that is far more machinery than you want."}},
+{"@type":"Question","name":"Does Tetragon work outside Kubernetes?","acceptedAnswer":{"@type":"Answer","text":"It can run in a 'standalone' mode but it is designed around Cilium and Hubble. Talus has no such coupling — it attaches eBPF tracepoints directly to the kernel on any Linux 5.8+ host."}}
+]}
+</script>
+<style>#comparison td,#comparison th{border:1px solid var(--border);padding:8px 12px;text-align:center;font-size:14.5px}th{font-weight:600}.tick{color:var(--green)}.cross{color:var(--red)}.warn{color:var(--amber)}a{color:var(--accent)}</style>
+</head>
+<body>
+<header><div class="container header-in"><a class="logo" href="/">Hartwell Labs</a><nav class="main"><a href="/talus-process-monitor/">Talus</a></nav></div></header>
+<main class="container" style="padding:56px 0 80px;max-width:820px">
+  <div class="eyebrow">Comparison</div>
+  <h1>Talus vs Tetragon</h1>
+  <p class="lede">Tetragon is a Cilium/Hubble project that excels inside Kubernetes. Talus exists for the rest of your fleet &mdash; individual Linux servers, edge, and small clusters where the CNI stack is not on the menu.</p>
+  <table id="comparison">
+    <thead><tr><th>Capability</th><th>Talus</th><th>Tetragon</th></tr></thead>
+    <tbody>
+      <tr><td>eBPF kernel events</td><td class="tick">✅</td><td class="tick">✅</td></tr>
+      <tr><td>Requires Kubernetes</td><td class="cross">❌</td><td class="warn">⚠️ yes (Cilium)</td></tr>
+      <tr><td>CNI / sidecar dependency</td><td class="cross">❌ none</td><td class="warn">⚠️ Cilium+Hubble</td></tr>
+      <tr><td>Standalone host deploy</td><td class="tick">✅ 1 binary</td><td class="cross">❌</td></tr>
+      <tr><td>Auto response</td><td class="tick">✅ SIGKILL</td><td class="warn">⚠️ via policy</td></tr>
+      <tr><td>Fleet dashboard</td><td class="tick">✅</td><td class="warn">⚠️ via Hubble</td></tr>
+      <tr><td>Setup time</td><td class="tick">5 min</td><td class="cross">30+ min (k8s)</td></tr>
+      <tr><td>Price / node / year</td><td class="tick">$50</td><td class="tick">Free (ops cost)</td></tr>
+    </tbody>
+  </table>
+  <details><summary>When to pick Tetragon</summary><p style="margin-top:8px">Inside Kubernetes, with Cilium already deployed, Tetragon is the richer signal. On a bare server or non-K8s fleet, Talus is simpler.</p></details>
+  <a class="btn btn-primary" style="margin-top:24px" href="/talus-process-monitor/pricing.html">Compare pricing →</a>
+  <p style="margin-top:18px"><a href="/talus-process-monitor/">← Back to product</a></p>
+</main>
+<footer class="f-fine"><span>&copy; 2026 Hartwell Labs</span></footer>
+</body></html>

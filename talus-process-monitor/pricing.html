@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Talus Process Monitor pricing. Single server $50/yr, fleet $30/node/year (min 3 nodes). PLN + USD. Annual subscription, cancel anytime. Buy and activate in 5 minutes.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://hartwell-labs.pl/talus-process-monitor/pricing.html">
+<title>Talus Pricing — $50/year single, $30/node/year fleet</title>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hartwell Labs">
+<meta property="og:title" content="Talus Pricing — $50/year single, $30/node/year fleet">
+<meta property="og:description" content="Single server $50/yr, fleet $30/node/yr (min 3 nodes). PLN + USD. Annual subscription, cancel anytime.">
+<meta property="og:url" content="https://hartwell-labs.pl/talus-process-monitor/pricing.html">
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Talus Pricing — $50/year single, $30/node/year fleet">
+<meta name="twitter:description" content="Single server $50/yr, fleet $30/node/yr (min 3 nodes). PLN + USD. Annual subscription.">
+<meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png">
+<meta name="theme-color" content="#0a0e14">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png">
+<link rel="apple-touch-icon" href="/assets/icon-192.png">
+<link rel="manifest" href="/assets/site.webmanifest">
+<link rel="stylesheet" href="/assets/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Product","name":"Talus Process Monitor","description":"eBPF-powered real-time ransomware detection for Linux servers and fleets","url":"https://hartwell-labs.pl/talus-process-monitor/","offers":[{"@type":"Offer","name":"Single Server License","price":"50","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://hartwell-labs.pl/talus-process-monitor/pricing.html"},{"@type":"Offer","name":"Fleet License","price":"30","priceCurrency":"USD","priceSpecification":{"minQuantity":3},"availability":"https://schema.org/InStock","url":"https://hartwell-labs.pl/talus-process-monitor/pricing.html"}],"publisher":{"@type":"Organization","name":"Hartwell Labs","url":"https://hartwell-labs.pl"}}
+</script>
+<style>
+:root{/* light theme, reuse site.css vars */}
+.cur-toggle{display:flex;gap:16px;align-items:center;margin:10px 0 4px;font-size:14px}
+.cur-toggle label{cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.cur-toggle input{color:var(--accent)}
+.fleet-calc{border:1px solid var(--border);border-radius:14px;background:var(--bg);padding:24px;margin:24px 0}
+.fleet-calc label{font-size:13.5px;color:var(--txt-2)}
+.fleet-calc input[type=range]{width:100%;accent-color:var(--accent)}
+.big-price{font-size:40px;font-weight:700;color:var(--accent)}
+.big-price small{font-size:16px;color:var(--txt-2);font-weight:500}
+.prose a{color:var(--accent)}
+.trial-link{display:inline-block;margin-top:12px;font-size:13.5px}<a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div class="container header-in">
+    <a class="logo" href="/">Hartwell Labs</a>
+    <nav class="main">
+      <a href="/talus-process-monitor/">Talus</a>
+      <a href="#pricing" aria-current="page">Pricing</a>
+      <a href="/docs">Docs</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container" style="padding:56px 0 80px;max-width:780px">
+  <div class="eyebrow">Flagship &middot; Rust &middot; eBPF</div>
+  <h1>Talus Process Monitor &mdash; <span class="dim">pricing that scales with your fleet</span></h1>
+  <p class="lede">One static eBPF binary per Linux host. Per-machine annual license. Cancel anytime.
+    PLN and USD, no trial credit card.</p>
+
+  <div class="cur-toggle">
+    <label><input type="radio" name="cur" value="usd" checked onchange="switchCurrency()"> USD ($)</label>
+    <label><input type="radio" name="cur" value="pln" onchange="switchCurrency()"> PLN (zł)</label>
+  </div>
+
+  <table class="spec" style="margin-top:18px">
+    <thead><tr><th style="text-align:left">Plan</th><th>Single</th><th>Fleet</th></tr></thead>
+    <tbody>
+      <tr><td>Price per year</td><td>$50 / 200&nbsp;PLN</td><td>$30 / 117&nbsp;PLN per node</td></tr>
+      <tr><td>Min. quantity</td><td>1</td><td>3 nodes</td></tr>
+      <tr><td>Billed as</td><td>one machine</td><td>annual subscription, min $90</td></tr>
+      <tr><td>Same features</td><td colspan="2">✅ web dashboard, REST API, SIGKILL auto-response, SIEM sinks, fleet view</td></tr>
+      <tr><td>License delivery</td><td colspan="2">Ed25519 key by email on Stripe payment — instant</td></tr>
+      <tr><td>Support</td><td colspan="2">Email, 48h business-day SLA</td></tr>
+    </tbody>
+  </table>
+
+  <div class="pricing" style="margin:28px 0">
+    <div class="head"><div class="amount">$50<small> / machine / year</small></div>
+      <p style="color:var(--txt-2);font-size:14.5px;margin-top:6px">Enterprise tier &mdash; one key per machine.</p>
+    </div>
+    <ul>
+      <li>Detection + SIGKILL response + SIEM sinks</li>
+      <li>eBPF, single static binary, no kernel modules</li>
+      <li>No cloud, no telemetry</li>
+      <li>SPDX SBOM + build provenance</li>
+    </ul>
+    <div style="padding:0 30px 30px">
+      <button type="button" class="btn btn-primary buy-btn" style="width:100%;justify-content:center"
+        data-tier="single" data-fallback="https://buy.stripe.com/eVq3cw5Wa3PG5Opd232Fa09">Buy now → <span class="buy-amount">1 machine</span></button>
+      <div style="text-align:center;margin-top:10px;font-size:13.5px"><a href="mailto:metaforicmail@proton.me?subject=Talus%2014-day%20trial&body=I%27d%20like%20a%2014-day%20evaluation%20license" style="color:var(--accent)">Try 14 days free →</a></div>
+    </div>
+  </div>
+
+  <div class="fleet-calc">
+    <label for="fleet-nodes" style="display:block;font-weight:600;margin-bottom:8px">Fleet license — nodes</label>
+    <input type="range" id="fleet-nodes" min="3" max="500" value="3" oninput="calcFleet()">
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--txt-2)">
+      <span>3 nodes</span><span>500 nodes</span></div>
+    <div style="margin-top:10px"><span class="big-price" id="fleet-total">$30<span>/year</span></span> <span style="color:var(--txt-2);font-size:14px">($30 <span class="node">/node</span>)</span></div>
+    <div style="margin-top:10px"><span class="big-price" id="fleet-total-pln">117 zł<span>/year</span></span> <span style="color:var(--txt-2);font-size:14px">(117 zł <span class="node">/node</span>)</span></div>
+    <button type="button" class="btn btn-primary buy-btn" style="margin-top:14px;width:100%"
+      data-tier="fleet" id="fleet-buy" data-fallback="https://buy.stripe.com/dRmbJ270e5XO1y96DF2Fa07">Buy fleet →</button>
+    <div style="text-align:center;margin-top:10px;font-size:13.5px"><a href="mailto:metaforicmail@proton.me?subject=Talus%20fleet%20quote&body=Nodes:%0AMachines%3A%0AEmail%3A" style="color:var(--accent)">>500 nodes? Custom quote →</a></div>
+  </div>
+
+  <section id="faq">
+    <h2>Frequent questions</h2>
+    <details><summary>How is Talus different from Falco or Tetragon?</summary>
+      <p style="margin-top:8px">Talus is built for standalone Linux servers, not Kubernetes. No sidecars, no cluster, no Helm charts.</p></details>
+    <details><summary>What are the system requirements?</summary>
+      <p style="margin-top:8px">Linux 5.8+ with BTF. Ubuntu 20.04+, Debian 11+, RHEL 8+, Arch. Root for eBPF.</p></details>
+    <details><summary>Can I change the number of nodes later?</summary>
+      <p style="margin-top:8px">Yes — fleet is a subscription; change seat count in your Stripe portal any time, prorated.</p></details>
+    <details><summary>Do I get a refund if not satisfied?</summary>
+      <p style="margin-top:8px">14-day money-back guarantee on request — email contact@hartwell-labs.pl.</p></details>
+  </section>
+
+  <p style="margin-top:24px"><a href="/talus-process-monitor/" class="btn btn-secondary">← Back to product page</a></p>
+</main>
+
+<footer class="f-fine"><span>&copy; 2026 Hartwell Labs. MIT core, commercial license.</span><span>Szczecin, Poland</span></footer>
+<script>
+(function(){
+  var cur = 'usd';
+  function money(c){ return c==='pln' ? ' zł' : '$'; }
+  window.switchCurrency = function(){ var v=document.querySelector('input[name="cur"]:checked').value; cur=v; recompute(); };
+  function recompute(){
+    document.querySelectorAll('.buy-btn').forEach(b=>{ b.textContent = cur==='pln' ? 'Kup teraz →' : 'Buy now →'; }); // naive
+    calcFleet();
+  }
+  window.calcFleet = function(){
+    var n=parseInt(document.getElementById('fleet-nodes').value)||3;
+    var usd=30*n, pln=117*n;
+    document.getElementById('fleet-total').innerHTML = usd + '<span>/year</span>';
+    document.getElementById('fleet-total-pln').innerHTML = pln + ' zł<span>/year</span>';
+    document.getElementById('fleet-buy').textContent = cur==='pln' ? ('Kup flotę → '+pln+' zł/rok') : ('Buy fleet → $'+usd+'/yr');
+  };
+  calcFleet();
+  // buy() same logic as main page; uses lic server, falls back to Stripe link.
+  window.buy = function(tier,nodes){
+    if(!window.event) return;
+    var btn = event.target, fb = btn.getAttribute('data-fallback');
+    btn.disabled=true; btn.textContent='Redirecting…';
+    fetch('https://lic.hartwell-labs.pl/api/v1/checkout-session',{method:'POST',
+      headers:{'content-type':'application/json','accept':'application/json'},credentials:'omit',referrerPolicy:'no-referrer',
+      body:JSON.stringify({tier:tier,currency:cur,nodes:nodes||undefined})})
+      .then(function(r){if(!r.ok) throw new Error(r.status); return r.json();})
+      .then(function(d){ if(d.success&&d.url) window.location.href=d.url; else throw new Error('nourl');})
+      .catch(function(){btn.disabled=false; if(fb){window.location.href=fb;} else {btn.textContent='Retry';}});
+  };
+  document.querySelectorAll('button[data-tier]').forEach(function(b){
+    b.addEventListener('click', function(e){ e.preventDefault(); buy(b.getAttribute('data-tier'), b.dataset.tier==='fleet'? (parseInt(document.getElementById('fleet-nodes').value)||3): undefined);});
+  });
+})();
+</script>
+</body>
+</html>

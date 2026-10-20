@@ -26,4 +26,11 @@
 <url><loc>https://hartwell-labs.pl/CyberForge/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 <url><loc>https://hartwell-labs.pl/hack-the-lab/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 <url><loc>https://hartwell-labs.pl/report/gov-ranking/</loc><lastmod>2026-10-11</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://hartwell-labs.pl/talus-process-monitor/pricing/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+<url><loc>https://hartwell-labs.pl/talus-process-monitor/changelog.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+<url><loc>https://hartwell-labs.pl/talus-process-monitor/activated.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+<url><loc>https://hartwell-labs.pl/talus-process-monitor/talus-vs-falco.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://hartwell-labs.pl/talus-process-monitor/talus-vs-tetragon.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://hartwell-labs.pl/talus-process-monitor/talus-vs-bpftrace.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+<url><loc>https://hartwell-labs.pl/ebpf-cheatsheet/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
