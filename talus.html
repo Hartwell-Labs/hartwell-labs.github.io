@@ -49,6 +49,12 @@
 .spec tr:last-child td { border-bottom: none; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
 @media (max-width: 860px) { .two-col { grid-template-columns: 1fr; } }
+.dl-list { list-style: none; padding: 0; margin: 14px 0 0; }
+.dl-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 14px; }
+.dl-list li:last-child { border-bottom: 0; }
+.dl-list a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.dl-list a:hover { text-decoration: underline; }
+.dl-list .sz { color: var(--txt-3); font-size: 12.5px; white-space: nowrap; }
 </style>
 </head> <body> <header> <div class="container header-in"> <a class="logo" href="/"> <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"> <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/> <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/> </svg> Hartwell Labs </a> <nav class="main"> <a href="/products">Products</a> <a href="/catalog">Catalog</a> <a href="/docs">Docs</a> <a href="/security">Security</a> <a href="/company">Company</a> </nav> <a class="header-cta" href="https://github.com/Hartwell-Labs">GitHub ↗</a> </div> </header>
 
@@ -61,6 +67,7 @@
   modules. No telemetry.</p>
   <div class="hero-actions">
     <a class="btn btn-primary" href="https://buy.stripe.com/eVq3cw5Wa3PG5Opd232Fa09">Buy Enterprise &mdash; 1 machine</a>
+    <a class="btn btn-secondary" href="https://download.hartwell-labs.pl/">Download</a>
     <a class="btn btn-secondary" href="/docs#talus">Deployment guide</a>
     <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/talus-process-monitor">Source ↗</a>
   </div>
@@ -113,6 +120,40 @@
     <p style="margin-top:16px; color:var(--txt-2); font-size:14.5px;">The canary self-test simulates a ransomware burst with harmless file operations and
     prints the real verdict &mdash; detection proof on your hardware in under a minute.
     Full flags and tuning: <a href="/docs#talus" style="color:var(--accent)">/docs</a> and the <a href="/talus-process-monitor/field-guide.html" style="color:var(--accent)">Field Guide</a>.</p>
+  </div>
+</section>
+
+<section id="download" style="border-top:1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Download</div>
+      <h2>Current build, both lines.</h2>
+      <p>v0.8.4, published 11 November 2026. The community build is public and MIT;
+      the licensed build is signed and checked against a live license on every request.</p>
+    </div>
+    <div class="two-col">
+      <div class="prod">
+        <div class="row"><h4>Community edition</h4><span class="lang">v0.8.4 &middot; MIT</span></div>
+        <p>Static binary and installer, no account and no key. Older releases back to
+        v0.8.0 stay on the mirror.</p>
+        <ul class="dl-list">
+          <li><a href="https://download.hartwell-labs.pl/mit/0.8.4/talus-monitor">talus-monitor</a><span class="sz">8.8 MB</span></li>
+          <li><a href="https://download.hartwell-labs.pl/mit/0.8.4/talus-installer">talus-installer</a><span class="sz">3.8 MB</span></li>
+        </ul>
+        <a class="btn btn-secondary" style="margin-top:18px;" href="https://download.hartwell-labs.pl/">All releases &rarr;</a>
+      </div>
+      <div class="prod">
+        <div class="row"><h4>Enterprise edition</h4><span class="lang">v0.8.4 &middot; licensed</span></div>
+        <p>Signed binary plus signature, certificate, checksums and SBOM. Paste a key
+        on the download page; the header travels only to the download host.</p>
+        <ul class="dl-list">
+          <li><span>talus-monitor-enterprise</span><span class="sz">23.8 MB</span></li>
+          <li><span>signature, certificate, checksums</span><span class="sz">KB</span></li>
+          <li><span>licence required on every download</span><span class="sz">X-Talus-License</span></li>
+        </ul>
+        <a class="btn btn-primary" style="margin-top:18px;" href="https://download.hartwell-labs.pl/">Enter license key &rarr;</a>
+      </div>
+    </div>
   </div>
 </section>
 
