@@ -13,7 +13,12 @@
 //   POST /api/v1/webhook/stripe         → commission ledger
 //   GET  /api/v1/health
 //
-// Admin (Authorization: Bearer PARTNERS_ADMIN_TOKEN):
+// Admin panel (cookie session from POST /v1/admin/login):
+//   GET  /v1/admin
+//   POST /v1/admin/panel/create | rotate | status | delete | payout
+//   POST /v1/admin/logout
+//
+// Admin API (Authorization: Bearer PARTNERS_ADMIN_TOKEN):
 //   GET  /v1/admin/applications?status=new
 //   GET  /v1/admin/affiliates
 //   POST /v1/admin/affiliates
@@ -29,6 +34,7 @@ import {
   claim_stripe_event,
   create_affiliate,
   create_application,
+  delete_affiliate,
   dollars_to_cents,
   ensure_schema,
   format_money,
@@ -77,8 +83,8 @@ function json(data, status = 200, extra = {}) {
   });
 }
 
-function html(body, status = 200) {
-  return new Response(body, { status, headers: HTML_HEADERS });
+function html(body, status = 200, extra = {}) {
+  return new Response(body, { status, headers: { ...HTML_HEADERS, ...extra } });
 }
 
 function escape_html(value) {
@@ -154,10 +160,10 @@ async function read_json(request) {
   }
 }
 
-function redirect(location, status = 303) {
+function redirect(location, status = 303, extra = {}) {
   return new Response(null, {
     status,
-    headers: { location, 'cache-control': 'no-store' },
+    headers: { location, 'cache-control': 'no-store', ...extra },
   });
 }
 
@@ -183,7 +189,10 @@ input,textarea{width:100%;max-width:520px;padding:10px 12px;border:1px solid var
 textarea{min-height:110px;resize:vertical}input[readonly]{background:var(--soft)}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 button{appearance:none;border:0;border-radius:8px;background:var(--accent);color:#fff;padding:10px 16px;font:700 14px/1 inherit;cursor:pointer}
-button:hover{filter:brightness(.95)}button:disabled{opacity:.5;cursor:not-allowed}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:180px}
+button:hover{filter:brightness(.95)}button:disabled{opacity:.5;cursor:not-allowed}button.small{padding:7px 10px;font-size:12px}button.danger{background:var(--bad)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:180px}
+.actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.actions form{margin:0}
+code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);padding:2px 5px;border-radius:4px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
 .pos{color:var(--good);font-weight:700}.neg{color:var(--bad);font-weight:700}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:11px;color:var(--muted);background:#fff}
 .notice{border-left:3px solid var(--accent);background:#eef2ff;padding:10px 12px;border-radius:0 8px 8px 0;margin:12px 0;color:#3730a3;font-size:13.5px}
@@ -328,21 +337,249 @@ function invalid_link_page() {
   ), 401);
 }
 
+function cookie_value(request, name) {
+  for (const part of String(request.headers.get('cookie') || '').split(';')) {
+    const at = part.indexOf('=');
+    if (at < 0) continue;
+    if (part.slice(0, at).trim() !== name) continue;
+    try {
+      return decodeURIComponent(part.slice(at + 1).trim());
+    } catch {
+      return '';
+    }
+  }
+  return '';
+}
+
+function admin_cookie(token) {
+  return `partners_admin=${encodeURIComponent(token)}; Path=/v1/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=43200`;
+}
+
+const ADMIN_COOKIE_CLEAR =
+  'partners_admin=; Path=/v1/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=0';
+
+async function secret_matches(provided, expected) {
+  if (!provided || !expected) return false;
+  const [a, b] = await Promise.all([
+    hash_token(String(provided).trim()),
+    hash_token(String(expected).trim()),
+  ]);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
+  return diff === 0;
+}
+
 async function admin_ok(request, env) {
   const expected = env.PARTNERS_ADMIN_TOKEN;
   if (!expected) return false;
   const header = request.headers.get('authorization') || '';
   const match = header.match(/^Bearer\s+(.+)$/i);
-  if (!match) return false;
-  const [provided, wanted] = await Promise.all([
-    hash_token(match[1].trim()),
-    hash_token(String(expected).trim()),
-  ]);
-  let diff = provided.length ^ wanted.length;
-  for (let i = 0; i < provided.length; i++) {
-    diff |= provided.charCodeAt(i) ^ wanted.charCodeAt(i);
+  const candidates = [match?.[1]?.trim(), cookie_value(request, 'partners_admin')].filter(Boolean);
+  for (const candidate of candidates) {
+    if (await secret_matches(candidate, expected)) return true;
   }
-  return diff === 0;
+  return false;
+}
+
+async function load_admin_data(env) {
+  await ensure_schema(env.DB);
+  const affiliates = await list_affiliates(env.DB);
+  const payouts = await list_payouts(env.DB, 'requested');
+  return { affiliates, payouts };
+}
+
+function admin_login_page(error = '') {
+  return page_shell(
+    'Admin sign in',
+    `<h1>Partner admin</h1>
+<p class="muted">Sign in with the <code>PARTNERS_ADMIN_TOKEN</code> Worker secret.</p>
+${error ? `<div class="notice err">${escape_html(error)}</div>` : ''}
+<div class="box">
+  <form method="post" action="/v1/admin/login">
+    <label class="k" for="admin_token">Admin token</label>
+    <input id="admin_token" name="token" type="password" autocomplete="current-password" required>
+    <div style="margin-top:14px"><button type="submit">Sign in</button></div>
+  </form>
+</div>`,
+  );
+}
+
+function credentials_block(title, data) {
+  if (!data) return '';
+  return `<div class="notice ok"><strong>${escape_html(title)}</strong> — copy this now; it is shown once.
+  <div style="margin-top:10px"><label class="k" for="new_dashboard">Dashboard URL</label><input id="new_dashboard" readonly value="${escape_attr(data.dashboard_url || '')}"></div>
+  <div style="margin-top:10px"><label class="k" for="new_referral">Referral link</label><input id="new_referral" readonly value="${escape_attr(data.referral_url || '')}"></div>
+</div>`;
+}
+
+function admin_flash_from_url(url) {
+  const ok = url.searchParams.get('ok');
+  const err = url.searchParams.get('err');
+  const messages = {
+    deleted: 'Account and its history were deleted.',
+    status: 'Account status updated.',
+    payout: 'Payout updated.',
+  };
+  return {
+    ok: ok ? messages[ok] || 'Done.' : null,
+    err: err || null,
+  };
+}
+
+function admin_page(data, opts = {}) {
+  const { affiliates, payouts } = data;
+  const flash = opts.flash || {};
+  const values = opts.values || {};
+  const delete_target = opts.delete_target || null;
+
+  const flash_html = flash.ok
+    ? `<div class="notice ok">${escape_html(flash.ok)}</div>`
+    : flash.err
+      ? `<div class="notice err">${escape_html(flash.err)}</div>`
+      : '';
+
+  const created_html = opts.created
+    ? credentials_block('Account created', opts.created)
+    : '';
+  const rotated_html = opts.rotated
+    ? credentials_block('New dashboard link generated', opts.rotated)
+    : '';
+
+  const rows = affiliates
+    .map((a) => {
+      const paused = a.status !== 'active';
+      return `<tr>
+  <td><strong>${escape_html(a.name || a.email)}</strong><br><span class="muted">${escape_html(a.email)}</span></td>
+  <td><code>${escape_html(a.code)}</code><br><a href="/r/${encodeURIComponent(a.code)}" target="_blank" rel="noreferrer">referral</a></td>
+  <td><span class="badge">${escape_html(a.status)}</span></td>
+  <td>${Number(a.clicks) || 0} clicks<br>${Number(a.sales) || 0} sales</td>
+  <td>${format_money(Number(a.earned_cents) || 0)}</td>
+  <td><div class="actions">
+    <form method="post" action="/v1/admin/panel/rotate"><input type="hidden" name="id" value="${escape_attr(a.id)}"><button class="small" type="submit">New link</button></form>
+    <form method="post" action="/v1/admin/panel/status"><input type="hidden" name="id" value="${escape_attr(a.id)}"><input type="hidden" name="status" value="${paused ? 'active' : 'paused'}"><button class="small" type="submit">${paused ? 'Resume' : 'Pause'}</button></form>
+    <a href="/v1/admin?delete=${encodeURIComponent(a.id)}">Delete</a>
+  </div></td>
+</tr>`;
+    })
+    .join('');
+
+  const payout_rows = payouts
+    .map(
+      (p) => `<tr>
+  <td>#${escape_html(p.id)}</td>
+  <td><strong>${escape_html(p.name || p.email)}</strong><br><span class="muted">${escape_html(p.email)}</span></td>
+  <td>${format_money(p.amount_cents)}</td>
+  <td>${escape_html(String(p.requested_at || '').slice(0, 10))}</td>
+  <td><div class="actions">
+    <form method="post" action="/v1/admin/panel/payout"><input type="hidden" name="id" value="${escape_attr(p.id)}"><input type="hidden" name="status" value="paid"><button class="small" type="submit">Mark paid</button></form>
+    <form method="post" action="/v1/admin/panel/payout"><input type="hidden" name="id" value="${escape_attr(p.id)}"><input type="hidden" name="status" value="rejected"><button class="small danger" type="submit">Reject</button></form>
+  </div></td>
+</tr>`,
+    )
+    .join('');
+
+  const delete_html = delete_target
+    ? `<div class="box" style="border-color:var(--bad)">
+  <h3>Delete ${escape_html(delete_target.name || delete_target.email)}?</h3>
+  <p class="muted">This permanently removes the account, its referral clicks, commissions and payout history. This cannot be undone.</p>
+  <form method="post" action="/v1/admin/panel/delete">
+    <input type="hidden" name="id" value="${escape_attr(delete_target.id)}">
+    <button class="danger" type="submit">Delete permanently</button>
+    <a href="/v1/admin" style="margin-left:12px">Cancel</a>
+  </form>
+</div>`
+    : '';
+
+  return page_shell(
+    'Admin',
+    `<div class="actions" style="justify-content:space-between">
+  <h1>Partner admin</h1>
+  <form method="post" action="/v1/admin/logout"><button class="small" type="submit">Sign out</button></form>
+</div>
+${flash_html}${created_html}${rotated_html}${delete_html}
+
+<h2 id="create">Create account</h2>
+<div class="box">
+  <form method="post" action="/v1/admin/panel/create">
+    <div class="row">
+      <div><label class="k" for="admin_name">Name</label><input id="admin_name" name="name" maxlength="120" value="${escape_attr(values.name || '')}"></div>
+      <div><label class="k" for="admin_email">Email</label><input id="admin_email" name="email" type="email" maxlength="254" value="${escape_attr(values.email || '')}" required></div>
+    </div>
+    <div style="margin-top:12px"><label class="k" for="admin_payout">Payout email (PayPal, optional)</label><input id="admin_payout" name="payout_email" type="email" maxlength="254" value="${escape_attr(values.payout_email || '')}"></div>
+    <div style="margin-top:14px"><button type="submit">Create account</button></div>
+  </form>
+</div>
+
+<h2>Accounts (${affiliates.length})</h2>
+<div class="box" style="padding:0;overflow:auto">
+  <table><thead><tr><th>Account</th><th>Code</th><th>Status</th><th>Activity</th><th>Earned</th><th>Actions</th></tr></thead><tbody>
+  ${rows || '<tr><td colspan="6" class="muted">No affiliate accounts yet.</td></tr>'}
+  </tbody></table>
+</div>
+
+<h2>Payout requests (${payouts.length})</h2>
+<div class="box" style="padding:0;overflow:auto">
+  <table><thead><tr><th>ID</th><th>Account</th><th>Amount</th><th>Requested</th><th>Actions</th></tr></thead><tbody>
+  ${payout_rows || '<tr><td colspan="5" class="muted">No pending payout requests.</td></tr>'}
+  </tbody></table>
+</div>`,
+  );
+}
+
+async function handle_admin_panel(request, env, pathname) {
+  if (!(await admin_ok(request, env))) {
+    return html(admin_login_page('Sign in first.'), 401);
+  }
+
+  let form = {};
+  try {
+    form = await read_form(request);
+    const id = String(form.id ?? '').trim();
+    if (pathname === '/v1/admin/panel/create') {
+      const created = await create_affiliate(env.DB, env, form);
+      const data = await load_admin_data(env);
+      return html(admin_page(data, { created, flash: { ok: 'Account created.' } }));
+    }
+
+    if (pathname === '/v1/admin/panel/rotate') {
+      const rotated = await rotate_affiliate_token(env.DB, env, id);
+      const data = await load_admin_data(env);
+      return html(
+        admin_page(data, { rotated, flash: { ok: 'Previous dashboard link no longer works.' } }),
+      );
+    }
+
+    if (pathname === '/v1/admin/panel/status') {
+      await set_affiliate_status(env.DB, id, String(form.status ?? ''));
+      return redirect('/v1/admin?ok=status');
+    }
+
+    if (pathname === '/v1/admin/panel/delete') {
+      await delete_affiliate(env.DB, id);
+      return redirect('/v1/admin?ok=deleted');
+    }
+
+    if (pathname === '/v1/admin/panel/payout') {
+      const payout_id = Number.parseInt(String(form.id ?? ''), 10);
+      const status = String(form.status ?? '');
+      await update_payout_status(
+        env.DB,
+        payout_id,
+        status,
+        status === 'paid' ? 'paid from admin panel' : 'rejected from admin panel',
+      );
+      return redirect('/v1/admin?ok=payout');
+    }
+
+    return html(admin_login_page('Unknown admin action.'), 404);
+  } catch (err) {
+    const message = err instanceof PartnerError ? err.message : 'Admin action failed.';
+    const data = await load_admin_data(env);
+    return html(
+      admin_page(data, { values: form, flash: { err: message } }),
+      err instanceof PartnerError ? err.status : 500,
+    );
+  }
 }
 
 async function handle_admin(request, env, pathname) {
@@ -520,6 +757,39 @@ export default {
           err instanceof PartnerError ? err.message : 'Could not send your application.';
         return html(landing_page({ err: message }, values), 400);
       }
+    }
+
+    if (pathname === '/v1/admin/login' && request.method === 'POST') {
+      let token = '';
+      try {
+        token = String((await read_form(request)).token ?? '').trim();
+      } catch {
+        token = '';
+      }
+      if (await secret_matches(token, env.PARTNERS_ADMIN_TOKEN)) {
+        return redirect('/v1/admin', 303, { 'set-cookie': admin_cookie(token) });
+      }
+      return html(admin_login_page('Invalid admin token.'), 401);
+    }
+
+    if (pathname === '/v1/admin/logout' && request.method === 'POST') {
+      return redirect('/v1/admin', 303, { 'set-cookie': ADMIN_COOKIE_CLEAR });
+    }
+
+    if (pathname === '/v1/admin' && request.method === 'GET') {
+      if (!(await admin_ok(request, env))) return html(admin_login_page());
+      const data = await load_admin_data(env);
+      const delete_id = url.searchParams.get('delete');
+      const delete_target = delete_id
+        ? data.affiliates.find((a) => a.id === delete_id) || null
+        : null;
+      return html(
+        admin_page(data, { flash: admin_flash_from_url(url), delete_target }),
+      );
+    }
+
+    if (request.method === 'POST' && pathname.startsWith('/v1/admin/panel/')) {
+      return handle_admin_panel(request, env, pathname);
     }
 
     if (pathname.startsWith('/v1/admin/')) {

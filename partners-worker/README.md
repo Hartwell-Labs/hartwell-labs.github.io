@@ -22,6 +22,21 @@ https://partners.hartwell-labs.pl/v1/dashboard?token=aff_...
 
 The typo-compatible alias `/v1/dahboard?token=...` also works.
 
+## Admin panel
+
+Open `https://partners.hartwell-labs.pl/v1/admin` and sign in with the
+`PARTNERS_ADMIN_TOKEN` secret. The panel can:
+
+- create an affiliate account and show its dashboard/referral link once,
+- pause/resume an account,
+- rotate a dashboard link (the old link stops working),
+- permanently delete an account together with its clicks, commissions and
+  payout history,
+- mark pending payout requests as paid or rejected.
+
+The panel uses an HttpOnly, Secure, SameSite=Strict cookie valid for 12 hours.
+The JSON admin API below still accepts `Authorization: Bearer`.
+
 ## Setup
 
 1. Create the D1 database (already created for this project):

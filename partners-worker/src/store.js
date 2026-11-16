@@ -396,6 +396,25 @@ export async function rotate_affiliate_token(db, env, affiliate_id) {
   };
 }
 
+export async function delete_affiliate(db, affiliate_id) {
+  await ensure_schema(db);
+  const affiliate = await db
+    .prepare('SELECT id, email FROM partner_affiliates WHERE id = ?1')
+    .bind(affiliate_id)
+    .first();
+  if (!affiliate) throw new PartnerError('affiliate not found', 404);
+
+  await db.batch([
+    db.prepare('DELETE FROM partner_clicks WHERE affiliate_id = ?1').bind(affiliate_id),
+    db.prepare('DELETE FROM partner_commissions WHERE affiliate_id = ?1').bind(affiliate_id),
+    db.prepare('DELETE FROM partner_subscriptions WHERE affiliate_id = ?1').bind(affiliate_id),
+    db.prepare('DELETE FROM partner_payouts WHERE affiliate_id = ?1').bind(affiliate_id),
+    db.prepare('DELETE FROM partner_affiliates WHERE id = ?1').bind(affiliate_id),
+  ]);
+
+  return { id: affiliate.id, email: affiliate.email };
+}
+
 export async function set_affiliate_status(db, affiliate_id, status) {
   await ensure_schema(db);
   const next = status === 'paused' ? 'paused' : status === 'active' ? 'active' : null;
