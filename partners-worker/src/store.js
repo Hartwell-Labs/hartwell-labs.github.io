@@ -129,6 +129,23 @@ export async function ensure_schema(db) {
         'CREATE INDEX IF NOT EXISTS idx_partner_affiliates_status ON partner_affiliates (status)',
       ),
       db.prepare(
+        `CREATE TABLE IF NOT EXISTS partner_applications (
+           id         TEXT PRIMARY KEY,
+           name       TEXT NOT NULL,
+           email      TEXT NOT NULL,
+           channel    TEXT NOT NULL,
+           message    TEXT,
+           status     TEXT NOT NULL DEFAULT 'new',
+           created_at TEXT NOT NULL
+         )`,
+      ),
+      db.prepare(
+        'CREATE INDEX IF NOT EXISTS idx_partner_applications_created ON partner_applications (created_at)',
+      ),
+      db.prepare(
+        'CREATE INDEX IF NOT EXISTS idx_partner_applications_status ON partner_applications (status)',
+      ),
+      db.prepare(
         `CREATE TABLE IF NOT EXISTS partner_clicks (
            id           INTEGER PRIMARY KEY AUTOINCREMENT,
            affiliate_id TEXT NOT NULL,
@@ -278,6 +295,65 @@ export async function create_affiliate(db, env, input = {}) {
     dashboard_url: dashboard_url(env, token),
     referral_url: affiliate_referral_url(env, code),
   };
+}
+
+export function normalize_application(input = {}) {
+  const name = String(input.name ?? '').trim().replace(/\s+/g, ' ').slice(0, 120);
+  const email = normalize_email(input.email);
+  const channel = String(input.channel ?? '').trim().replace(/\s+/g, ' ').slice(0, 200);
+  const message = String(input.message ?? '').trim().slice(0, 2000) || null;
+
+  if (name.length < 2) throw new PartnerError('valid name required', 400);
+  if (!email) throw new PartnerError('valid email required', 400);
+  if (channel.length < 2) throw new PartnerError('tell us where you will promote Talus', 400);
+
+  return { name, email, channel, message };
+}
+
+export async function create_application(db, input = {}) {
+  await ensure_schema(db);
+  const application = normalize_application(input);
+  const id = `app_${crypto.randomUUID().replace(/-/g, '').slice(0, 24)}`;
+  const now = now_iso();
+
+  await db
+    .prepare(
+      `INSERT INTO partner_applications
+         (id, name, email, channel, message, status, created_at)
+       VALUES (?1, ?2, ?3, ?4, ?5, 'new', ?6)`,
+    )
+    .bind(
+      id,
+      application.name,
+      application.email,
+      application.channel,
+      application.message,
+      now,
+    )
+    .run();
+
+  return { id, ...application, status: 'new', created_at: now };
+}
+
+export async function list_applications(db, status = null) {
+  await ensure_schema(db);
+  const want = str(status);
+  const statement = want
+    ? db
+        .prepare(
+          `SELECT id, name, email, channel, message, status, created_at
+             FROM partner_applications
+            WHERE status = ?1
+            ORDER BY created_at DESC`,
+        )
+        .bind(want)
+    : db.prepare(
+        `SELECT id, name, email, channel, message, status, created_at
+           FROM partner_applications
+          ORDER BY created_at DESC`,
+      );
+  const { results } = await statement.all();
+  return results ?? [];
 }
 
 export async function list_affiliates(db) {

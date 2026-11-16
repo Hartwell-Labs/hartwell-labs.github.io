@@ -5,6 +5,7 @@ import {
   dollars_to_cents,
   format_money,
   hash_token,
+  normalize_application,
   normalize_code,
   normalize_email,
 } from '../src/store.js';
@@ -40,6 +41,26 @@ test('money formatting keeps cents and signs', () => {
   assert.equal(format_money(12345), '$123.45');
   assert.equal(format_money(-999), '-$9.99');
   assert.equal(format_money(0), '$0.00');
+});
+
+test('applications are trimmed and validated', () => {
+  assert.deepEqual(
+    normalize_application({
+      name: '  Ada   Lovelace ',
+      email: ' ADA@Example.COM ',
+      channel: '  newsletter  ',
+      message: '  hello  ',
+    }),
+    {
+      name: 'Ada Lovelace',
+      email: 'ada@example.com',
+      channel: 'newsletter',
+      message: 'hello',
+    },
+  );
+  assert.throws(() => normalize_application({ email: 'a@b.pl', channel: 'x' }), /valid name/);
+  assert.throws(() => normalize_application({ name: 'Ada', email: 'nope', channel: 'x' }), /valid email/);
+  assert.throws(() => normalize_application({ name: 'Ada', email: 'a@b.pl' }), /where you will promote/);
 });
 
 test('dashboard tokens hash deterministically but are not stored raw', async () => {

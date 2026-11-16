@@ -62,6 +62,19 @@ The typo-compatible alias `/v1/dahboard?token=...` also works.
 
    GitHub Actions also deploys on changes under `partners-worker/`.
 
+## Review applications
+
+The landing page has an application form. Submissions are stored in D1 and are
+not emailed anywhere:
+
+```bash
+curl "https://partners.hartwell-labs.pl/v1/admin/applications?status=new" \
+  -H "Authorization: Bearer $PARTNERS_ADMIN_TOKEN"
+```
+
+After reviewing an application, create the affiliate with the endpoint below
+and send them the returned `dashboard_url`.
+
 ## Create an affiliate
 
 ```bash

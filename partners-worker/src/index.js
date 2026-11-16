@@ -3,6 +3,7 @@
 // Deployed from the main site repository on partners.hartwell-labs.pl.
 //
 //   GET  /                              → program landing
+//   POST /v1/apply                      → affiliate application
 //   GET  /v1/dashboard?token=...        → affiliate dashboard
 //   GET  /v1/dahboard?token=...         → legacy spelling alias
 //   POST /v1/dashboard/payout           → request a manual payout
@@ -13,6 +14,7 @@
 //   GET  /api/v1/health
 //
 // Admin (Authorization: Bearer PARTNERS_ADMIN_TOKEN):
+//   GET  /v1/admin/applications?status=new
 //   GET  /v1/admin/affiliates
 //   POST /v1/admin/affiliates
 //   POST /v1/admin/affiliates/:id/token
@@ -26,6 +28,7 @@ import {
   affiliate_referral_url,
   claim_stripe_event,
   create_affiliate,
+  create_application,
   dollars_to_cents,
   ensure_schema,
   format_money,
@@ -33,6 +36,7 @@ import {
   get_dashboard,
   hash_token,
   list_affiliates,
+  list_applications,
   list_payouts,
   record_checkout_commission,
   record_click,
@@ -175,8 +179,9 @@ header{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--soft)}
 .k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}.v{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-top:6px}
 .box{border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:18px}.link{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-input{width:100%;max-width:520px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
-input[readonly]{background:var(--soft)}
+input,textarea{width:100%;max-width:520px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:110px;resize:vertical}input[readonly]{background:var(--soft)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 button{appearance:none;border:0;border-radius:8px;background:var(--accent);color:#fff;padding:10px 16px;font:700 14px/1 inherit;cursor:pointer}
 button:hover{filter:brightness(.95)}button:disabled{opacity:.5;cursor:not-allowed}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:180px}
 table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
@@ -194,16 +199,36 @@ ${body}
 </main></body></html>`;
 }
 
-function landing_page() {
+function landing_page(flash = {}, values = {}) {
+  const flash_html = flash.ok
+    ? `<div class="notice ok">${escape_html(flash.ok)}</div>`
+    : flash.err
+      ? `<div class="notice err">${escape_html(flash.err)}</div>`
+      : '';
+
   return page_shell(
     'Affiliate program',
     `<h1>Earn 20% on every Talus subscription.</h1>
 <p class="muted">Refer a team to Talus and keep 20% of every paid subscription — first year and renewals. Payouts are reviewed and sent manually, so you can request one whenever you want.</p>
 <div class="notice"><strong>Already an affiliate?</strong> Open the dashboard link we sent you. The link is a private credential; do not forward it.</div>
+${flash_html}
 <div class="box">
   <h3>How it works</h3>
   <p class="muted">Share your tracked link. When a buyer completes checkout within 60 days, the subscription is attributed to you. Your dashboard shows clicks, sales, available balance and payout history.</p>
-  <p><a href="mailto:contact@hartwell-labs.pl?subject=Talus%20Partners%20application">Apply to the program →</a></p>
+</div>
+<div class="box" id="apply">
+  <h3>Apply to the program</h3>
+  <p class="muted">Tell us who you are and where you would promote Talus. Applications are reviewed manually; approved partners receive a private dashboard link.</p>
+  <form method="post" action="/v1/apply">
+    <div class="row">
+      <div><label class="k" for="name">Name</label><input id="name" name="name" maxlength="120" value="${escape_attr(values.name || '')}" required></div>
+      <div><label class="k" for="email">Email</label><input id="email" name="email" type="email" maxlength="254" value="${escape_attr(values.email || '')}" required></div>
+    </div>
+    <div style="margin-top:12px"><label class="k" for="channel">Where will you promote Talus?</label><input id="channel" name="channel" maxlength="200" value="${escape_attr(values.channel || '')}" placeholder="YouTube channel, newsletter, community…" required></div>
+    <div style="margin-top:12px"><label class="k" for="message">Anything else? (optional)</label><textarea id="message" name="message" maxlength="2000" placeholder="Audience size, links, previous work…">${escape_html(values.message || '')}</textarea></div>
+    <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+    <button type="submit" style="margin-top:14px">Send application</button>
+  </form>
 </div>`,
   );
 }
@@ -326,6 +351,11 @@ async function handle_admin(request, env, pathname) {
   }
 
   try {
+    if (pathname === '/v1/admin/applications' && request.method === 'GET') {
+      const status = new URL(request.url).searchParams.get('status');
+      return json({ success: true, applications: await list_applications(env.DB, status) });
+    }
+
     if (pathname === '/v1/admin/affiliates' && request.method === 'GET') {
       return json({ success: true, affiliates: await list_affiliates(env.DB) });
     }
@@ -459,12 +489,37 @@ export default {
       return json({ success: false, message: 'method not allowed' }, 405);
     }
 
-    if (pathname === '/' || pathname === '') return html(landing_page());
+    if (pathname === '/' || pathname === '') {
+      const submitted = url.searchParams.get('submitted') === '1';
+      return html(
+        landing_page({
+          ok: submitted
+            ? 'Application received. We review applications manually and will email you if approved.'
+            : null,
+        }),
+      );
+    }
 
     try {
       await ensure_schema(env.DB);
     } catch {
       return html(page_shell('Unavailable', '<h1>Partner service is temporarily unavailable.</h1>'), 503);
+    }
+
+    if (request.method === 'POST' && pathname === '/v1/apply') {
+      let values = {};
+      try {
+        values = await read_form(request);
+        // Honeypot: real people never fill this hidden field. Pretend success
+        // so a bot cannot tell that its submission was discarded.
+        if (String(values.website ?? '').trim()) return redirect('/?submitted=1#apply');
+        await create_application(env.DB, values);
+        return redirect('/?submitted=1#apply');
+      } catch (err) {
+        const message =
+          err instanceof PartnerError ? err.message : 'Could not send your application.';
+        return html(landing_page({ err: message }, values), 400);
+      }
     }
 
     if (pathname.startsWith('/v1/admin/')) {
