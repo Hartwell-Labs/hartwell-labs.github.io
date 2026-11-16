@@ -44,23 +44,36 @@ test('money formatting keeps cents and signs', () => {
 });
 
 test('applications are trimmed and validated', () => {
+  const valid = {
+    name: '  Ada   Lovelace ',
+    email: ' ADA@Example.COM ',
+    channel: '  newsletter  ',
+    message: '  I write about infrastructure.  ',
+    age: '31',
+    country: '  Poland  ',
+  };
+  assert.deepEqual(normalize_application(valid), {
+    name: 'Ada Lovelace',
+    email: 'ada@example.com',
+    channel: 'newsletter',
+    message: 'I write about infrastructure.',
+    age: 31,
+    country: 'Poland',
+    attachments: [],
+  });
+  assert.throws(() => normalize_application({ ...valid, name: '' }), /nickname or first name/);
+  assert.throws(() => normalize_application({ ...valid, email: 'nope' }), /valid contact email/);
+  assert.throws(() => normalize_application({ ...valid, message: 'hi' }), /short description/);
+  assert.throws(() => normalize_application({ ...valid, channel: '' }), /where you will promote/);
+  assert.throws(() => normalize_application({ ...valid, age: '0' }), /age must be between/);
+  assert.throws(() => normalize_application({ ...valid, country: '' }), /country required/);
   assert.deepEqual(
     normalize_application({
-      name: '  Ada   Lovelace ',
-      email: ' ADA@Example.COM ',
-      channel: '  newsletter  ',
-      message: '  hello  ',
-    }),
-    {
-      name: 'Ada Lovelace',
-      email: 'ada@example.com',
-      channel: 'newsletter',
-      message: 'hello',
-    },
+      ...valid,
+      attachments: [{ key: 'applications/abc/media.pdf', name: 'media.pdf', size: 1024 }],
+    }).attachments,
+    [{ key: 'applications/abc/media.pdf', name: 'media.pdf', size: 1024 }],
   );
-  assert.throws(() => normalize_application({ email: 'a@b.pl', channel: 'x' }), /valid name/);
-  assert.throws(() => normalize_application({ name: 'Ada', email: 'nope', channel: 'x' }), /valid email/);
-  assert.throws(() => normalize_application({ name: 'Ada', email: 'a@b.pl' }), /where you will promote/);
 });
 
 test('dashboard tokens hash deterministically but are not stored raw', async () => {

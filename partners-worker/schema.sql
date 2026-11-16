@@ -19,13 +19,16 @@ CREATE INDEX IF NOT EXISTS idx_partner_affiliates_code ON partner_affiliates (co
 CREATE INDEX IF NOT EXISTS idx_partner_affiliates_status ON partner_affiliates (status);
 
 CREATE TABLE IF NOT EXISTS partner_applications (
-  id         TEXT PRIMARY KEY,
-  name       TEXT NOT NULL,
-  email      TEXT NOT NULL,
-  channel    TEXT NOT NULL,
-  message    TEXT,
-  status     TEXT NOT NULL DEFAULT 'new',
-  created_at TEXT NOT NULL
+  id          TEXT PRIMARY KEY,
+  name        TEXT NOT NULL,
+  email       TEXT NOT NULL,
+  channel     TEXT NOT NULL,
+  message     TEXT,
+  age         INTEGER,
+  country     TEXT,
+  attachments TEXT,
+  status      TEXT NOT NULL DEFAULT 'new',
+  created_at  TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_partner_applications_created ON partner_applications (created_at);
 CREATE INDEX IF NOT EXISTS idx_partner_applications_status ON partner_applications (status);

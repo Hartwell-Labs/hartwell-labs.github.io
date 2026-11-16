@@ -27,6 +27,7 @@ The typo-compatible alias `/v1/dahboard?token=...` also works.
 Open `https://partners.hartwell-labs.pl/v1/admin` and sign in with the
 `PARTNERS_ADMIN_TOKEN` secret. The panel can:
 
+- review applications and download attached PDFs,
 - create an affiliate account and show its dashboard/referral link once,
 - pause/resume an account,
 - rotate a dashboard link (the old link stops working),
@@ -46,7 +47,17 @@ The JSON admin API below still accepts `Authorization: Bearer`.
    npx wrangler d1 execute talus-partners --remote --file=schema.sql
    ```
 
-2. Set the Worker secrets:
+2. Create the private R2 bucket for application PDFs (already created for this
+   project):
+
+   ```bash
+   npx wrangler r2 bucket create talus-partner-applications
+   ```
+
+   `wrangler.jsonc` binds it as `APPLICATIONS_BUCKET`. The bucket is not public;
+   PDFs are served only through the authenticated admin panel/API.
+
+3. Set the Worker secrets:
 
    ```bash
    npx wrangler secret put STRIPE_SECRET_KEY
@@ -55,7 +66,7 @@ The JSON admin API below still accepts `Authorization: Bearer`.
    npx wrangler secret put PARTNER_CLICK_SALT   # optional
    ```
 
-3. Add a Stripe webhook endpoint:
+4. Add a Stripe webhook endpoint:
 
    ```
    https://partners.hartwell-labs.pl/api/v1/webhook/stripe
@@ -69,7 +80,7 @@ The JSON admin API below still accepts `Authorization: Bearer`.
    same events to both endpoints. Fulfilment remains on the license server,
    commissions live here.
 
-4. Deploy:
+5. Deploy:
 
    ```bash
    npx wrangler deploy
@@ -79,8 +90,13 @@ The JSON admin API below still accepts `Authorization: Bearer`.
 
 ## Review applications
 
-The landing page has an application form. Submissions are stored in D1 and are
-not emailed anywhere:
+`https://partners.hartwell-labs.pl/apply` has the application form. It collects
+nickname/first name, contact email, age, country, a short description, where the
+applicant will promote Talus, and up to three optional PDFs (10 MB each).
+
+Submissions are stored in D1; PDFs go to the private R2 bucket
+`talus-partner-applications`. Nothing is emailed automatically. The admin panel
+lists applications and links to their PDFs:
 
 ```bash
 curl "https://partners.hartwell-labs.pl/v1/admin/applications?status=new" \

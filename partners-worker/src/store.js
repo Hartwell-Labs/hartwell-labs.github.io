@@ -130,13 +130,16 @@ export async function ensure_schema(db) {
       ),
       db.prepare(
         `CREATE TABLE IF NOT EXISTS partner_applications (
-           id         TEXT PRIMARY KEY,
-           name       TEXT NOT NULL,
-           email      TEXT NOT NULL,
-           channel    TEXT NOT NULL,
-           message    TEXT,
-           status     TEXT NOT NULL DEFAULT 'new',
-           created_at TEXT NOT NULL
+           id          TEXT PRIMARY KEY,
+           name        TEXT NOT NULL,
+           email       TEXT NOT NULL,
+           channel     TEXT NOT NULL,
+           message     TEXT,
+           age         INTEGER,
+           country     TEXT,
+           attachments TEXT,
+           status      TEXT NOT NULL DEFAULT 'new',
+           created_at  TEXT NOT NULL
          )`,
       ),
       db.prepare(
@@ -218,6 +221,20 @@ export async function ensure_schema(db) {
          )`,
       ),
     ]);
+
+    // Additive migration for databases created before applications carried
+    // age, country and private PDF attachments.
+    const columns = await db.prepare('PRAGMA table_info(partner_applications)').all();
+    const present = new Set((columns.results ?? []).map((column) => column.name));
+    const additions = [
+      ['age', 'ALTER TABLE partner_applications ADD COLUMN age INTEGER'],
+      ['country', 'ALTER TABLE partner_applications ADD COLUMN country TEXT'],
+      ['attachments', 'ALTER TABLE partner_applications ADD COLUMN attachments TEXT'],
+    ]
+      .filter(([name]) => !present.has(name))
+      .map(([, sql]) => db.prepare(sql));
+    if (additions.length) await db.batch(additions);
+
     schema_ready = true;
     return true;
   } catch (err) {
@@ -297,17 +314,50 @@ export async function create_affiliate(db, env, input = {}) {
   };
 }
 
+function normalize_attachments(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .slice(0, 3)
+    .map((item) => {
+      const key = String(item?.key ?? '').trim().slice(0, 400);
+      const name = String(item?.name ?? '').trim().slice(0, 160);
+      const size = Number(item?.size);
+      if (!key.startsWith('applications/') || !name || !Number.isFinite(size) || size <= 0) {
+        return null;
+      }
+      return { key, name, size };
+    })
+    .filter(Boolean);
+}
+
+function parse_attachments(value) {
+  if (!value) return [];
+  try {
+    return normalize_attachments(JSON.parse(value));
+  } catch {
+    return [];
+  }
+}
+
 export function normalize_application(input = {}) {
   const name = String(input.name ?? '').trim().replace(/\s+/g, ' ').slice(0, 120);
   const email = normalize_email(input.email);
   const channel = String(input.channel ?? '').trim().replace(/\s+/g, ' ').slice(0, 200);
-  const message = String(input.message ?? '').trim().slice(0, 2000) || null;
+  const message = String(input.message ?? '').trim().slice(0, 2000);
+  const country = String(input.country ?? '').trim().replace(/\s+/g, ' ').slice(0, 80);
+  const age = Number.parseInt(String(input.age ?? '').trim(), 10);
+  const attachments = normalize_attachments(input.attachments);
 
-  if (name.length < 2) throw new PartnerError('valid name required', 400);
-  if (!email) throw new PartnerError('valid email required', 400);
+  if (name.length < 2) throw new PartnerError('nickname or first name required', 400);
+  if (!email) throw new PartnerError('valid contact email required', 400);
+  if (message.length < 10) throw new PartnerError('short description required', 400);
   if (channel.length < 2) throw new PartnerError('tell us where you will promote Talus', 400);
+  if (!Number.isInteger(age) || age < 1 || age > 120) {
+    throw new PartnerError('age must be between 1 and 120', 400);
+  }
+  if (country.length < 2) throw new PartnerError('country required', 400);
 
-  return { name, email, channel, message };
+  return { name, email, channel, message, age, country, attachments };
 }
 
 export async function create_application(db, input = {}) {
@@ -319,8 +369,8 @@ export async function create_application(db, input = {}) {
   await db
     .prepare(
       `INSERT INTO partner_applications
-         (id, name, email, channel, message, status, created_at)
-       VALUES (?1, ?2, ?3, ?4, ?5, 'new', ?6)`,
+         (id, name, email, channel, message, age, country, attachments, status, created_at)
+       VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, 'new', ?9)`,
     )
     .bind(
       id,
@@ -328,6 +378,9 @@ export async function create_application(db, input = {}) {
       application.email,
       application.channel,
       application.message,
+      application.age,
+      application.country,
+      application.attachments.length ? JSON.stringify(application.attachments) : null,
       now,
     )
     .run();
@@ -341,19 +394,38 @@ export async function list_applications(db, status = null) {
   const statement = want
     ? db
         .prepare(
-          `SELECT id, name, email, channel, message, status, created_at
+          `SELECT id, name, email, channel, message, age, country, attachments,
+                  status, created_at
              FROM partner_applications
             WHERE status = ?1
             ORDER BY created_at DESC`,
         )
-        .bind(want)
-    : db.prepare(
-        `SELECT id, name, email, channel, message, status, created_at
+        .bind(want)      : db.prepare(
+        `SELECT id, name, email, channel, message, age, country, attachments,
+                status, created_at
            FROM partner_applications
           ORDER BY created_at DESC`,
       );
   const { results } = await statement.all();
-  return results ?? [];
+  return (results ?? []).map((row) => ({
+    ...row,
+    attachments: parse_attachments(row.attachments),
+  }));
+}
+
+export async function get_application(db, application_id) {
+  await ensure_schema(db);
+  const row = await db
+    .prepare(
+      `SELECT id, name, email, channel, message, age, country, attachments,
+              status, created_at
+         FROM partner_applications
+        WHERE id = ?1`,
+    )
+    .bind(String(application_id ?? '').trim())
+    .first();
+  if (!row) throw new PartnerError('application not found', 404);
+  return { ...row, attachments: parse_attachments(row.attachments) };
 }
 
 export async function list_affiliates(db) {

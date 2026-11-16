@@ -3,7 +3,8 @@
 // Deployed from the main site repository on partners.hartwell-labs.pl.
 //
 //   GET  /                              → program landing
-//   POST /v1/apply                      → affiliate application
+//   GET  /apply                         → affiliate application form
+//   POST /v1/apply                      → affiliate application + optional PDFs
 //   GET  /v1/dashboard?token=...        → affiliate dashboard
 //   GET  /v1/dahboard?token=...         → legacy spelling alias
 //   POST /v1/dashboard/payout           → request a manual payout
@@ -20,6 +21,7 @@
 //
 // Admin API (Authorization: Bearer PARTNERS_ADMIN_TOKEN):
 //   GET  /v1/admin/applications?status=new
+//   GET  /v1/admin/applications/:id/files/:index
 //   GET  /v1/admin/affiliates
 //   POST /v1/admin/affiliates
 //   POST /v1/admin/affiliates/:id/token
@@ -41,6 +43,7 @@ import {
   get_affiliate_by_token,
   get_dashboard,
   hash_token,
+  get_application,
   list_affiliates,
   list_applications,
   list_payouts,
@@ -147,6 +150,102 @@ async function read_form(request) {
   }
 }
 
+const MAX_APPLICATION_FILES = 3;
+const MAX_APPLICATION_FILE_BYTES = 10 * 1024 * 1024;
+const MAX_APPLICATION_BODY_BYTES = 32 * 1024 * 1024;
+
+async function read_application_form(request) {
+  const type = request.headers.get('content-type') || '';
+  if (!type.includes('multipart/form-data')) {
+    throw new PartnerError('form submission required', 400);
+  }
+  const declared = Number.parseInt(request.headers.get('content-length') || '0', 10);
+  if (Number.isFinite(declared) && declared > MAX_APPLICATION_BODY_BYTES) {
+    throw new PartnerError('application files are too large', 413);
+  }
+
+  let form;
+  try {
+    form = await request.formData();
+  } catch {
+    throw new PartnerError('invalid form body', 400);
+  }
+
+  const values = {};
+  const files = [];
+  for (const [key, value] of form.entries()) {
+    if (typeof value === 'string') {
+      values[key] = value;
+    } else if (key === 'files' && value.size > 0) {
+      files.push(value);
+    }
+  }
+  return { values, files };
+}
+
+function pdf_file_name(file) {
+  return String(file.name || '')
+    .split(/[\\/]/)
+    .pop()
+    .trim()
+    .slice(0, 160);
+}
+
+async function upload_application_files(env, files) {
+  if (!files.length) return [];
+  if (!env.APPLICATIONS_BUCKET) {
+    throw new PartnerError('PDF uploads are temporarily unavailable', 503);
+  }
+  if (files.length > MAX_APPLICATION_FILES) {
+    throw new PartnerError('attach at most 3 PDF files', 400);
+  }
+  const total = files.reduce((sum, file) => sum + Number(file.size || 0), 0);
+  if (total > MAX_APPLICATION_BODY_BYTES) {
+    throw new PartnerError('application files are too large', 413);
+  }
+
+  const uploaded = [];
+  try {
+    for (const file of files) {
+      const original = pdf_file_name(file);
+      const type = String(file.type || '').toLowerCase();
+      if (!original.toLowerCase().endsWith('.pdf')) {
+        throw new PartnerError('only PDF files can be attached', 400);
+      }
+      if (type && type !== 'application/pdf' && type !== 'application/octet-stream') {
+        throw new PartnerError('only PDF files can be attached', 400);
+      }
+      if (file.size > MAX_APPLICATION_FILE_BYTES) {
+        throw new PartnerError('each PDF must be 10 MB or smaller', 413);
+      }
+
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const magic = String.fromCharCode(...bytes.slice(0, 5));
+      if (magic !== '%PDF-') {
+        throw new PartnerError('only valid PDF files can be attached', 400);
+      }
+
+      const base =
+        original
+          .replace(/[^A-Za-z0-9._-]+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .slice(0, 100) || 'attachment.pdf';
+      const key = `applications/${crypto.randomUUID().replace(/-/g, '')}/${base}`;
+      await env.APPLICATIONS_BUCKET.put(key, bytes, {
+        httpMetadata: { contentType: 'application/pdf' },
+        customMetadata: { originalName: original },
+      });
+      uploaded.push({ key, name: original, size: bytes.byteLength });
+    }
+  } catch (err) {
+    await Promise.allSettled(
+      uploaded.map((file) => env.APPLICATIONS_BUCKET.delete(file.key)),
+    );
+    throw err;
+  }
+  return uploaded;
+}
+
 async function read_json(request) {
   const type = request.headers.get('content-type') || '';
   if (!type.includes('application/json')) throw new PartnerError('JSON body required', 415);
@@ -190,6 +289,8 @@ textarea{min-height:110px;resize:vertical}input[readonly]{background:var(--soft)
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 button{appearance:none;border:0;border-radius:8px;background:var(--accent);color:#fff;padding:10px 16px;font:700 14px/1 inherit;cursor:pointer}
 button:hover{filter:brightness(.95)}button:disabled{opacity:.5;cursor:not-allowed}button.small{padding:7px 10px;font-size:12px}button.danger{background:var(--bad)}
+.btn{display:inline-block;border-radius:8px;background:var(--accent);color:#fff;padding:11px 18px;font-weight:700;text-decoration:none}
+input[type=file]{padding:9px;background:var(--soft)}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:180px}
 .actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.actions form{margin:0}
 code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);padding:2px 5px;border-radius:4px}
@@ -228,17 +329,53 @@ ${flash_html}
 <div class="box" id="apply">
   <h3>Apply to the program</h3>
   <p class="muted">Tell us who you are and where you would promote Talus. Applications are reviewed manually; approved partners receive a private dashboard link.</p>
-  <form method="post" action="/v1/apply">
+  <a class="btn" href="/apply">Apply to the program →</a>
+</div>`,
+  );
+}
+
+function application_page(flash = {}, values = {}) {
+  const flash_html = flash.err
+    ? `<div class="notice err">${escape_html(flash.err)}</div>`
+    : '';
+
+  return page_shell(
+    'Apply to the program',
+    `<p><a href="/">← Back to the program</a></p>
+<h1>Apply to the Talus partner program</h1>
+<p class="muted">We review every application manually. If approved, you receive a private dashboard link and a tracked referral link. All fields except the PDFs are required.</p>
+${flash_html}
+<div class="box">
+  <form method="post" action="/v1/apply" enctype="multipart/form-data">
     <div class="row">
-      <div><label class="k" for="name">Name</label><input id="name" name="name" maxlength="120" value="${escape_attr(values.name || '')}" required></div>
-      <div><label class="k" for="email">Email</label><input id="email" name="email" type="email" maxlength="254" value="${escape_attr(values.email || '')}" required></div>
+      <div><label class="k" for="name">Nickname or first name</label><input id="name" name="name" maxlength="120" value="${escape_attr(values.name || '')}" required></div>
+      <div><label class="k" for="email">Contact email</label><input id="email" name="email" type="email" maxlength="254" value="${escape_attr(values.email || '')}" required></div>
     </div>
+    <div class="row" style="margin-top:12px">
+      <div><label class="k" for="age">Age</label><input id="age" name="age" type="number" min="1" max="120" step="1" value="${escape_attr(values.age || '')}" required></div>
+      <div><label class="k" for="country">Country</label><input id="country" name="country" maxlength="80" autocomplete="country-name" value="${escape_attr(values.country || '')}" placeholder="Poland" required></div>
+    </div>
+    <div style="margin-top:12px"><label class="k" for="message">Short description: who are you?</label><textarea id="message" name="message" maxlength="2000" required placeholder="A few sentences about you, your audience and your work…">${escape_html(values.message || '')}</textarea></div>
     <div style="margin-top:12px"><label class="k" for="channel">Where will you promote Talus?</label><input id="channel" name="channel" maxlength="200" value="${escape_attr(values.channel || '')}" placeholder="YouTube channel, newsletter, community…" required></div>
-    <div style="margin-top:12px"><label class="k" for="message">Anything else? (optional)</label><textarea id="message" name="message" maxlength="2000" placeholder="Audience size, links, previous work…">${escape_html(values.message || '')}</textarea></div>
+    <div style="margin-top:12px">
+      <label class="k" for="files">PDFs (optional)</label>
+      <input id="files" name="files" type="file" accept="application/pdf,.pdf" multiple>
+      <p class="muted" style="font-size:12.5px;margin:6px 0 0">Up to 3 PDF files, 10 MB each. Media kit, portfolio, audience stats — whatever helps us review.</p>
+    </div>
     <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
-    <button type="submit" style="margin-top:14px">Send application</button>
+    <button type="submit" style="margin-top:16px">Send application</button>
   </form>
 </div>`,
+  );
+}
+
+function application_received_page() {
+  return page_shell(
+    'Application received',
+    `<h1>Application received.</h1>
+<div class="notice ok">Thank you. We review applications manually and will email you at the address you provided if approved.</div>
+<p class="muted">You can close this page. If you need to correct something, reply to the address in the footer.</p>
+<p><a class="btn" href="/">Back to the partner program</a></p>`,
   );
 }
 
@@ -385,7 +522,8 @@ async function load_admin_data(env) {
   await ensure_schema(env.DB);
   const affiliates = await list_affiliates(env.DB);
   const payouts = await list_payouts(env.DB, 'requested');
-  return { affiliates, payouts };
+  const applications = await list_applications(env.DB);
+  return { affiliates, payouts, applications };
 }
 
 function admin_login_page(error = '') {
@@ -427,7 +565,7 @@ function admin_flash_from_url(url) {
 }
 
 function admin_page(data, opts = {}) {
-  const { affiliates, payouts } = data;
+  const { affiliates, payouts, applications = [] } = data;
   const flash = opts.flash || {};
   const values = opts.values || {};
   const delete_target = opts.delete_target || null;
@@ -459,6 +597,24 @@ function admin_page(data, opts = {}) {
     <form method="post" action="/v1/admin/panel/status"><input type="hidden" name="id" value="${escape_attr(a.id)}"><input type="hidden" name="status" value="${paused ? 'active' : 'paused'}"><button class="small" type="submit">${paused ? 'Resume' : 'Pause'}</button></form>
     <a href="/v1/admin?delete=${encodeURIComponent(a.id)}">Delete</a>
   </div></td>
+</tr>`;
+    })
+    .join('');
+
+  const application_rows = applications
+    .map((a) => {
+      const files = (a.attachments ?? [])
+        .map(
+          (file, index) =>
+            `<a href="/v1/admin/applications/${encodeURIComponent(a.id)}/files/${index}" target="_blank" rel="noreferrer">${escape_html(file.name)}</a>`,
+        )
+        .join('<br>');
+      return `<tr>
+  <td><strong>${escape_html(a.name)}</strong><br><span class="muted">${escape_html(a.email)}</span></td>
+  <td>${escape_html(a.age ?? '—')} · ${escape_html(a.country || '—')}</td>
+  <td style="max-width:340px"><span class="muted">${escape_html(a.message || '')}</span><br>${escape_html(a.channel || '')}</td>
+  <td>${files || '<span class="muted">—</span>'}</td>
+  <td>${escape_html(String(a.created_at || '').slice(0, 10))}</td>
 </tr>`;
     })
     .join('');
@@ -514,6 +670,13 @@ ${flash_html}${created_html}${rotated_html}${delete_html}
 <div class="box" style="padding:0;overflow:auto">
   <table><thead><tr><th>Account</th><th>Code</th><th>Status</th><th>Activity</th><th>Earned</th><th>Actions</th></tr></thead><tbody>
   ${rows || '<tr><td colspan="6" class="muted">No affiliate accounts yet.</td></tr>'}
+  </tbody></table>
+</div>
+
+<h2>Applications (${applications.length})</h2>
+<div class="box" style="padding:0;overflow:auto">
+  <table><thead><tr><th>Applicant</th><th>Age · country</th><th>About · where</th><th>PDFs</th><th>Received</th></tr></thead><tbody>
+  ${application_rows || '<tr><td colspan="5" class="muted">No applications yet.</td></tr>'}
   </tbody></table>
 </div>
 
@@ -588,6 +751,34 @@ async function handle_admin(request, env, pathname) {
   }
 
   try {
+    const file_match = pathname.match(
+      /^\/v1\/admin\/applications\/([^/]+)\/files\/(\d+)$/,
+    );
+    if (file_match && request.method === 'GET') {
+      const application = await get_application(
+        env.DB,
+        decodeURIComponent(file_match[1]),
+      );
+      const file = application.attachments[Number(file_match[2])];
+      if (!file) return json({ success: false, message: 'file not found' }, 404);
+      if (!env.APPLICATIONS_BUCKET) {
+        return json({ success: false, message: 'file storage unavailable' }, 503);
+      }
+      const object = await env.APPLICATIONS_BUCKET.get(file.key);
+      if (!object) return json({ success: false, message: 'file not found' }, 404);
+      const filename = String(file.name || 'application.pdf')
+        .replace(/[^A-Za-z0-9._ -]+/g, '_')
+        .slice(0, 120);
+      return new Response(object.body, {
+        headers: {
+          'content-type': 'application/pdf',
+          'content-disposition': `attachment; filename="${filename}"`,
+          'cache-control': 'no-store',
+          'x-content-type-options': 'nosniff',
+        },
+      });
+    }
+
     if (pathname === '/v1/admin/applications' && request.method === 'GET') {
       const status = new URL(request.url).searchParams.get('status');
       return json({ success: true, applications: await list_applications(env.DB, status) });
@@ -727,14 +918,14 @@ export default {
     }
 
     if (pathname === '/' || pathname === '') {
-      const submitted = url.searchParams.get('submitted') === '1';
-      return html(
-        landing_page({
-          ok: submitted
-            ? 'Application received. We review applications manually and will email you if approved.'
-            : null,
-        }),
-      );
+      return html(landing_page());
+    }
+
+    if ((pathname === '/apply' || pathname === '/apply/') && request.method === 'GET') {
+      if (url.searchParams.get('received') === '1') {
+        return html(application_received_page());
+      }
+      return html(application_page());
     }
 
     try {
@@ -745,17 +936,28 @@ export default {
 
     if (request.method === 'POST' && pathname === '/v1/apply') {
       let values = {};
+      let attachments = [];
       try {
-        values = await read_form(request);
+        const parsed = await read_application_form(request);
+        values = parsed.values;
         // Honeypot: real people never fill this hidden field. Pretend success
         // so a bot cannot tell that its submission was discarded.
-        if (String(values.website ?? '').trim()) return redirect('/?submitted=1#apply');
-        await create_application(env.DB, values);
-        return redirect('/?submitted=1#apply');
+        if (String(values.website ?? '').trim()) return redirect('/apply?received=1');
+        attachments = await upload_application_files(env, parsed.files);
+        await create_application(env.DB, { ...values, attachments });
+        return redirect('/apply?received=1');
       } catch (err) {
+        if (attachments.length) {
+          await Promise.allSettled(
+            attachments.map((file) => env.APPLICATIONS_BUCKET?.delete(file.key)),
+          );
+        }
         const message =
           err instanceof PartnerError ? err.message : 'Could not send your application.';
-        return html(landing_page({ err: message }, values), 400);
+        return html(
+          application_page({ err: message }, values),
+          err instanceof PartnerError ? err.status : 500,
+        );
       }
     }
 

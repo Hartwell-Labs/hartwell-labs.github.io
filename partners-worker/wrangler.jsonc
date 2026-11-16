@@ -13,6 +13,12 @@
       "database_id": "f0156057-f834-4580-b8bf-8f577a0ddce6"
     }
   ],
+  "r2_buckets": [
+    {
+      "binding": "APPLICATIONS_BUCKET",
+      "bucket_name": "talus-partner-applications"
+    }
+  ],
   "vars": {
     "PARTNERS_PUBLIC_ORIGIN": "https://partners.hartwell-labs.pl",
     "PARTNERS_PRODUCT_URL": "https://hartwell-labs.pl/talus",
