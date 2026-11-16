@@ -282,7 +282,7 @@ header{display:flex;justify-content:space-between;gap:16px;align-items:baseline;
 .brand{font-weight:800;letter-spacing:-.03em;font-size:20px}.brand span{color:var(--accent)}
 .muted{color:var(--muted)}h1{font-size:30px;letter-spacing:-.04em;margin:0 0 6px}h2{font-size:18px;margin:30px 0 12px}h3{font-size:15px;margin:0 0 8px}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--soft)}
-.k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}.v{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-top:6px}
+.k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}label.k{display:block;margin-bottom:5px}.v{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-top:6px}
 .box{border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:18px}.link{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 input,textarea{width:100%;max-width:520px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
 textarea{min-height:110px;resize:vertical}input[readonly]{background:var(--soft)}
