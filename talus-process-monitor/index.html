@@ -412,17 +412,29 @@
   var currency = detectCurrency(); // 'usd' | 'pln'
 
   // fleet node count pulled from the modal-less UI is fixed; enterprise quote links stay mailto.
+  function withAffiliate(url) {
+    var ref = window.TALUS_AFFILIATE;
+    if (!ref) return url;
+    try {
+      var u = new URL(url, location.href);
+      u.searchParams.set('client_reference_id', ref);
+      return u.href;
+    } catch (e) { return url; }
+  }
   function buy(tier, nodes) {
     var btn = event && event.target ? event.target : document.activeElement;
     var fb = btn.getAttribute('data-fallback');
     btn.disabled = true;
     btn.textContent = 'Redirecting…';
-    fetch(LIC + '/api/v1/checkout-session', {
+    var checkoutUrl = window.TALUS_AFFILIATE
+      ? 'https://partners.hartwell-labs.pl/api/v1/checkout-session'
+      : LIC + '/api/v1/checkout-session';
+    fetch(checkoutUrl, {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'accept': 'application/json' },
       credentials: 'omit',
       referrerPolicy: 'no-referrer',
-      body: JSON.stringify({ tier: tier, currency: currency, nodes: nodes || undefined })
+      body: JSON.stringify({ tier: tier, currency: currency, nodes: nodes || undefined, affiliate: window.TALUS_AFFILIATE || undefined })
     })
       .then(function (r) { if (!r.ok) throw new Error('status ' + r.status); return r.json(); })
       .then(function (data) {
@@ -431,7 +443,7 @@
       })
       .catch(function () {
         btn.disabled = false;
-        if (fb) { window.location.href = fb; return; }
+        if (fb) { window.location.href = withAffiliate(fb); return; }
         var e = document.getElementById('buy-error');
         if (e) { e.hidden = false; e.style.display = 'block'; }
       });

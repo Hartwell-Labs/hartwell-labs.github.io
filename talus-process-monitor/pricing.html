@@ -149,16 +149,23 @@
   };
   calcFleet();
   // buy() same logic as main page; uses lic server, falls back to Stripe link.
+  function withAffiliate(url){
+    var ref = window.TALUS_AFFILIATE;
+    if(!ref) return url;
+    try { var u = new URL(url, location.href); u.searchParams.set('client_reference_id', ref); return u.href; }
+    catch(e){ return url; }
+  }
   window.buy = function(tier,nodes){
     if(!window.event) return;
     var btn = event.target, fb = btn.getAttribute('data-fallback');
     btn.disabled=true; btn.textContent='Redirecting…';
-    fetch('https://lic.hartwell-labs.pl/api/v1/checkout-session',{method:'POST',
+    var checkoutUrl = window.TALUS_AFFILIATE ? 'https://partners.hartwell-labs.pl/api/v1/checkout-session' : 'https://lic.hartwell-labs.pl/api/v1/checkout-session';
+    fetch(checkoutUrl,{method:'POST',
       headers:{'content-type':'application/json','accept':'application/json'},credentials:'omit',referrerPolicy:'no-referrer',
-      body:JSON.stringify({tier:tier,currency:cur,nodes:nodes||undefined})})
+      body:JSON.stringify({tier:tier,currency:cur,nodes:nodes||undefined,affiliate:window.TALUS_AFFILIATE||undefined})})
       .then(function(r){if(!r.ok) throw new Error(r.status); return r.json();})
       .then(function(d){ if(d.success&&d.url) window.location.href=d.url; else throw new Error('nourl');})
-      .catch(function(){btn.disabled=false; if(fb){window.location.href=fb;} else {btn.textContent='Retry';}});
+      .catch(function(){btn.disabled=false; if(fb){window.location.href=withAffiliate(fb);} else {btn.textContent='Retry';}});
   };
   document.querySelectorAll('button[data-tier]').forEach(function(b){
     b.addEventListener('click', function(e){ e.preventDefault(); buy(b.getAttribute('data-tier'), b.dataset.tier==='fleet'? (parseInt(document.getElementById('fleet-nodes').value)||10): undefined);});

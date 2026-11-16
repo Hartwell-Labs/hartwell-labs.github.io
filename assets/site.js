@@ -39,4 +39,35 @@
       ' · <a href="/llms-full.txt" title="llms-full.txt — wszystkie strony w jednym pliku">llms-full.txt</a>';
     foot.appendChild(s);
   }
+
+  /* --- Talus Partners: 60-day referral attribution ----------------------
+     The partner link lands on /talus?ref=CODE. Store the code locally, refresh
+     its timestamp on every visit, and put it on any static Stripe Payment Link
+     as client_reference_id. The buy() handlers read window.TALUS_AFFILIATE and
+     pass the same code to the licensed checkout API. */
+  (function () {
+    var KEY = "talus_ref";
+    var MAX_AGE = 60 * 24 * 60 * 60 * 1000;
+    var now = Date.now();
+    var code = "";
+    try {
+      var saved = JSON.parse(localStorage.getItem(KEY) || "null");
+      if (saved && saved.code && saved.ts && now - saved.ts <= MAX_AGE) code = saved.code;
+    } catch (e) {}
+    try {
+      var ref = new URLSearchParams(location.search).get("ref") || "";
+      ref = ref.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 24);
+      if (ref.length >= 4) code = ref;
+    } catch (e) {}
+    if (!code) return;
+    try { localStorage.setItem(KEY, JSON.stringify({ code: code, ts: now })); } catch (e) {}
+    window.TALUS_AFFILIATE = code;
+    document.querySelectorAll('a[href*="buy.stripe.com"]').forEach(function (a) {
+      try {
+        var u = new URL(a.href, location.href);
+        u.searchParams.set("client_reference_id", code);
+        a.href = u.href;
+      } catch (e) {}
+    });
+  })();
 })();

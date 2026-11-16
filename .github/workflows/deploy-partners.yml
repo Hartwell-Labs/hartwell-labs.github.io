@@ -1,0 +1,43 @@
+name: Deploy Talus Partners
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "partners-worker/**"
+      - ".github/workflows/deploy-partners.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-partners
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy the partners Worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: 29ee063c29d9e8f27a8863fadcaa9073
+        working-directory: partners-worker
+        run: |
+          npx --yes wrangler@4 deploy
+          echo "Deployed $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      - name: Smoke test the partner endpoint
+        run: |
+          for i in $(seq 1 10); do
+            body=$(curl -fsS https://partners.hartwell-labs.pl/api/v1/health || true)
+            case "$body" in
+              *talus-partners*) echo "partners OK"; exit 0 ;;
+            esac
+            sleep 6
+          done
+          echo "partners did not come back after deploy"
+          exit 1
