@@ -295,12 +295,12 @@ ${flash_html}
 }
 
 function invalid_link_page() {
-  return page_shell(
+  return html(page_shell(
     'Invalid dashboard link',
     `<h1>This dashboard link is not valid.</h1>
 <p class="muted">The link may have been rotated or copied incorrectly. Ask for a fresh dashboard link.</p>
 <p><a href="mailto:contact@hartwell-labs.pl?subject=Talus%20Partners%20dashboard%20link">Request a new link →</a></p>`,
-  );
+  ), 401);
 }
 
 async function admin_ok(request, env) {
