@@ -5670,7 +5670,7 @@ async function handle(request, env) {
   }
   if (path === "/api/send" && request.method === "POST") {
     const ct = request.headers.get("content-type") || "";
-    let to = "", cc = "", subject = "", text = "", html = "", fromKey = "contact";
+    let to = "", cc = "", subject = "", text = "", html = "", fromKey = "contact", track = true;
     const files = [];
     try {
       if (ct.includes("multipart/form-data") || ct.includes("application/x-www-form-urlencoded")) {
@@ -5681,6 +5681,7 @@ async function handle(request, env) {
         text = String(form.get("text") || "");
         html = form.get("html") ? String(form.get("html")) : "";
         fromKey = String(form.get("from") || "contact");
+        if (form.has("track")) track = String(form.get("track")) !== "false";
         for (const f of form.getAll("attachments")) {
           if (typeof f === "string" || !f.size) continue;
           files.push({
@@ -5698,6 +5699,7 @@ async function handle(request, env) {
         text = String(b.text || "");
         html = b.html || "";
         fromKey = String(b.from || "contact");
+        if (b.track === false || b.track === "false") track = false;
         for (const a of b.attachments || []) {
           const bytes = b64decode(a.content || "");
           files.push({ filename: a.filename || "zalacznik", type: a.type || "application/octet-stream", bytes, size: bytes.length });
@@ -5719,7 +5721,7 @@ async function handle(request, env) {
     const ccList = cc ? cc.split(",").map((s) => s.trim()).filter(Boolean) : [];
     const recipients = [...toList, ...ccList];
     const trackId = crypto.randomUUID().replace(/-/g, "");
-    const outgoingHtml = injectPixel(htmlBody, `${url.origin}/t/o/${trackId}.gif`);
+    const outgoingHtml = track ? injectPixel(htmlBody, `${url.origin}/t/o/${trackId}.gif`) : htmlBody;
     if (/^HeartCore sales PDF$/i.test(subject) && files.length) {
       const pdf = files.find((f) => /pdf$/i.test(f.filename));
       if (!pdf) {
