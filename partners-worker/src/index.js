@@ -71,7 +71,7 @@ const HTML_HEADERS = {
   'x-content-type-options': 'nosniff',
   'x-frame-options': 'DENY',
   'content-security-policy':
-    "default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+    "default-src 'none'; script-src 'sha256-C2Qu9gU/T9QUq//aVRRybKIEao2a/ORXWB9cn+mkbqw='; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
 };
 
 function json(data, status = 200, extra = {}) {
@@ -416,7 +416,46 @@ summary::-webkit-details-marker{display:none}
 summary:after{content:"+";color:var(--accent);font-weight:700;font-size:18px;line-height:1}
 details[open] summary:after{content:"-"}
 details p{margin:10px 0 0;color:var(--txt-2);font-size:14.5px;max-width:760px;line-height:1.65}
-.legal{max-width:760px}.legal h1{font-size:clamp(30px,4.4vw,44px);margin-bottom:10px}.legal h2{font-size:19px;line-height:1.3;text-transform:none;letter-spacing:-.01em;margin:30px 0 8px}.legal p,.legal li{font-size:14px;line-height:1.78;color:var(--txt-2);margin:8px 0}.legal ul{padding-left:20px;margin:8px 0}.legal .meta{font-size:12.5px;color:var(--txt-3)}.legal code{font-size:12px}.legal a{color:var(--accent)}.apply-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:start}
+.legal{max-width:760px}.legal h1{font-size:clamp(30px,4.4vw,44px);margin-bottom:10px}.legal h2{font-size:19px;line-height:1.3;text-transform:none;letter-spacing:-.01em;margin:30px 0 8px}.legal p,.legal li{font-size:14px;line-height:1.78;color:var(--txt-2);margin:8px 0}.legal ul{padding-left:20px;margin:8px 0}.legal .meta{font-size:12.5px;color:var(--txt-3)}.legal code{font-size:12px}.legal a{color:var(--accent)}.terms-bar{position:sticky;top:64px;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:10px 0}
+.terms-tools{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:760px}
+.terms-search{display:flex;align-items:center;gap:9px;flex:1;height:44px;border:1px solid var(--border-strong);border-radius:10px;background:#fff;padding:0 12px;transition:border-color .15s,box-shadow .15s}
+.terms-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.12)}
+.terms-search input{flex:1;min-width:0;height:100%;border:0!important;background:transparent!important;padding:0!important;font-size:14px;box-shadow:none!important;outline:0}
+.terms-search kbd{font:600 10px/1 var(--mono);color:var(--txt-3);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:4px 6px;background:var(--bg-subtle)}
+.terms-search button{width:24px;height:24px;display:grid;place-items:center;border:0;border-radius:50%;background:var(--bg-subtle);color:var(--txt-2);font:400 17px/1 Inter,sans-serif;padding:0}
+.terms-search button:hover{background:var(--border);color:var(--txt)}
+.terms-meta{display:flex;flex-direction:column;align-items:flex-end;gap:1px;font-size:11px;color:var(--txt-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.terms-meta span:first-child{font-weight:600;color:var(--txt-2)}
+.toc{max-width:760px;margin:18px 0 0;display:grid;grid-template-columns:repeat(3,1fr);gap:1px 20px}
+.toc[hidden]{display:none}
+.toc a{font-size:12.5px;line-height:1.5;color:var(--txt-3);text-decoration:none;padding:2px 0;border-radius:3px}
+.toc a:hover{color:var(--accent)}
+.toc a.toc-key{color:var(--accent);font-weight:600}
+.terms-empty{max-width:760px;margin:22px 0 0;padding:16px 18px;border:1px dashed var(--border-strong);border-radius:10px;display:flex;flex-direction:column;gap:4px;font-size:13.5px;color:var(--txt-2)}
+.terms-empty[hidden]{display:none}
+.terms-empty strong{color:var(--txt)}
+.clause{padding-top:2px}
+.clause[hidden]{display:none}
+.legal ol.flow{counter-reset:step;list-style:none;padding:0;display:grid;gap:9px;margin:14px 0 18px}
+.legal ol.flow li{counter-increment:step;position:relative;padding:12px 15px 12px 48px;border:1px solid var(--border);border-radius:10px;background:var(--bg-subtle);font-size:13.5px;line-height:1.65}
+.legal ol.flow li:before{content:counter(step);position:absolute;left:14px;top:12px;width:23px;height:23px;border-radius:50%;background:var(--accent);color:#fff;font:700 11px/23px Inter,sans-serif;text-align:center}
+.legal .callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:13px 16px;border-radius:0 8px 8px 0;margin:16px 0;font-size:13.5px;line-height:1.65;color:#3730a3}
+.legal .callout strong{color:var(--txt)}
+.legal .callout-key{border-color:var(--amber);background:var(--amber-soft);color:#92400e}
+.legal h2.clause-key{color:var(--accent)}
+.legal .example{border:1px solid var(--border);border-radius:10px;margin:18px 0;overflow:hidden}
+.legal .example-head{padding:9px 14px;background:var(--bg-subtle);border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--txt-3)}
+.legal .example table{font-size:13px}
+.legal .example td{padding:8px 14px;border-bottom:1px solid var(--border)}
+.legal .example tr:last-child td{border-bottom:0}
+.legal .example td:last-child{text-align:right;font-weight:600}
+.legal .example p{padding:9px 14px;margin:0;font-size:11.5px;line-height:1.5;color:var(--txt-3);border-top:1px solid var(--border)}
+.legal ul.defs{list-style:none;padding:0;margin:10px 0}
+.legal ul.defs li{padding:5px 0;border-bottom:1px solid var(--border);margin:0}
+.legal ul.defs li:last-child{border-bottom:0}
+mark.tm{background:#fef08a;color:inherit;border-radius:2px;padding:0 1px;box-shadow:0 0 0 1px #fde68a}
+@media(max-width:720px){.terms-bar{top:56px}.terms-tools{max-width:none;gap:10px}.terms-meta span:last-child{display:none}.terms-search kbd{display:none}.toc{grid-template-columns:1fr 1fr;gap:0 14px}.toc a{font-size:12px}}
+.apply-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:start}
 .aside{border:1px solid var(--border);border-radius:12px;background:var(--bg-subtle);padding:22px}
 .aside ul{margin:0;padding-left:18px;color:var(--txt-2);font-size:14px}
 .aside li{margin:6px 0}
@@ -584,90 +623,376 @@ function landing_page(flash = {}, values = {}) {
 function terms_page() {
   return page_shell(
     'Partner program terms',
-    `<section class="hero" style="padding-bottom:24px">
+    `<section class="hero" style="padding-bottom:18px">
   <div class="legal">
     <div class="eyebrow">Legal</div>
     <h1>Partner Program Terms</h1>
-    <p class="meta">Version 1.0 &middot; Effective 17 November 2026 &middot; Hartwell Labs, Szczecin, Poland</p>
-    <p class="lede" style="font-size:15px">These terms govern participation in the Talus Partner Program. By applying, accepting a referral link or requesting a payout, you agree to them. If you do not agree, do not participate.</p>
+    <p class="meta">Version 2.0 &middot; Effective 17 November 2026 &middot; Hartwell Labs, Szczecin, Poland</p>
+    <p class="lede" style="font-size:15px">These terms govern participation in the Talus Partner Program. By applying, accepting a referral link or requesting a payout, you agree to them. Section 1 explains the whole arrangement in plain language; the sections after it are the binding agreement.</p>
   </div>
 </section>
 
-<section style="padding-top:8px">
-  <div class="legal">
-    <h2>1. The program</h2>
-    <p>Hartwell Labs ("Company", "we", "us") operates the Talus Partner Program (the "Program"). The Program lets approved affiliates ("Affiliate", "you") refer customers to Talus, an eBPF-based ransomware detection and response product for Linux, and earn a commission on collected revenue.</p>
-    <p>The Program is free to join. It does not create an employment, agency, franchise, joint venture or fiduciary relationship. You act as an independent contractor and have no authority to bind the Company.</p>
-
-    <h2>2. Eligibility and enrollment</h2>
-    <p>You must be at least 18 years old, legally able to enter into a contract, and not barred from the Program under applicable law. We review every application manually and may accept or decline it for any lawful reason, including audience quality, brand fit and compliance risk.</p>
-    <p>Enrollment takes effect when we send you a written acceptance and a private dashboard link. We may limit the number of active Affiliates and may close enrollment at any time.</p>
-
-    <h2>3. Definitions</h2>
-    <ul>
-      <li><strong>Referral Link</strong> &mdash; the tracked link or code assigned to you in the dashboard.</li>
-      <li><strong>Customer</strong> &mdash; a new customer who purchases a Talus subscription after clicking your Referral Link, as recorded by our attribution system.</li>
-      <li><strong>Net Revenue</strong> &mdash; the pre-tax amount actually collected from a Customer, less refunds, chargebacks, payment-processor fees, taxes and any amount that is not ultimately retained by the Company.</li>
-      <li><strong>Commission</strong> &mdash; 20% of Net Revenue, calculated as described in section 4.</li>
-      <li><strong>Attribution Window</strong> &mdash; 90 days from the click on your Referral Link.</li>
-    </ul>
-
-    <h2>4. Commission</h2>
-    <p>We pay <strong>20% of Net Revenue</strong> on the first paid invoice and on every renewal for as long as the Customer remains subscribed. Commission is recurring, not a one-time bounty.</p>
-    <p>No Commission is payable on: taxes; amounts that are refunded, reversed or never collected; fraudulent or disputed orders; purchases by you, your employees or related parties; or orders that we determine were generated through prohibited conduct.</p>
-    <p>If a payment is refunded or charged back, the related Commission is reversed proportionally. If the reversal exceeds your available balance, the negative amount may be offset against future Commission.</p>
-
-    <h2>5. Attribution</h2>
-    <p>A click on your Referral Link stores your code in the buyer's browser for 90 days. Checkout carries the same code through Stripe as <code>client_reference_id</code>, and our webhook records the Commission in your ledger.</p>
-    <p>Attribution depends on the buyer using the same browser and not blocking or deleting cookies. We do not guarantee attribution where tracking is prevented, where the buyer uses a different device, or where a later eligible referral replaces an earlier one. Our records are conclusive, acting reasonably and in good faith.</p>
-
-    <h2>6. Payouts</h2>
-    <p>You can request a payout from the dashboard whenever your available balance is above zero. We review each request manually and normally process approved payouts within 14 business days. PayPal is the default method; payment by invoice is available where we agree.</p>
-    <p>Payouts are made in USD. Currency conversion and payment-provider fees may be deducted. You are responsible for your own taxes, social contributions and any registration required in your jurisdiction. We may withhold amounts required by law.</p>
-
-    <h2>7. Affiliate obligations</h2>
-    <ul>
-      <li>Promote Talus honestly and only make claims you can support.</li>
-      <li>Clearly disclose your affiliate relationship wherever you promote the Program, in line with applicable advertising and consumer-protection rules.</li>
-      <li>Comply with all laws, platform rules and anti-spam requirements.</li>
-      <li>Keep your account details and payout information accurate.</li>
-      <li>Do not promise results, security outcomes or savings that Talus does not guarantee.</li>
-    </ul>
-
-    <h2>8. Prohibited conduct</h2>
-    <p>The following is not permitted: unsolicited bulk email or messages; coupon, cashback, rebate or deal sites; paid search bidding on "Talus", "Hartwell Labs" or confusingly similar terms; cookie stuffing, click fraud, self-referrals or incentivised clicks; fake reviews or fabricated endorsements; malware, adware or forced redirects; impersonating the Company; and any conduct that is unlawful, deceptive or harmful to the Company's reputation.</p>
-    <p>We may withhold or reclaim Commission connected to prohibited conduct and terminate the account immediately.</p>
-
-    <h2>9. Intellectual property</h2>
-    <p>We grant you a limited, revocable, non-exclusive, non-transferable licence to use the Talus name, logo and approved marketing materials solely to promote the Program during your participation. You may not modify the marks, register domain names or social handles confusingly similar to them, or use them after termination. All goodwill belongs to the Company.</p>
-
-    <h2>10. Confidentiality and data</h2>
-    <p>Dashboard links, customer information, Commission data and non-public business information are confidential. Do not share your dashboard link; anyone with it can see your balance and request payouts. You may use customer data only to the extent necessary to perform under these terms and must protect it with reasonable security.</p>
-    <p>The Company processes your personal data to administer the Program, prevent fraud and comply with law. The legal bases are performance of these terms, our legitimate interests and legal obligations. You may request access, correction, deletion or restriction by writing to <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a>. Attribution cookies are used only to measure referrals.</p>
-
-    <h2>11. Term and termination</h2>
-    <p>These terms apply while you participate. Either party may terminate with 30 days' written notice. We may suspend or terminate immediately for breach, prohibited conduct, fraud or risk to the Company or its customers.</p>
-    <p>After termination, you must stop using the Referral Link and the Company's marks. Commission properly earned on Customers acquired before termination remains payable, subject to refunds, chargebacks and these terms. Sections that by their nature should survive &mdash; including confidentiality, intellectual property, liability and governing law &mdash; survive termination.</p>
-
-    <h2 id="equity">12. Founding affiliate equity consideration (first four affiliates)</h2>
-    <p><strong>This section applies only to the first four Affiliates approved into the Program</strong>, determined by the timestamp of the Company's written acceptance. It does not apply to any other Affiliate, regardless of performance.</p>
-    <p>After the fifth anniversary of the Company's incorporation, the Company <strong>may</strong>, in its sole and absolute discretion, decide to offer an eligible Founding Affiliate a grant of up to <strong>0.5% of the Company's shares</strong>. The Company may also decide not to grant any equity, to grant less than 0.5%, or to make an offer to fewer than four Affiliates. Each case is considered individually.</p>
-    <p><strong>No entitlement.</strong> Nothing in these terms, the Program, an acceptance email, a dashboard, a referral link or any communication creates an obligation, promise, expectation or right to receive shares, options, dividends, profit participation or any other equity interest. Eligibility is not a guarantee and may not be relied on for any purpose.</p>
-    <p>Any grant would be subject to the Company's board and shareholder approvals, satisfactory due diligence, definitive grant and shareholder agreements, vesting and leaver provisions, and any other conditions the Company requires. The Company does not promise any valuation, liquidity event, dividend, information right or exit. Any shares would be subject to dilution and to the Company's constitutional documents.</p>
-    <p>Eligibility ends automatically on termination for cause, material breach, fraud or prohibited conduct, or after 12 consecutive months without an active referral. Eligibility is personal and may not be transferred, assigned or inherited. Nothing in this section is an offer of securities, investment advice or a promise of future employment or engagement.</p>
-
-    <h2>13. Disclaimer and liability</h2>
-    <p>The Program is provided "as is". We do not guarantee any level of traffic, sales, revenue or Commission. To the maximum extent permitted by law, we are not liable for indirect, incidental, special, consequential or punitive damages, or for lost profits, revenue, data or goodwill.</p>
-    <p>Our aggregate liability under these terms is limited to the Commission paid or payable to you in the six months before the event giving rise to the claim. Nothing limits liability that cannot be limited under mandatory law, including liability for fraud or wilful misconduct.</p>
-
-    <h2>14. Changes</h2>
-    <p>We may update these terms to reflect changes in the Program, law or our business. We will give at least 14 days' notice by email or in the dashboard before a material change takes effect. Continued participation after the effective date means acceptance. If you do not agree, you may terminate before the change takes effect.</p>
-
-    <h2>15. Governing law and contact</h2>
-    <p>These terms are governed by Polish law. The parties will first attempt to resolve disputes in good faith; otherwise the competent courts for Szczecin, Poland, have jurisdiction. If any provision is invalid, the remaining provisions stay in force. The English version prevails over any translation.</p>
-    <p>Questions about these terms: <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a>.</p>
+<div class="terms-bar">
+  <div class="wrap">
+    <div class="terms-tools">
+      <div class="terms-search">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7" stroke="#64748b" stroke-width="1.8"/><path d="m16.5 16.5 4 4" stroke="#64748b" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input id="terms-search" type="search" placeholder="Search the terms &mdash; equity, payouts, termination&hellip;" aria-label="Search the terms" autocomplete="off" spellcheck="false">
+        <kbd aria-hidden="true">/</kbd>
+        <button type="button" id="terms-clear" aria-label="Clear search" hidden>&times;</button>
+      </div>
+      <div class="terms-meta"><span id="terms-count" aria-live="polite">23 sections</span><span>Version 2.0</span></div>
+    </div>
   </div>
-</section>`,
+</div>
+
+<nav class="toc" id="terms-toc" aria-label="Contents">
+  <a href="#summary">1. The short version</a>
+  <a href="#scope">2. Scope</a>
+  <a href="#definitions">3. Definitions</a>
+  <a href="#eligibility">4. Eligibility</a>
+  <a href="#attribution">5. Attribution</a>
+  <a href="#commission">6. Commission</a>
+  <a href="#payouts">7. Payouts</a>
+  <a href="#obligations">8. Your obligations</a>
+  <a href="#prohibited">9. Prohibited conduct</a>
+  <a href="#ip">10. Intellectual property</a>
+  <a href="#confidentiality">11. Confidentiality</a>
+  <a href="#data">12. Data protection</a>
+  <a href="#term">13. Term and termination</a>
+  <a href="#equity" class="toc-key">14. Founding equity</a>
+  <a href="#warranties">15. Representations</a>
+  <a href="#indemnity">16. Indemnity</a>
+  <a href="#liability">17. Liability</a>
+  <a href="#force-majeure">18. Force majeure</a>
+  <a href="#changes">19. Changes</a>
+  <a href="#notices">20. Notices</a>
+  <a href="#general">21. General</a>
+  <a href="#law">22. Governing law</a>
+  <a href="#contact">23. Contact</a>
+</nav>
+
+<div class="terms-empty" id="terms-empty" hidden>
+  <strong>No section matches that search.</strong>
+  <span>Try a broader word: &ldquo;equity&rdquo;, &ldquo;payout&rdquo;, &ldquo;refund&rdquo;, &ldquo;termination&rdquo; or &ldquo;tax&rdquo;.</span>
+</div>
+
+<section style="padding-top:10px">
+  <div class="legal" id="terms-doc">
+
+    <h2 id="summary">1. The short version</h2>
+    <p>This section is a map, not a substitute for the terms. Where it differs from a later section, the later section wins.</p>
+    <ol class="flow">
+      <li><strong>Apply.</strong> We review every application by hand and accept or decline it in writing.</li>
+      <li><strong>Get your link.</strong> If accepted, you receive a private dashboard and a tracked referral link.</li>
+      <li><strong>Refer.</strong> A new customer clicks your link. We attribute the purchase to you for 90 days.</li>
+      <li><strong>Earn.</strong> You receive 20% of Net Revenue on the first invoice and on every renewal, for as long as the customer stays.</li>
+      <li><strong>Get paid.</strong> Request a payout from the dashboard. We review it and pay, normally within 14 business days.</li>
+      <li><strong>Founding affiliates.</strong> The first four approved affiliates may, at our sole discretion, be considered for up to 0.5% equity after the company has existed for five years. This is a possibility, not a promise. Section 14 controls.</li>
+    </ol>
+    <div class="callout">
+      <strong>The one number to remember:</strong> 20% of what we actually collect, recurring. No one-time bounty, no fixed cap.
+    </div>
+
+    <h2 id="scope">2. Scope and acceptance</h2>
+    <p>Hartwell Labs (&ldquo;Company&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) operates the Talus Partner Program (the &ldquo;Program&rdquo;) from Szczecin, Poland. The Program lets approved affiliates (&ldquo;Affiliate&rdquo;, &ldquo;you&rdquo;) refer customers to Talus, an eBPF-based ransomware detection and response product for Linux, and earn a commission on collected revenue.</p>
+    <p>You accept these terms when you submit an application, use a referral link, access the dashboard or request a payout. The agreement between us consists of these terms, your written acceptance and any notices we publish in the dashboard. If you do not agree, do not participate.</p>
+    <p>The Program is free to join. It does not create employment, agency, franchise, joint venture, partnership or fiduciary duties. You are an independent contractor and may not bind the Company or speak as its official representative.</p>
+    <p>If you act as a consumer within the meaning of Polish or EU law, mandatory consumer-protection provisions apply and prevail over anything in these terms that would reduce your statutory rights. Nothing here is legal, tax or investment advice to you.</p>
+
+    <h2 id="definitions">3. Definitions</h2>
+    <p>These words have the following meanings throughout the agreement.</p>
+    <ul class="defs">
+      <li><strong>Affiliate</strong> &mdash; a person or entity accepted into the Program in writing by the Company.</li>
+      <li><strong>Application</strong> &mdash; the form and materials you submit to join the Program.</li>
+      <li><strong>Attribution Window</strong> &mdash; 90 days from the click on your Referral Link.</li>
+      <li><strong>Business Day</strong> &mdash; Monday to Friday, excluding Polish public holidays.</li>
+      <li><strong>Commission</strong> &mdash; 20% of Net Revenue, calculated under section 6.</li>
+      <li><strong>Company</strong> &mdash; Hartwell Labs, Szczecin, Poland.</li>
+      <li><strong>Confidential Information</strong> &mdash; non-public information described in section 11.</li>
+      <li><strong>Customer</strong> &mdash; a person or entity that was not already a paying Talus customer at the time of the click and that purchases a subscription after an eligible click on your Referral Link.</li>
+      <li><strong>Dashboard</strong> &mdash; the private web page where you see clicks, referrals, Commission and payouts.</li>
+      <li><strong>Founding Affiliate</strong> &mdash; one of the first four Affiliates approved into the Program, as recorded by the Company under section 14.</li>
+      <li><strong>Net Revenue</strong> &mdash; the pre-tax amount actually collected from a Customer, less refunds, chargebacks, payment-processor fees, taxes and any amount the Company does not ultimately retain.</li>
+      <li><strong>Program</strong> &mdash; the Talus Partner Program operated under these terms.</li>
+      <li><strong>Referral Link</strong> &mdash; the tracked link or code assigned to you in the Dashboard.</li>
+      <li><strong>Talus</strong> &mdash; the Talus process monitor product line, including its MIT community edition and licensed enterprise edition.</li>
+      <li><strong>Taxes</strong> &mdash; VAT, sales tax, withholding, social contributions and any similar charge.</li>
+      <li><strong>Term</strong> &mdash; the period from written acceptance until termination under section 13.</li>
+    </ul>
+
+    <h2 id="eligibility">4. Eligibility and enrollment</h2>
+    <p>You must be at least 18 years old, have legal capacity to contract, and not be barred from the Program by law, sanctions or a previous removal for cause. If you apply on behalf of a company, you confirm that you are authorised to bind it.</p>
+    <p>We review every Application manually. We may accept or decline it for any lawful reason, including audience quality, brand fit, compliance risk or the existence of a conflict. We do not have to give a reason for a decline, and a decline is not a breach of these terms.</p>
+    <p>Enrollment takes effect when we send a written acceptance and Dashboard access. We may ask for business details, tax forms or identity verification before enrollment or before a payout, and may withhold payment until verification is complete. We may limit the number of active Affiliates and close enrollment at any time.</p>
+    <p>You may hold one Affiliate account unless we agree otherwise in writing. You must keep your details accurate and must not apply through automated means, false identities or another person&rsquo;s details.</p>
+
+    <h2 id="attribution">5. Attribution</h2>
+    <p>A click on your Referral Link stores your code in the buyer&rsquo;s browser for 90 days. At checkout the code travels to Stripe as <code>client_reference_id</code>; our webhook records the resulting Commission in your ledger. This is the chain we rely on.</p>
+    <p>The most recent eligible click before checkout replaces an earlier one. Attribution depends on the buyer using the same browser, not blocking or deleting cookies, and completing the purchase within the Attribution Window. We do not attribute direct visits, purchases on another device, purchases after the window, or purchases influenced by another channel that we cannot verify.</p>
+    <p>Our ledger is presumptive evidence of attribution. If you believe a referral is missing, write to us within 30 days of the invoice with the order, date, link and any supporting evidence. We will review it in good faith and correct genuine errors. We do not adjust the ledger for suspected but unverifiable referrals.</p>
+    <p>No Commission is payable on an order that results from prohibited conduct, even if the technical attribution is present.</p>
+
+    <h2 id="commission">6. Commission</h2>
+    <p>We pay <strong>20% of Net Revenue</strong> on the first paid invoice and on every renewal for as long as the Customer remains subscribed. Commission is recurring, not a one-time bounty.</p>
+    <p>Net Revenue excludes Taxes, refunds, chargebacks, payment-processor fees, credits, write-offs, amounts never collected and any amount the Company does not ultimately retain. If a Customer pays in a currency other than USD, we convert at the rate our payment processor reports on the collection date.</p>
+    <p>No Commission is payable on purchases by you, your employees, contractors or related parties; on fraudulent, disputed or test orders; on orders generated through prohibited conduct; on customers that already had a paid Talus subscription before the click; or on amounts that are later reversed.</p>
+    <p>If a payment is refunded or charged back, the related Commission is reversed proportionally. If the reversal exceeds your available balance, the negative amount may be offset against future Commission. Commission is not salary, does not accrue benefits, and does not create an employment relationship.</p>
+    <div class="example">
+      <div class="example-head">Worked example &mdash; illustrative only</div>
+      <table>
+        <tbody>
+          <tr><td>Customer pays</td><td>$100 per month</td></tr>
+          <tr><td>Your Commission</td><td>$20 per month</td></tr>
+          <tr><td>Customer stays 12 months</td><td>$240 in total</td></tr>
+          <tr><td>One $100 invoice is refunded</td><td>$20 is reversed</td></tr>
+        </tbody>
+      </table>
+      <p>Actual amounts depend on the customer&rsquo;s plan, currency, taxes and payments collected. This example is not a promise of earnings.</p>
+    </div>
+
+    <h2 id="payouts">7. Payouts</h2>
+    <p>You can request a payout from the Dashboard whenever your available balance is above zero. We review each request manually and normally process approved payouts within 14 Business Days. PayPal is the default method; payment by invoice is available where we agree in writing.</p>
+    <p>Payouts are made in USD to an account in your name. Currency conversion and payment-provider fees may be deducted. We may set a reasonable minimum payout amount in the Dashboard; if we do, it applies equally to all Affiliates. We do not pay interest on balances.</p>
+    <p>You are responsible for your own Taxes, social contributions and any registration required where you live. We may withhold amounts required by law and may ask for a tax form before paying. You must tell us promptly if your tax status or payout details change.</p>
+    <p>We may pause a payout while we investigate fraud, a chargeback, a duplicate account or a breach of these terms. A pause is not a forfeiture; once the review ends, we release what is properly payable or explain in writing what was reversed and why.</p>
+    <p>If you dispute a statement, write to us within 30 days of the payout or statement date. After that period, the statement is treated as accepted, except for manifest error or fraud.</p>
+
+    <h2 id="obligations">8. Your obligations</h2>
+    <ul>
+      <li>Promote Talus honestly, with claims you can support from our published documentation.</li>
+      <li>Clearly disclose that you earn a commission, wherever you promote the Program and in line with advertising and consumer-protection rules.</li>
+      <li>Comply with all applicable laws, platform rules, anti-spam rules and sanctions.</li>
+      <li>Do not promise security outcomes, certifications, savings or performance that Talus does not guarantee.</li>
+      <li>Keep your Dashboard link, login and payout details secure. Anyone with the link can see your balance and request a payout.</li>
+      <li>Keep your contact, business and tax details accurate and respond to reasonable verification requests.</li>
+      <li>Maintain the audience or channel you described in your Application; if it changes materially, tell us.</li>
+    </ul>
+    <p>You are responsible for your content, your audience and anyone who acts on your behalf. We are not responsible for statements you make that go beyond our published materials.</p>
+
+    <h2 id="prohibited">9. Prohibited conduct</h2>
+    <p>The following is not permitted:</p>
+    <ul>
+      <li>unsolicited bulk email, messages, comments or automated DMs;</li>
+      <li>coupon, cashback, rebate, deal or &ldquo;discount code&rdquo; sites, unless we approve the channel in writing;</li>
+      <li>paid search or social bidding on &ldquo;Talus&rdquo;, &ldquo;Hartwell Labs&rdquo; or confusingly similar terms;</li>
+      <li>registering domains, social handles or ads that impersonate Talus or the Company;</li>
+      <li>cookie stuffing, click fraud, forced redirects, adware, malware or traffic from botnets;</li>
+      <li>self-referrals, circular referrals, fake customers or purchases made to generate Commission;</li>
+      <li>fake reviews, fabricated endorsements or paid engagement that is not disclosed;</li>
+      <li>incentivising clicks or purchases in a way that is not clearly disclosed;</li>
+      <li>reselling, sharing or publishing license keys, or distributing the licensed enterprise binary;</li>
+      <li>reverse engineering the licensed binary except where mandatory law permits it;</li>
+      <li>violating privacy, data-protection, intellectual-property or export-control law;</li>
+      <li>any other conduct that is unlawful, deceptive or harms the Company or its customers.</li>
+    </ul>
+    <p>We may withhold or reclaim Commission connected to prohibited conduct, suspend the account during an investigation and terminate immediately. We may also report conduct to the relevant platform or authority where the law requires or permits it.</p>
+
+    <h2 id="ip">10. Intellectual property and brand use</h2>
+    <p>We grant you a limited, revocable, non-exclusive, non-transferable licence to use the Talus name, logo and approved marketing materials solely to promote the Program during the Term. You may not modify the marks, combine them with your own marks in a confusing way, register domain names or social handles similar to them, or use them after termination.</p>
+    <p>All goodwill from your use belongs to the Company. You may not suggest that you are Talus, an official reseller, a certified partner or an employee unless we say so in writing. The MIT community edition remains under the MIT licence; the licensed enterprise edition is governed by its own commercial licence and is not redistributable.</p>
+    <p>If you send us feedback or suggestions, you grant us a perpetual, worldwide, royalty-free licence to use them without obligation to you. This does not transfer your own pre-existing content or customer list.</p>
+
+    <h2 id="confidentiality">11. Confidentiality</h2>
+    <p>Confidential Information includes your Dashboard link, Commission data, customer information, unpublished pricing, roadmaps, security details and any non-public business information we share. You may use it only to perform under these terms and must protect it with at least reasonable care.</p>
+    <p>This does not apply to information that is public without your breach, that you already lawfully knew, that you receive from a third party without a duty of confidence, or that the law requires you to disclose (after notice where lawful).</p>
+    <p>The duty lasts during the Term and for three years after it, and indefinitely for trade secrets. On termination you must stop using Confidential Information and delete or return it on request. A breach may cause harm that money cannot repair, so we may seek injunctive relief in addition to other remedies.</p>
+
+    <h2 id="data">12. Data protection and privacy</h2>
+    <p>The Company is the controller of personal data processed to run the Program. We process your contact, business, payout and tax details to assess your Application, administer the Program, prevent fraud, pay Commission and comply with law. The legal bases are performance of these terms, our legitimate interests and legal obligations.</p>
+    <p>We share data only with providers that help us run the Program &mdash; for example Stripe for payments, Cloudflare for hosting and our email provider &mdash; under appropriate safeguards. Some providers may process data outside the EEA; where that happens, we rely on an adequacy decision or standard contractual clauses. We do not sell personal data.</p>
+    <p>We keep data for as long as you participate and for the period needed to meet tax, accounting, fraud-prevention and limitation obligations. You may request access, correction, deletion, restriction, portability or objection by writing to <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a>. You may also complain to the Polish supervisory authority (UODO).</p>
+    <p>Attribution cookies are used only to measure referrals and are described in our cookie notice. If you collect your own leads, you are an independent controller for that data and must have your own lawful basis and privacy notice. Do not send us personal data you are not allowed to share.</p>
+
+    <h2 id="term">13. Term, suspension and termination</h2>
+    <p>These terms apply from written acceptance until terminated. Either party may terminate with 30 days&rsquo; written notice. We may suspend or terminate immediately for breach, prohibited conduct, fraud, a security risk, a legal requirement or conduct that harms the Company or its customers.</p>
+    <p>On termination you must stop promoting Talus, remove your Referral Link and stop using the Company&rsquo;s marks. Dashboard access ends. Commission properly earned on Customers acquired before termination remains payable under section 7, subject to refunds, chargebacks, holds and these terms. We do not pay compensation for lost opportunity, goodwill or expected future Commission.</p>
+    <p>Sections that by their nature should survive &mdash; including definitions, confidentiality, intellectual property, data protection, indemnity, liability, general provisions and governing law &mdash; survive termination. Termination does not affect accrued rights or remedies.</p>
+
+    <h2 id="equity" class="clause-key">14. Founding affiliate equity consideration (first four affiliates)</h2>
+    <div class="callout callout-key">
+      <strong>Read this section as a possibility, not a promise.</strong> The Company may decide to offer equity. It is never obliged to, and no Affiliate has a claim to it.
+    </div>
+    <p><strong>Who is eligible.</strong> This section applies only to the first four Affiliates approved into the Program, determined by the timestamp of the Company&rsquo;s written acceptance. The Company&rsquo;s record of that order is conclusive. It does not apply to any other Affiliate, regardless of performance, revenue or tenure.</p>
+    <p><strong>What may happen.</strong> After the Company has existed for five years, the Company <strong>may</strong>, in its sole and absolute discretion, decide to offer an eligible Founding Affiliate a grant of up to <strong>0.5% of the Company&rsquo;s shares</strong>. The Company may also decide not to grant any equity, to grant less than 0.5%, or to make an offer to fewer than four Affiliates. Each case is considered individually.</p>
+    <p><strong>No entitlement.</strong> Nothing in these terms, the Program, an acceptance email, a Dashboard, a Referral Link or any communication creates an obligation, promise, expectation or right to receive shares, options, dividends, profit participation or any other equity interest. Eligibility is not a guarantee and may not be relied on for any purpose, including raising finance, making a claim or valuing your business.</p>
+    <p><strong>Conditions.</strong> Any grant would be subject to the Company&rsquo;s board and shareholder approvals, satisfactory due diligence, definitive grant and shareholder agreements, vesting and leaver provisions, and any other conditions the Company requires. The Company does not promise any valuation, liquidity event, dividend, information right or exit. Any shares would be subject to dilution and to the Company&rsquo;s constitutional documents. Nothing here obliges the Company to create an option pool or reserve shares.</p>
+    <p><strong>When eligibility ends.</strong> Eligibility ends automatically on termination for cause, material breach, fraud or prohibited conduct, or after 12 consecutive months without an active referral. Eligibility is personal and may not be transferred, assigned or inherited. Any grant would be subject to the tax rules applicable to you at the time.</p>
+    <p><strong>Not an offer of securities.</strong> This section is not an offer of securities, investment advice or a promise of future employment or engagement. Any actual offer would be made in a separate document and only where lawful.</p>
+
+    <h2 id="warranties">15. Representations and warranties</h2>
+    <p>You represent that you have authority to enter these terms, that your participation does not breach any agreement or law, that the information you give us is true and complete, and that your promotion will not contain malware, unlawful content or misleading claims. You will tell us promptly if any of this changes.</p>
+    <p>We represent that we operate the Program with reasonable skill and care and that we have the right to grant the licences in section 10. We do not warrant that the Program will be uninterrupted, error-free or produce any particular number of clicks, customers or revenue.</p>
+
+    <h2 id="indemnity">16. Indemnity</h2>
+    <p>You will indemnify and hold harmless the Company, its directors, employees and contractors from third-party claims, losses, liabilities, damages and reasonable costs (including legal fees) arising from your promotion of Talus, your breach of these terms, your violation of law, or your infringement of intellectual-property, privacy or publicity rights.</p>
+    <p>We will notify you promptly of a covered claim, may control its defence, and will reasonably cooperate. You may not settle a claim in a way that admits fault by the Company without our written consent. This section does not apply to the extent the claim is caused by our own breach, negligence or wilful misconduct.</p>
+
+    <h2 id="liability">17. Limitation of liability</h2>
+    <p>To the maximum extent permitted by law, neither party is liable for indirect, incidental, special, consequential or punitive damages, or for lost profits, revenue, data, goodwill or business opportunity, even if advised of the possibility.</p>
+    <p>Our aggregate liability under these terms is limited to the Commission paid or payable to you in the six months before the event giving rise to the claim. This cap does not apply to fraud, wilful misconduct, death or personal injury caused by negligence, or any liability that mandatory law does not allow us to limit.</p>
+    <p>We do not guarantee any level of traffic, sales, revenue or Commission. You decide whether participating is worthwhile; we do not reimburse your costs, advertising spend or time.</p>
+
+    <h2 id="force-majeure">18. Force majeure</h2>
+    <p>Neither party is liable for a delay or failure caused by an event beyond its reasonable control, including natural disaster, war, civil unrest, epidemic, network or hosting failure, government action, sanctions or a prolonged third-party payment outage. The affected party will notify the other promptly and use reasonable efforts to resume. If the event lasts more than 30 days, either party may terminate.</p>
+
+    <h2 id="changes">19. Changes to the Program and these terms</h2>
+    <p>We may update these terms to reflect changes in the Program, law, payment rails or our business. We will give at least 14 days&rsquo; notice by email or in the Dashboard before a material change takes effect. Continued participation after the effective date means acceptance. If you do not agree, you may terminate before the change takes effect.</p>
+    <p>Changes do not apply retroactively to Commission already earned. We may change or close the Program, but we will honour properly earned Commission under section 7.</p>
+
+    <h2 id="notices">20. Notices</h2>
+    <p>We may send notices to the email address on your Application or publish them in the Dashboard. You are responsible for keeping that address current. A notice is treated as received 24 hours after sending, unless we receive a delivery failure. Legal notices to the Company must go to <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a>.</p>
+
+    <h2 id="general">21. General</h2>
+    <p>These terms are the entire agreement about the Program and replace earlier discussions. If a provision is invalid, the rest stays in force and the invalid part is replaced by the closest lawful meaning. A failure to enforce a right is not a waiver. You may not assign these terms without our written consent; we may assign them to a successor of the business. No third party has rights under this agreement except as stated in section 16.</p>
+    <p>Headings are for navigation only. The English version prevails over any translation. Where these terms conflict with your written acceptance, these terms prevail unless the acceptance expressly says otherwise.</p>
+
+    <h2 id="law">22. Governing law and disputes</h2>
+    <p>These terms are governed by Polish law, without regard to conflict-of-law rules. Before starting proceedings, the parties will try in good faith for 30 days to resolve the dispute through the contact address in section 23. If that fails, the competent courts for Szczecin, Poland, have jurisdiction, subject to any mandatory consumer forum.</p>
+    <p>Nothing in this section prevents either party from seeking urgent injunctive relief to protect confidentiality or intellectual property. If you are a consumer, mandatory rules on jurisdiction and applicable law still apply.</p>
+
+    <h2 id="contact">23. Contact and version</h2>
+    <p>Questions, notices and disputes: <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a>. Hartwell Labs, Szczecin, Poland.</p>
+    <p class="meta">Version 2.0 &middot; 17 November 2026. Version 1.0 was published on the same date and replaced by this version. This document is not legal advice to you; if you need advice about your own position, consult a lawyer.</p>
+
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+  var doc = document.getElementById('terms-doc');
+  if (!doc) return;
+  var input = document.getElementById('terms-search');
+  var clear = document.getElementById('terms-clear');
+  var count = document.getElementById('terms-count');
+  var empty = document.getElementById('terms-empty');
+  var toc = document.getElementById('terms-toc');
+  var headings = Array.prototype.slice.call(doc.querySelectorAll('h2'));
+  var clauses = [];
+
+  function normalize(value) {
+    return String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\\u0300-\\u036f]/g, '')
+      .replace(/\\s+/g, ' ')
+      .trim();
+  }
+
+  headings.forEach(function (heading) {
+    var box = document.createElement('div');
+    box.className = 'clause';
+    heading.parentNode.insertBefore(box, heading);
+    var node = heading;
+    while (node) {
+      var next = node.nextSibling;
+      if (node !== heading && node.nodeType === 1 && node.tagName === 'H2') break;
+      box.appendChild(node);
+      if (!next) break;
+      node = next;
+    }
+    clauses.push({ el: box, text: normalize(box.textContent) });
+  });
+
+  function clearMarks() {
+    Array.prototype.slice.call(doc.querySelectorAll('mark.tm')).forEach(function (mark) {
+      var parent = mark.parentNode;
+      parent.replaceChild(document.createTextNode(mark.textContent), mark);
+      parent.normalize();
+    });
+  }
+
+  function markTokens(box, tokens) {
+    var walker = document.createTreeWalker(box, NodeFilter.SHOW_TEXT, null);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function (node) {
+      if (!node.nodeValue.trim()) return;
+      var text = node.nodeValue;
+      var lower = text.toLowerCase();
+      var ranges = [];
+      tokens.forEach(function (token) {
+        if (token.length < 2) return;
+        var from = 0;
+        while (from < lower.length) {
+          var at = lower.indexOf(token, from);
+          if (at < 0) break;
+          ranges.push([at, at + token.length]);
+          from = at + token.length;
+        }
+      });
+      if (!ranges.length) return;
+      ranges.sort(function (a, b) { return a[0] - b[0]; });
+      var merged = [];
+      ranges.forEach(function (range) {
+        var last = merged[merged.length - 1];
+        if (last && range[0] <= last[1]) last[1] = Math.max(last[1], range[1]);
+        else merged.push(range.slice());
+      });
+      var fragment = document.createDocumentFragment();
+      var cursor = 0;
+      merged.forEach(function (range) {
+        if (range[0] > cursor) fragment.appendChild(document.createTextNode(text.slice(cursor, range[0])));
+        var mark = document.createElement('mark');
+        mark.className = 'tm';
+        mark.textContent = text.slice(range[0], range[1]);
+        fragment.appendChild(mark);
+        cursor = range[1];
+      });
+      if (cursor < text.length) fragment.appendChild(document.createTextNode(text.slice(cursor)));
+      node.parentNode.replaceChild(fragment, node);
+    });
+  }
+
+  function apply() {
+    var query = normalize(input.value);
+    var tokens = query ? query.split(' ') : [];
+    var shown = 0;
+    clearMarks();
+    clauses.forEach(function (clause) {
+      var match = !tokens.length || tokens.every(function (token) {
+        return clause.text.indexOf(token) >= 0;
+      });
+      clause.el.hidden = !match;
+      if (match) shown++;
+    });
+    if (tokens.length) clauses.forEach(function (clause) {
+      if (!clause.el.hidden) markTokens(clause.el, tokens);
+    });
+    count.textContent = tokens.length
+      ? shown + (shown === 1 ? ' section matches' : ' sections match')
+      : clauses.length + ' sections';
+    empty.hidden = shown !== 0 || !tokens.length;
+    toc.hidden = tokens.length > 0;
+    clear.hidden = !input.value;
+  }
+
+  input.addEventListener('input', apply);
+  input.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape') {
+      input.value = '';
+      apply();
+      input.blur();
+    }
+  });
+  clear.addEventListener('click', function () {
+    input.value = '';
+    apply();
+    input.focus();
+  });
+  document.addEventListener('keydown', function (event) {
+    var tag = (event.target && event.target.tagName) || '';
+    if (event.key === '/' && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+      event.preventDefault();
+      input.focus();
+      input.select();
+    }
+  });
+
+  apply();
+})();
+</script>`,
   );
 }
 
