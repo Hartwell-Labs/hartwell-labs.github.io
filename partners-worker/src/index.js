@@ -416,7 +416,7 @@ summary::-webkit-details-marker{display:none}
 summary:after{content:"+";color:var(--accent);font-weight:700;font-size:18px;line-height:1}
 details[open] summary:after{content:"-"}
 details p{margin:10px 0 0;color:var(--txt-2);font-size:14.5px;max-width:760px;line-height:1.65}
-.apply-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:start}
+.legal{max-width:760px}.legal h1{font-size:clamp(30px,4.4vw,44px);margin-bottom:10px}.legal h2{font-size:19px;line-height:1.3;text-transform:none;letter-spacing:-.01em;margin:30px 0 8px}.legal p,.legal li{font-size:14px;line-height:1.78;color:var(--txt-2);margin:8px 0}.legal ul{padding-left:20px;margin:8px 0}.legal .meta{font-size:12.5px;color:var(--txt-3)}.legal code{font-size:12px}.legal a{color:var(--accent)}.apply-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:28px;align-items:start}
 .aside{border:1px solid var(--border);border-radius:12px;background:var(--bg-subtle);padding:22px}
 .aside ul{margin:0;padding-left:18px;color:var(--txt-2);font-size:14px}
 .aside li{margin:6px 0}
@@ -458,7 +458,7 @@ ${body}
     </a>
     <p class="about">Affiliate program for Talus — behavioral ransomware detection and response for Linux.</p>
   </div>
-  <div><h5>Program</h5><a href="/">Overview</a><a href="/apply">Apply</a><a href="mailto:contact@hartwell-labs.pl?subject=Talus%20Partners%20dashboard%20link">Dashboard link</a></div>
+  <div><h5>Program</h5><a href="/">Overview</a><a href="/apply">Apply</a><a href="/terms">Terms</a><a href="mailto:contact@hartwell-labs.pl?subject=Talus%20Partners%20dashboard%20link">Dashboard link</a></div>
   <div><h5>Product</h5><a href="https://hartwell-labs.pl/talus-process-monitor/">talus-process-monitor</a><a href="https://download.hartwell-labs.pl/">Downloads</a><a href="https://wiki.hartwell-labs.pl/">Documentation</a></div>
   <div><h5>Company</h5><a href="https://hartwell-labs.pl/company">About</a><a href="https://hartwell-labs.pl/security">Security</a><a href="https://hartwell-labs.pl/privacy/">Privacy</a></div>
 </div>
@@ -557,6 +557,7 @@ function landing_page(flash = {}, values = {}) {
     <div class="card"><h3>Refunds reverse it</h3><p>If a payment is refunded, the matching commission is reversed proportionally. No clawback games beyond what was refunded.</p></div>
     <div class="card"><h3>Manual payouts</h3><p>Request any amount from the dashboard. We review and send it manually; PayPal is the default rail, invoices are available.</p></div>
   </div>
+  <p style="margin-top:18px"><a href="/terms">Full program terms →</a></p>
 </section>
 
 <section id="faq">
@@ -575,6 +576,97 @@ function landing_page(flash = {}, values = {}) {
   <h2 style="margin-bottom:12px">Apply once. Refer when it fits.</h2>
   <p class="muted" style="max-width:520px;margin:0 auto 26px">Applications are reviewed manually. If approved, you receive a private dashboard link and a tracked referral link.</p>
   <a class="btn" href="/apply">Apply to the program →</a>
+</section>`,
+  );
+}
+
+
+function terms_page() {
+  return page_shell(
+    'Partner program terms',
+    `<section class="hero" style="padding-bottom:24px">
+  <div class="legal">
+    <div class="eyebrow">Legal</div>
+    <h1>Partner Program Terms</h1>
+    <p class="meta">Version 1.0 &middot; Effective 17 November 2026 &middot; Hartwell Labs, Szczecin, Poland</p>
+    <p class="lede" style="font-size:15px">These terms govern participation in the Talus Partner Program. By applying, accepting a referral link or requesting a payout, you agree to them. If you do not agree, do not participate.</p>
+  </div>
+</section>
+
+<section style="padding-top:8px">
+  <div class="legal">
+    <h2>1. The program</h2>
+    <p>Hartwell Labs ("Company", "we", "us") operates the Talus Partner Program (the "Program"). The Program lets approved affiliates ("Affiliate", "you") refer customers to Talus, an eBPF-based ransomware detection and response product for Linux, and earn a commission on collected revenue.</p>
+    <p>The Program is free to join. It does not create an employment, agency, franchise, joint venture or fiduciary relationship. You act as an independent contractor and have no authority to bind the Company.</p>
+
+    <h2>2. Eligibility and enrollment</h2>
+    <p>You must be at least 18 years old, legally able to enter into a contract, and not barred from the Program under applicable law. We review every application manually and may accept or decline it for any lawful reason, including audience quality, brand fit and compliance risk.</p>
+    <p>Enrollment takes effect when we send you a written acceptance and a private dashboard link. We may limit the number of active Affiliates and may close enrollment at any time.</p>
+
+    <h2>3. Definitions</h2>
+    <ul>
+      <li><strong>Referral Link</strong> &mdash; the tracked link or code assigned to you in the dashboard.</li>
+      <li><strong>Customer</strong> &mdash; a new customer who purchases a Talus subscription after clicking your Referral Link, as recorded by our attribution system.</li>
+      <li><strong>Net Revenue</strong> &mdash; the pre-tax amount actually collected from a Customer, less refunds, chargebacks, payment-processor fees, taxes and any amount that is not ultimately retained by the Company.</li>
+      <li><strong>Commission</strong> &mdash; 20% of Net Revenue, calculated as described in section 4.</li>
+      <li><strong>Attribution Window</strong> &mdash; 90 days from the click on your Referral Link.</li>
+    </ul>
+
+    <h2>4. Commission</h2>
+    <p>We pay <strong>20% of Net Revenue</strong> on the first paid invoice and on every renewal for as long as the Customer remains subscribed. Commission is recurring, not a one-time bounty.</p>
+    <p>No Commission is payable on: taxes; amounts that are refunded, reversed or never collected; fraudulent or disputed orders; purchases by you, your employees or related parties; or orders that we determine were generated through prohibited conduct.</p>
+    <p>If a payment is refunded or charged back, the related Commission is reversed proportionally. If the reversal exceeds your available balance, the negative amount may be offset against future Commission.</p>
+
+    <h2>5. Attribution</h2>
+    <p>A click on your Referral Link stores your code in the buyer's browser for 90 days. Checkout carries the same code through Stripe as <code>client_reference_id</code>, and our webhook records the Commission in your ledger.</p>
+    <p>Attribution depends on the buyer using the same browser and not blocking or deleting cookies. We do not guarantee attribution where tracking is prevented, where the buyer uses a different device, or where a later eligible referral replaces an earlier one. Our records are conclusive, acting reasonably and in good faith.</p>
+
+    <h2>6. Payouts</h2>
+    <p>You can request a payout from the dashboard whenever your available balance is above zero. We review each request manually and normally process approved payouts within 14 business days. PayPal is the default method; payment by invoice is available where we agree.</p>
+    <p>Payouts are made in USD. Currency conversion and payment-provider fees may be deducted. You are responsible for your own taxes, social contributions and any registration required in your jurisdiction. We may withhold amounts required by law.</p>
+
+    <h2>7. Affiliate obligations</h2>
+    <ul>
+      <li>Promote Talus honestly and only make claims you can support.</li>
+      <li>Clearly disclose your affiliate relationship wherever you promote the Program, in line with applicable advertising and consumer-protection rules.</li>
+      <li>Comply with all laws, platform rules and anti-spam requirements.</li>
+      <li>Keep your account details and payout information accurate.</li>
+      <li>Do not promise results, security outcomes or savings that Talus does not guarantee.</li>
+    </ul>
+
+    <h2>8. Prohibited conduct</h2>
+    <p>The following is not permitted: unsolicited bulk email or messages; coupon, cashback, rebate or deal sites; paid search bidding on "Talus", "Hartwell Labs" or confusingly similar terms; cookie stuffing, click fraud, self-referrals or incentivised clicks; fake reviews or fabricated endorsements; malware, adware or forced redirects; impersonating the Company; and any conduct that is unlawful, deceptive or harmful to the Company's reputation.</p>
+    <p>We may withhold or reclaim Commission connected to prohibited conduct and terminate the account immediately.</p>
+
+    <h2>9. Intellectual property</h2>
+    <p>We grant you a limited, revocable, non-exclusive, non-transferable licence to use the Talus name, logo and approved marketing materials solely to promote the Program during your participation. You may not modify the marks, register domain names or social handles confusingly similar to them, or use them after termination. All goodwill belongs to the Company.</p>
+
+    <h2>10. Confidentiality and data</h2>
+    <p>Dashboard links, customer information, Commission data and non-public business information are confidential. Do not share your dashboard link; anyone with it can see your balance and request payouts. You may use customer data only to the extent necessary to perform under these terms and must protect it with reasonable security.</p>
+    <p>The Company processes your personal data to administer the Program, prevent fraud and comply with law. The legal bases are performance of these terms, our legitimate interests and legal obligations. You may request access, correction, deletion or restriction by writing to <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a>. Attribution cookies are used only to measure referrals.</p>
+
+    <h2>11. Term and termination</h2>
+    <p>These terms apply while you participate. Either party may terminate with 30 days' written notice. We may suspend or terminate immediately for breach, prohibited conduct, fraud or risk to the Company or its customers.</p>
+    <p>After termination, you must stop using the Referral Link and the Company's marks. Commission properly earned on Customers acquired before termination remains payable, subject to refunds, chargebacks and these terms. Sections that by their nature should survive &mdash; including confidentiality, intellectual property, liability and governing law &mdash; survive termination.</p>
+
+    <h2 id="equity">12. Founding affiliate equity consideration (first four affiliates)</h2>
+    <p><strong>This section applies only to the first four Affiliates approved into the Program</strong>, determined by the timestamp of the Company's written acceptance. It does not apply to any other Affiliate, regardless of performance.</p>
+    <p>After the fifth anniversary of the Company's incorporation, the Company <strong>may</strong>, in its sole and absolute discretion, decide to offer an eligible Founding Affiliate a grant of up to <strong>0.5% of the Company's shares</strong>. The Company may also decide not to grant any equity, to grant less than 0.5%, or to make an offer to fewer than four Affiliates. Each case is considered individually.</p>
+    <p><strong>No entitlement.</strong> Nothing in these terms, the Program, an acceptance email, a dashboard, a referral link or any communication creates an obligation, promise, expectation or right to receive shares, options, dividends, profit participation or any other equity interest. Eligibility is not a guarantee and may not be relied on for any purpose.</p>
+    <p>Any grant would be subject to the Company's board and shareholder approvals, satisfactory due diligence, definitive grant and shareholder agreements, vesting and leaver provisions, and any other conditions the Company requires. The Company does not promise any valuation, liquidity event, dividend, information right or exit. Any shares would be subject to dilution and to the Company's constitutional documents.</p>
+    <p>Eligibility ends automatically on termination for cause, material breach, fraud or prohibited conduct, or after 12 consecutive months without an active referral. Eligibility is personal and may not be transferred, assigned or inherited. Nothing in this section is an offer of securities, investment advice or a promise of future employment or engagement.</p>
+
+    <h2>13. Disclaimer and liability</h2>
+    <p>The Program is provided "as is". We do not guarantee any level of traffic, sales, revenue or Commission. To the maximum extent permitted by law, we are not liable for indirect, incidental, special, consequential or punitive damages, or for lost profits, revenue, data or goodwill.</p>
+    <p>Our aggregate liability under these terms is limited to the Commission paid or payable to you in the six months before the event giving rise to the claim. Nothing limits liability that cannot be limited under mandatory law, including liability for fraud or wilful misconduct.</p>
+
+    <h2>14. Changes</h2>
+    <p>We may update these terms to reflect changes in the Program, law or our business. We will give at least 14 days' notice by email or in the dashboard before a material change takes effect. Continued participation after the effective date means acceptance. If you do not agree, you may terminate before the change takes effect.</p>
+
+    <h2>15. Governing law and contact</h2>
+    <p>These terms are governed by Polish law. The parties will first attempt to resolve disputes in good faith; otherwise the competent courts for Szczecin, Poland, have jurisdiction. If any provision is invalid, the remaining provisions stay in force. The English version prevails over any translation.</p>
+    <p>Questions about these terms: <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a>.</p>
+  </div>
 </section>`,
   );
 }
@@ -611,7 +703,8 @@ ${flash_html}
         <p class="muted" style="font-size:12.5px;margin:7px 0 0">Up to 3 PDF files, 10 MB each. Media kit, portfolio or audience stats.</p>
       </div>
       <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
-      <button type="submit" style="margin-top:20px">Send application →</button>
+      <p class="muted" style="font-size:12px;margin:16px 0 0">By submitting this application you agree to the <a href="/terms">Partner Program Terms</a>.</p>
+      <button type="submit" style="margin-top:14px">Send application →</button>
     </form>
   </div>
   <aside class="aside">
@@ -1182,6 +1275,10 @@ export default {
 
     if (pathname === '/' || pathname === '') {
       return html(landing_page());
+    }
+
+    if (pathname === '/terms' || pathname === '/terms/') {
+      return html(terms_page());
     }
 
     if ((pathname === '/apply' || pathname === '/apply/') && request.method === 'GET') {
