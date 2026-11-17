@@ -345,7 +345,7 @@ h3{font-size:15.5px;font-weight:600;letter-spacing:-.01em;line-height:1.4}
 .term-body .path{color:#a5b4fc}
 .term-body .c{color:#64748b}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:16px}
-.grid.two{grid-template-columns:repeat(auto-fill,minmax(min(320px,100%),1fr))}
+.grid.two{grid-template-columns:repeat(2,1fr)}
 .grid.three{grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr))}
 .card{border:1px solid var(--border);border-radius:12px;padding:22px;background:var(--bg);transition:border-color .15s ease,box-shadow .15s ease}
 .card:hover{border-color:#c7d2fe;box-shadow:0 4px 16px rgba(79,70,229,.08)}
@@ -426,7 +426,7 @@ details p{margin:10px 0 0;color:var(--txt-2);font-size:14.5px;max-width:760px;li
 .stat-cards .card{padding:18px}
 .stat-cards .v{color:var(--txt)}
 @media(max-width:920px){.hero-grid,.earn,.apply-grid{grid-template-columns:1fr}.grid,.grid.two,.grid.three,.steps{grid-template-columns:1fr}.stat-cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:720px){nav.main{display:none}.header-in{height:auto;flex-wrap:wrap;padding:10px 0;row-gap:6px}section{padding:52px 0}section.hero{padding:54px 0 46px}.hero-grid{gap:30px}.stat-strip{grid-template-columns:1fr}.stat+.stat{border-left:0;border-top:1px solid var(--border)}.foot-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.header-in{height:auto;flex-wrap:wrap;padding:10px 0;row-gap:6px}nav.main{display:flex;width:100%;order:3;gap:18px;overflow-x:auto;-webkit-overflow-scrolling:touch}nav.main a{white-space:nowrap;font-size:13.5px;padding:6px 0}section{padding:52px 0}section.hero{padding:54px 0 46px}.hero-grid{gap:30px}.stat-strip{grid-template-columns:1fr}.stat+.stat{border-left:0;border-top:1px solid var(--border)}.grid.two{grid-template-columns:1fr}.foot-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:420px){.wrap{padding:0 18px}h1{font-size:clamp(28px,8.4vw,34px)}.stat-cards{grid-template-columns:1fr}.hero-actions .btn{width:100%}}
 </style>
 </head>
