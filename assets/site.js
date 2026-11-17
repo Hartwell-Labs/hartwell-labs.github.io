@@ -40,14 +40,14 @@
     foot.appendChild(s);
   }
 
-  /* --- Talus Partners: 60-day referral attribution ----------------------
+  /* --- Talus Partners: 90-day referral attribution ----------------------
      The partner link lands on /talus?ref=CODE. Store the code locally, refresh
      its timestamp on every visit, and put it on any static Stripe Payment Link
      as client_reference_id. The buy() handlers read window.TALUS_AFFILIATE and
      pass the same code to the licensed checkout API. */
   (function () {
     var KEY = "talus_ref";
-    var MAX_AGE = 60 * 24 * 60 * 60 * 1000;
+    var MAX_AGE = 90 * 24 * 60 * 60 * 1000;
     var now = Date.now();
     var code = "";
     try {

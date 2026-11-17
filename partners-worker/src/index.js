@@ -71,7 +71,7 @@ const HTML_HEADERS = {
   'x-content-type-options': 'nosniff',
   'x-frame-options': 'DENY',
   'content-security-policy':
-    "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+    "default-src 'none'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
 };
 
 function json(data, status = 200, extra = {}) {
@@ -274,38 +274,123 @@ function page_shell(title, body) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
 <title>${escape_html(title)} · Talus Partners</title>
+<meta name="description" content="Earn 20% recurring on every Talus subscription. Talus is eBPF ransomware detection and response for Linux, sold per node to teams that run servers.">
+<meta name="theme-color" content="#08080b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
-:root{color-scheme:light;--ink:#0f172a;--muted:#64748b;--line:#e2e8f0;--soft:#f8fafc;--accent:#4f46e5;--good:#047857;--bad:#b91c1c}
-*{box-sizing:border-box}body{margin:0;background:#fff;color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,sans-serif}
-main{max-width:980px;margin:0 auto;padding:32px 20px 64px}
-header{display:flex;justify-content:space-between;gap:16px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:26px}
-.brand{font-weight:800;letter-spacing:-.03em;font-size:20px}.brand span{color:var(--accent)}
-.muted{color:var(--muted)}h1{font-size:30px;letter-spacing:-.04em;margin:0 0 6px}h2{font-size:18px;margin:30px 0 12px}h3{font-size:15px;margin:0 0 8px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{border:1px solid var(--line);border-radius:12px;padding:16px;background:var(--soft)}
-.k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}label.k{display:block;margin-bottom:5px}.v{font-size:24px;font-weight:800;letter-spacing:-.04em;margin-top:6px}
-.box{border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:18px}.link{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-input,textarea{width:100%;max-width:520px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff;color:var(--ink)}
-textarea{min-height:110px;resize:vertical}input[readonly]{background:var(--soft)}
+:root{color-scheme:dark;--bg:#08080b;--panel:#101015;--panel2:#15151c;--line:#26262f;--line2:#33333e;--text:#ededf2;--muted:#9b9ba8;--dim:#6f6f7c;--rust:#f15a24;--rust2:#ff7a45;--good:#34d399;--bad:#f87171;--mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(900px 420px at 12% -8%,rgba(241,90,36,.16),transparent 60%),radial-gradient(700px 380px at 92% 4%,rgba(79,70,229,.13),transparent 65%);z-index:0}
+a{color:var(--rust2);text-decoration:none}a:hover{text-decoration:underline}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:0 24px}
+header.site{position:sticky;top:0;z-index:20;background:rgba(8,8,11,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.header-in{display:flex;align-items:center;justify-content:space-between;height:66px;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.01em;color:var(--text)}
+.brand:hover{text-decoration:none}.brand span{color:var(--rust)}
+nav.main{display:flex;gap:26px;align-items:center}nav.main a{font-size:13.5px;color:var(--muted);font-weight:500}nav.main a:hover{color:var(--text);text-decoration:none}
+.header-cta{display:inline-flex;align-items:center;height:36px;padding:0 16px;border-radius:8px;background:var(--rust);color:#fff!important;font-size:13px;font-weight:700}
+.header-cta:hover{background:var(--rust2);text-decoration:none}
+main{padding:0 0 20px}
+section{padding:64px 0;border-top:1px solid var(--line)}
+section.hero{border-top:0;padding:76px 0 56px}
+.kicker{display:inline-flex;align-items:center;gap:8px;font:600 11.5px/1 Inter,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--rust2);margin-bottom:18px}
+.kicker:before{content:"";width:18px;height:1px;background:var(--rust)}
+h1{font-size:clamp(38px,5.4vw,62px);line-height:1.04;letter-spacing:-.045em;margin:0 0 20px;font-weight:800}
+h1 .dim{color:var(--dim)}
+h2{font-size:clamp(24px,3vw,34px);line-height:1.12;letter-spacing:-.03em;margin:0 0 10px;font-weight:700}
+h3{font-size:15.5px;margin:0 0 8px;font-weight:700;letter-spacing:-.01em}
+.lede{font-size:17.5px;line-height:1.65;color:var(--muted);max-width:600px;margin:0 0 28px}
+.muted{color:var(--muted)}.dim{color:var(--dim)}
+.hero-grid{display:grid;grid-template-columns:1.04fr .96fr;gap:52px;align-items:center}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:30px 0 26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 22px;border-radius:10px;background:var(--rust);color:#fff;font:700 14.5px/1 Inter,sans-serif;border:1px solid transparent;cursor:pointer}
+.btn:hover{background:var(--rust2);text-decoration:none}
+.btn.secondary{background:transparent;border-color:var(--line2);color:var(--text)}
+.btn.secondary:hover{background:var(--panel2);border-color:#444}
+.btn.ghost{background:transparent;border:0;color:var(--muted);height:auto;padding:0}
+.btn.small{height:36px;padding:0 14px;font-size:13px}
+.hero-note{font-size:12.5px;color:var(--dim)}
+.stat-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-top:8px}
+.stat{background:var(--panel);padding:18px 20px}.stat .n{font:800 26px/1 Inter,sans-serif;letter-spacing:-.04em}.stat .l{font-size:11.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;font-weight:700;margin-top:6px}
+.terminal{border:1px solid var(--line2);border-radius:14px;background:#0b0b10;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line);background:#0e0e14}
+.dot{width:9px;height:9px;border-radius:50%;background:#2c2c36}.dot.r{background:#f15a24}.dot.a{background:#d9a441}.dot.g{background:#3f7f5c}
+.term-title{margin-left:8px;font:500 11.5px/1 var(--mono);color:var(--dim)}
+.term-body{padding:18px 18px 22px;font:12.5px/1.85 var(--mono);color:#c9c9d4;white-space:pre-wrap}
+.term-body .cmd{color:#fff}.term-body .ok{color:var(--good)}.term-body .warn{color:#e3b341}.term-body .kill{color:#ff6b5e;font-weight:600}.term-body .path{color:#8fa1ff}.term-body .c{color:var(--dim)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.grid.two{grid-template-columns:repeat(2,1fr)}.grid.three{grid-template-columns:repeat(3,1fr)}
+.card{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--panel)}
+.card p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.icon{width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;margin-bottom:14px;color:var(--rust2);font:700 13px/1 var(--mono)}
+.k{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);font-weight:700}label.k{display:block;margin-bottom:6px}
+.v{font-size:26px;font-weight:800;letter-spacing:-.04em;margin-top:6px}
+.box{border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:18px;background:var(--panel)}
+.link{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input,textarea,select{width:100%;max-width:560px;padding:11px 13px;border:1px solid var(--line2);border-radius:9px;font:inherit;background:#0b0b10;color:var(--text)}
+input:focus,textarea:focus{outline:none;border-color:var(--rust);box-shadow:0 0 0 3px rgba(241,90,36,.14)}
+textarea{min-height:120px;resize:vertical}input[readonly]{background:var(--panel2);font-family:var(--mono);font-size:12.5px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-button{appearance:none;border:0;border-radius:8px;background:var(--accent);color:#fff;padding:10px 16px;font:700 14px/1 inherit;cursor:pointer}
-button:hover{filter:brightness(.95)}button:disabled{opacity:.5;cursor:not-allowed}button.small{padding:7px 10px;font-size:12px}button.danger{background:var(--bad)}
-.btn{display:inline-block;border-radius:8px;background:var(--accent);color:#fff;padding:11px 18px;font-weight:700;text-decoration:none}
-input[type=file]{padding:9px;background:var(--soft)}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:180px}
+button{appearance:none;border:0;border-radius:9px;background:var(--rust);color:#fff;padding:11px 17px;font:700 14px/1 Inter,sans-serif;cursor:pointer}
+button:hover{background:var(--rust2)}button:disabled{opacity:.45;cursor:not-allowed}button.small{padding:7px 11px;font-size:12px}button.danger{background:var(--bad);color:#1a0505}
+input[type=file]{padding:10px;background:var(--panel2)}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:end}.row>div{flex:1;min-width:180px}
 .actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.actions form{margin:0}
-code{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--soft);padding:2px 5px;border-radius:4px}
-table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
-.pos{color:var(--good);font-weight:700}.neg{color:var(--bad);font-weight:700}.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:11px;color:var(--muted);background:#fff}
-.notice{border-left:3px solid var(--accent);background:#eef2ff;padding:10px 12px;border-radius:0 8px 8px 0;margin:12px 0;color:#3730a3;font-size:13.5px}
-.err{border-left-color:var(--bad);background:#fef2f2;color:#991b1b}.ok{border-left-color:var(--good);background:#ecfdf5;color:#065f46}
-a{color:var(--accent)}.foot{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
-@media(max-width:760px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:480px){.grid{grid-template-columns:1fr}}
+code{font:12px var(--mono);background:var(--panel2);border:1px solid var(--line);padding:2px 6px;border-radius:5px;color:#d6d6e0}
+table{width:100%;border-collapse:collapse;font-size:13.5px}th,td{text-align:left;padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top}tr:last-child td{border-bottom:0}th{color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+.pos{color:var(--good);font-weight:700}.neg{color:var(--bad);font-weight:700}
+.badge{display:inline-block;border:1px solid var(--line2);border-radius:999px;padding:3px 9px;font-size:11px;color:var(--muted);background:var(--panel2)}
+.notice{border:1px solid #2f3a5f;background:#0e1424;padding:12px 14px;border-radius:10px;margin:14px 0;color:#b9c6ee;font-size:13.5px}
+.notice strong{color:#fff}
+.err{border-color:#5f2f2f;background:#1a0e0e;color:#f0b4b4}
+.ok{border-color:#24503c;background:#0b1813;color:#a7e8c9}
+.notice a{color:#fff;text-decoration:underline}
+.foot{border-top:1px solid var(--line);margin-top:20px;padding:34px 0 42px;font-size:12.5px;color:var(--dim)}
+.foot-grid{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;align-items:flex-start}
+.foot a{color:var(--muted)}.foot a:hover{color:var(--text)}
+.foot-links{display:flex;gap:18px;flex-wrap:wrap}
+.eyebrow-row{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:26px;flex-wrap:wrap}
+.eyebrow-row p{margin:0;color:var(--muted);max-width:520px;font-size:14.5px}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step{counter-increment:s;border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--panel);position:relative}
+.step:before{content:counter(s,decimal-leading-zero);font:700 11px/1 var(--mono);color:var(--rust2);letter-spacing:.1em}
+.step h3{margin:10px 0 6px}.step p{margin:0;color:var(--muted);font-size:13.8px}
+.earn{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center}
+.earn-table{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.earn-table table{font-size:13.5px}.earn-table td:last-child{text-align:right;font-weight:700;color:var(--text)}
+.earn-table th:last-child{text-align:right}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line2);border-radius:999px;padding:5px 12px;font-size:12px;color:var(--muted);background:var(--panel)}
+.faq{border-top:1px solid var(--line)}details{border-bottom:1px solid var(--line);padding:16px 0}summary{cursor:pointer;font-weight:600;font-size:14.5px;list-style:none;display:flex;justify-content:space-between;gap:16px}summary::-webkit-details-marker{display:none}summary:after{content:"+";color:var(--rust2);font-weight:700}details[open] summary:after{content:"–"}details p{margin:10px 0 0;color:var(--muted);font-size:14px;max-width:760px}
+.apply-grid{display:grid;grid-template-columns:1.5fr .8fr;gap:26px;align-items:start}
+.aside{border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:20px}
+.aside ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px}.aside li{margin:6px 0}
+.dash-head{display:flex;justify-content:space-between;gap:18px;align-items:flex-end;flex-wrap:wrap;margin-bottom:22px}
+.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
+.stat-cards .card{padding:18px}
+@media(max-width:920px){.hero-grid,.earn,.apply-grid{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}.grid.three,.steps{grid-template-columns:1fr}.stat-cards{grid-template-columns:repeat(2,1fr)}nav.main{display:none}}
+@media(max-width:560px){.grid,.grid.two{grid-template-columns:1fr}.stat-strip{grid-template-columns:1fr}.stat-cards{grid-template-columns:1fr 1fr}section{padding:48px 0}.wrap{padding:0 18px}.hero-actions .btn{width:100%}}
 </style>
 </head>
-<body><main>
-<header><div class="brand">Talus <span>Partners</span></div><div class="muted">20% recurring affiliate</div></header>
+<body>
+<header class="site"><div class="wrap header-in">
+  <a class="brand" href="/"><svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#f15a24" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#f15a24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>Talus <span>Partners</span></a>
+  <nav class="main">
+    <a href="https://hartwell-labs.pl/talus-process-monitor/">Product</a>
+    <a href="https://download.hartwell-labs.pl/">Downloads</a>
+    <a href="https://wiki.hartwell-labs.pl/projects/talus-process-monitor/">Docs</a>
+    <a href="https://github.com/Hartwell-Labs/talus-process-monitor">GitHub ↗</a>
+  </nav>
+  <a class="header-cta" href="/apply">Apply</a>
+</div></header>
+<main class="wrap">
 ${body}
-<div class="foot">Talus Partners · Hartwell Labs · manual payouts after review · <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a></div>
+<div class="foot"><div class="foot-grid"><div><div class="brand" style="font-size:14px">Talus <span>Partners</span></div><p class="muted" style="margin:8px 0 0;max-width:360px">Affiliate program for Talus — eBPF ransomware detection and response for Linux, by Hartwell Labs.</p></div>
+<div class="foot-links"><a href="https://hartwell-labs.pl/talus-process-monitor/">Product</a><a href="https://download.hartwell-labs.pl/">Downloads</a><a href="https://wiki.hartwell-labs.pl/">Documentation</a><a href="mailto:contact@hartwell-labs.pl">Contact</a></div></div>
+<p class="muted" style="margin:22px 0 0;font-size:12px">20% recurring commission · 90-day attribution · manual payouts after review · <a href="mailto:contact@hartwell-labs.pl">contact@hartwell-labs.pl</a></p></div>
 </main></body></html>`;
 }
 
@@ -318,19 +403,106 @@ function landing_page(flash = {}, values = {}) {
 
   return page_shell(
     'Affiliate program',
-    `<h1>Earn 20% on every Talus subscription.</h1>
-<p class="muted">Refer a team to Talus and keep 20% of every paid subscription — first year and renewals. Payouts are reviewed and sent manually, so you can request one whenever you want.</p>
-<div class="notice"><strong>Already an affiliate?</strong> Open the dashboard link we sent you. The link is a private credential; do not forward it.</div>
-${flash_html}
-<div class="box">
-  <h3>How it works</h3>
-  <p class="muted">Share your tracked link. When a buyer completes checkout within 60 days, the subscription is attributed to you. Your dashboard shows clicks, sales, available balance and payout history.</p>
-</div>
-<div class="box" id="apply">
-  <h3>Apply to the program</h3>
-  <p class="muted">Tell us who you are and where you would promote Talus. Applications are reviewed manually; approved partners receive a private dashboard link.</p>
+    `<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">Talus partner program</div>
+      <h1>Refer the agent that <span class="dim">kills ransomware.</span></h1>
+      <p class="lede">Talus traces syscalls with eBPF, scores per-process file activity and terminates the encryptor with SIGKILL. You bring the team that runs Linux servers; we pay <strong style="color:var(--text)">20% of every subscription, for as long as they stay</strong>.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/apply">Apply to the program →</a>
+        <a class="btn secondary" href="https://hartwell-labs.pl/talus-process-monitor/">See the product</a>
+      </div>
+      <p class="hero-note">Manual review · private dashboard · payouts on request · 90-day attribution</p>
+    </div>
+    <div class="terminal" aria-hidden="true">
+      <div class="term-bar"><span class="dot r"></span><span class="dot a"></span><span class="dot g"></span><span class="term-title">talus-monitor — live</span></div>
+      <div class="term-body"><span class="c"># one encryptor, 4,812 files in 1s</span>
+<span class="path">/srv/app</span>  open   <span class="warn">OPEN_WRITE</span>  pid 8412
+<span class="path">/srv/app</span>  write  <span class="warn">score 35</span>  pid 8412
+<span class="c"># evidence: 82 marker extensions</span>
+<span class="path">.locked</span>  marker <span class="warn">+40</span>  family <span class="dim">lockbit</span>
+
+<span class="kill">VERDICT  ransomware  score 78</span>
+<span class="kill">SIGKILL  pid 8412  in 0.4s</span>
+<span class="ok">host intact · 3 files touched · audit logged</span></div>
+    </div>
+  </div>
+  <div class="stat-strip">
+    <div class="stat"><div class="n">20%</div><div class="l">recurring, first payment and renewals</div></div>
+    <div class="stat"><div class="n">90 days</div><div class="l">attribution window from the click</div></div>
+    <div class="stat"><div class="n">$10</div><div class="l">per node per year at list price</div></div>
+  </div>
+  ${flash_html}
+  <div class="notice" style="margin-top:22px"><strong>Already an affiliate?</strong> Open the dashboard link we sent you. The link is a private credential; do not forward it. <a href="mailto:contact@hartwell-labs.pl?subject=Talus%20Partners%20dashboard%20link">Lost it?</a></div>
+</section>
+
+<section id="fit">
+  <div class="eyebrow-row"><div><div class="kicker">Who it is for</div><h2>You already have the trust. We have the tool.</h2></div><p>The program is built for people who advise teams running Linux servers — not for coupon sites or paid-link farms.</p></div>
+  <div class="grid">
+    <div class="card"><div class="icon">01</div><h3>MSPs &amp; MSSPs</h3><p>You manage fleets and already sell uptime. Add ransomware response as a per-node line item and keep the client relationship.</p></div>
+    <div class="card"><div class="icon">02</div><h3>DevSecOps consultants</h3><p>You are already doing hardening, NIS2 or SOC 2 work. Talus is the control that proves a host can detect and respond.</p></div>
+    <div class="card"><div class="icon">03</div><h3>Linux creators</h3><p>Newsletters, YouTube, podcasts and self-hosting communities where admins look for tools they can deploy this week.</p></div>
+    <div class="card"><div class="icon">04</div><h3>Freelance sysadmins</h3><p>You touch dozens of hosts a year. A referral survives the handover, and renewals keep paying after the project ends.</p></div>
+  </div>
+</section>
+
+<section id="earn">
+  <div class="earn">
+    <div>
+      <div class="kicker">What it pays</div>
+      <h2>A recurring share, not a one-off bounty.</h2>
+      <p class="lede" style="font-size:15.5px;margin-bottom:18px">Talus is licensed per node, per year. You earn 20% of the pre-tax amount actually collected — on the first payment and on every renewal. Refunds reverse the commission proportionally.</p>
+      <div class="link"><span class="pill">20% recurring</span><span class="pill">paid on request</span><span class="pill">USD or PLN invoice</span></div>
+      <p class="muted" style="font-size:12.5px;margin-top:14px">Illustration at the $50/node list price. Fleet pricing is lower per node; the commission stays 20%.</p>
+    </div>
+    <div class="earn-table">
+      <table><thead><tr><th>Nodes referred</th><th>Your share / year</th></tr></thead><tbody>
+        <tr><td>10 nodes</td><td>$100</td></tr>
+        <tr><td>50 nodes</td><td>$500</td></tr>
+        <tr><td>200 nodes</td><td>$2,000</td></tr>
+        <tr><td>500 nodes</td><td>$5,000</td></tr>
+      </tbody></table>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="eyebrow-row"><div><div class="kicker">How it works</div><h2>Three steps, no dashboard to babysit.</h2></div></div>
+  <div class="steps">
+    <div class="step"><h3>Apply</h3><p>Tell us who you are, where you publish and who you advise. We review every application manually and reply by email.</p></div>
+    <div class="step"><h3>Share your link</h3><p>You get a tracked link and a private dashboard with clicks, sales, balance and payout history. Attribution lasts 90 days.</p></div>
+    <div class="step"><h3>Get paid</h3><p>Request a payout whenever you want. We review it and send it manually, so there is no minimum balance trap.</p></div>
+  </div>
+</section>
+
+<section id="terms">
+  <div class="eyebrow-row"><div><div class="kicker">The terms</div><h2>Short, because they should be.</h2></div></div>
+  <div class="grid two">
+    <div class="card"><h3>20% of collected revenue</h3><p>Commission is 20% of the pre-tax amount actually collected by Stripe, including renewals for as long as the customer stays.</p></div>
+    <div class="card"><h3>90-day attribution</h3><p>The click is remembered in the buyer's browser for 90 days and travels through Stripe as <code>client_reference_id</code>.</p></div>
+    <div class="card"><h3>Refunds reverse it</h3><p>If a payment is refunded, the matching commission is reversed proportionally. No clawback games beyond what was refunded.</p></div>
+    <div class="card"><h3>Manual payouts</h3><p>Request any amount from the dashboard. We review and send it manually; PayPal is the default rail, invoices are available.</p></div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="eyebrow-row"><div><div class="kicker">FAQ</div><h2>Questions partners ask first.</h2></div></div>
+  <div class="faq">
+    <details><summary>Can I install Talus for my clients?</summary><p>Yes. Talus is licensed per machine, so each protected host needs its own seat. Many partners deploy it during an engagement and the customer keeps the license afterwards.</p></details>
+    <details><summary>Does the commission really recur?</summary><p>Yes. You are credited on the first paid invoice and on renewals, for as long as the subscription remains active. Refunds reverse the corresponding commission.</p></details>
+    <details><summary>How is a sale attributed to me?</summary><p>Your tracked link stores your code in the buyer's browser for 90 days. Checkout carries the same code through Stripe, and the webhook writes the commission to your ledger.</p></details>
+    <details><summary>When do I get paid?</summary><p>Request a payout whenever your balance is above zero. Payouts are reviewed manually and sent by PayPal or invoice. The dashboard shows every request and its status.</p></details>
+    <details><summary>Do you accept coupon or deal sites?</summary><p>No. The program is for people with an audience or client base that actually runs Linux servers. Low-effort link placements are declined.</p></details>
+  </div>
+</section>
+
+<section id="apply" style="text-align:center">
+  <div class="kicker" style="justify-content:center">Ready?</div>
+  <h2 style="margin-bottom:12px">Apply once. Refer when it fits.</h2>
+  <p class="muted" style="max-width:520px;margin:0 auto 26px">Applications are reviewed manually. If approved, you receive a private dashboard link and a tracked referral link.</p>
   <a class="btn" href="/apply">Apply to the program →</a>
-</div>`,
+</section>`,
   );
 }
 
@@ -341,31 +513,46 @@ function application_page(flash = {}, values = {}) {
 
   return page_shell(
     'Apply to the program',
-    `<p><a href="/">← Back to the program</a></p>
-<h1>Apply to the Talus partner program</h1>
-<p class="muted">We review every application manually. If approved, you receive a private dashboard link and a tracked referral link. All fields except the PDFs are required.</p>
+    `<section style="padding-top:48px">
+<p style="margin:0 0 18px"><a href="/" style="font-size:13px">← Back to the program</a></p>
+<div class="kicker">Partner application</div>
+<h1 style="font-size:clamp(32px,4.4vw,48px)">Apply to the Talus partner program.</h1>
+<p class="lede" style="font-size:16px">We review every application manually. If approved, you receive a private dashboard link and a tracked referral link. All fields except the PDFs are required.</p>
 ${flash_html}
-<div class="box">
-  <form method="post" action="/v1/apply" enctype="multipart/form-data">
-    <div class="row">
-      <div><label class="k" for="name">Nickname or first name</label><input id="name" name="name" maxlength="120" value="${escape_attr(values.name || '')}" required></div>
-      <div><label class="k" for="email">Contact email</label><input id="email" name="email" type="email" maxlength="254" value="${escape_attr(values.email || '')}" required></div>
-    </div>
-    <div class="row" style="margin-top:12px">
-      <div><label class="k" for="age">Age</label><input id="age" name="age" type="number" min="1" max="120" step="1" value="${escape_attr(values.age || '')}" required></div>
-      <div><label class="k" for="country">Country</label><input id="country" name="country" maxlength="80" autocomplete="country-name" value="${escape_attr(values.country || '')}" placeholder="Poland" required></div>
-    </div>
-    <div style="margin-top:12px"><label class="k" for="message">Short description: who are you?</label><textarea id="message" name="message" maxlength="2000" required placeholder="A few sentences about you, your audience and your work…">${escape_html(values.message || '')}</textarea></div>
-    <div style="margin-top:12px"><label class="k" for="channel">Where will you promote Talus?</label><input id="channel" name="channel" maxlength="200" value="${escape_attr(values.channel || '')}" placeholder="YouTube channel, newsletter, community…" required></div>
-    <div style="margin-top:12px">
-      <label class="k" for="files">PDFs (optional)</label>
-      <input id="files" name="files" type="file" accept="application/pdf,.pdf" multiple>
-      <p class="muted" style="font-size:12.5px;margin:6px 0 0">Up to 3 PDF files, 10 MB each. Media kit, portfolio, audience stats — whatever helps us review.</p>
-    </div>
-    <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
-    <button type="submit" style="margin-top:16px">Send application</button>
-  </form>
-</div>`,
+<div class="apply-grid">
+  <div class="box" style="margin-top:0">
+    <form method="post" action="/v1/apply" enctype="multipart/form-data">
+      <div class="row">
+        <div><label class="k" for="name">Name or handle</label><input id="name" name="name" maxlength="120" value="${escape_attr(values.name || '')}" placeholder="How we should address you" required></div>
+        <div><label class="k" for="email">Contact email</label><input id="email" name="email" type="email" maxlength="254" value="${escape_attr(values.email || '')}" placeholder="you@example.com" required></div>
+      </div>
+      <div class="row" style="margin-top:16px">
+        <div><label class="k" for="age">Age</label><input id="age" name="age" type="number" min="1" max="120" step="1" value="${escape_attr(values.age || '')}" required></div>
+        <div><label class="k" for="country">Country</label><input id="country" name="country" maxlength="80" autocomplete="country-name" value="${escape_attr(values.country || '')}" placeholder="Poland" required></div>
+      </div>
+      <div style="margin-top:16px"><label class="k" for="message">Who are you, and who do you advise?</label><textarea id="message" name="message" maxlength="2000" required placeholder="Your work, the audience or clients you reach, and why Talus fits them.">${escape_html(values.message || '')}</textarea></div>
+      <div style="margin-top:16px"><label class="k" for="channel">Where will you promote Talus?</label><input id="channel" name="channel" maxlength="200" value="${escape_attr(values.channel || '')}" placeholder="Newsletter, YouTube, MSP client base, community…" required><p class="muted" style="font-size:12.5px;margin:7px 0 0">A link or an approximate audience size helps us review faster.</p></div>
+      <div style="margin-top:16px">
+        <label class="k" for="files">PDFs (optional)</label>
+        <input id="files" name="files" type="file" accept="application/pdf,.pdf" multiple>
+        <p class="muted" style="font-size:12.5px;margin:7px 0 0">Up to 3 PDF files, 10 MB each. Media kit, portfolio or audience stats.</p>
+      </div>
+      <div class="hp" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+      <button type="submit" style="margin-top:20px">Send application →</button>
+    </form>
+  </div>
+  <aside class="aside">
+    <h3>What happens next</h3>
+    <ul>
+      <li>We read the application and check the channel or client base.</li>
+      <li>If it fits, you get a private dashboard link and a tracked referral link by email.</li>
+      <li>You earn 20% of every collected payment, including renewals, for 90 days after each click.</li>
+      <li>Payouts are manual and available on request — no minimum balance.</li>
+    </ul>
+    <p class="muted" style="font-size:12.5px;margin:16px 0 0">Not sure whether you qualify? <a href="mailto:contact@hartwell-labs.pl?subject=Talus%20Partners">Ask first</a> — a short email is enough.</p>
+  </aside>
+</div>
+</section>`,
   );
 }
 
@@ -411,10 +598,13 @@ function dashboard_page(data, token, env, flash = {}) {
 
   return page_shell(
     'Dashboard',
-    `<h1>${escape_html(affiliate.name || affiliate.email)}</h1>
-<p class="muted">Your private dashboard. Do not share this URL — anyone with it can see your balance and request payouts.</p>
+    `<div class="dash-head">
+  <div><div class="kicker">Partner dashboard</div><h1 style="font-size:clamp(28px,4vw,40px)">${escape_html(affiliate.name || affiliate.email)}</h1>
+  <p class="muted" style="margin:0">Your private dashboard. Do not share this URL — anyone with it can see your balance and request payouts.</p></div>
+  <a class="btn secondary small" href="https://hartwell-labs.pl/talus-process-monitor/" target="_blank" rel="noreferrer">Product page ↗</a>
+</div>
 ${flash_html}
-<div class="grid">
+<div class="stat-cards">
   <div class="card"><div class="k">Clicks</div><div class="v">${data.clicks}</div></div>
   <div class="card"><div class="k">Paid sales</div><div class="v">${data.sales}</div></div>
   <div class="card"><div class="k">Available</div><div class="v">${format_money(available)}</div></div>
@@ -424,7 +614,7 @@ ${flash_html}
 <div class="box">
   <h3>Your referral link</h3>
   <div class="link"><input readonly value="${escape_attr(referral)}" aria-label="Referral link"></div>
-  <p class="muted">20% of every paid invoice, including renewals. Attribution is kept for 60 days from the click.</p>
+  <p class="muted">20% of every paid invoice, including renewals. Attribution is kept for 90 days from the click.</p>
 </div>
 
 <div class="box">

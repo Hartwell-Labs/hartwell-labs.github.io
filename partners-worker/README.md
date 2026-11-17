@@ -11,7 +11,7 @@ Affiliate backend for Talus, deployed from the main site repository on
 - Affiliates request payouts from the dashboard at any time. Payouts are
   **manual**: the request is stored, the owner reviews it, then marks it paid.
 - Dashboard links are bearer credentials. Only a SHA-256 hash is stored.
-- Attribution is kept for 60 days in the buyer's browser and travels through
+- Attribution is kept for 90 days in the buyer's browser and travels through
   Stripe as `client_reference_id` / `metadata.affiliate_code`.
 
 ## Dashboard URL
