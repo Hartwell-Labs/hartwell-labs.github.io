@@ -1,8 +1,8 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "hartwell-mail",
-  "main": "src/index.ts",
-  "compatibility_date": "2026-09-01",
+  "main": "src/index.prod.js",
+  "compatibility_date": "2025-11-01",
   "account_id": "29ee063c29d9e8f27a8863fadcaa9073",
 
   "send_email": [{ "name": "EMAIL" }],
@@ -13,6 +13,14 @@
 
   "kv_namespaces": [
     { "binding": "KV", "id": "42e2acc4f13a461fae55a6dc59ed2800" }
+  ],
+
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "hartwell-mail",
+      "database_id": "31c4b5a8-6b43-44d9-902c-808867242c85"
+    }
   ],
 
   "routes": [
