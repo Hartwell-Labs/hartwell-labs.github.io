@@ -4142,7 +4142,7 @@ var APP_HTML = `<!doctype html>
         <span class="fico">\u2713</span> Wszystkie
       </button>
       <div class="fnote">
-        <b>Adresy:</b><br>contact@ \xB7 business@<br>important@<br><br>Za\u0142\u0105czniki i tre\u015B\u0107 s\u0105 przechowywane w Cloudflare KV.
+        <b>Adresy:</b><br>contact@ \xB7 business@<br>important@ \xB7 mod@<br><br>Za\u0142\u0105czniki i tre\u015B\u0107 s\u0105 przechowywane w Cloudflare KV.
       </div>
     </nav>
 
@@ -4190,6 +4190,7 @@ var APP_HTML = `<!doctype html>
         <option value="contact">contact@hartwell-labs.pl</option>
         <option value="business">business@hartwell-labs.pl</option>
         <option value="important">important@hartwell-labs.pl</option>
+        <option value="mod">mod@hartwell-labs.pl</option>
         <option value="noreply">noreply@hartwell-labs.pl</option>
       </select></div>
       <div class="srow"><label>Do</label><input id="f-to" placeholder="adres@domena.pl" autocomplete="off"></div>
@@ -4747,6 +4748,7 @@ var ALIASES = {
   contact: { email: `contact@${DOMAIN}`, name: "Hartwell Labs \u2014 Contact" },
   business: { email: `business@${DOMAIN}`, name: "Hartwell Labs \u2014 Business" },
   important: { email: `important@${DOMAIN}`, name: "Hartwell Labs \u2014 Important" },
+  mod: { email: `mod@${DOMAIN}`, name: "Studio Moderskie" },
   noreply: { email: `noreply@${DOMAIN}`, name: "Hartwell Labs" }
 };
 var MAX_STORE_BYTES = 9 * 1024 * 1024;
