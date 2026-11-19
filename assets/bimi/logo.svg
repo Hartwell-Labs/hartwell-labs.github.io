@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny-ps" viewBox="0 0 512 512" width="512" height="512">
+<title>Hartwell Labs</title>
+<circle cx="256" cy="256" r="256" fill="#0A0E14"/>
+<circle cx="256" cy="256" r="224" fill="none" stroke="#1E2A38" stroke-width="8"/>
+<rect x="146" y="128" width="62" height="256" fill="#F15A24"/>
+<rect x="304" y="128" width="62" height="256" fill="#F15A24"/>
+<rect x="208" y="228" width="96" height="56" fill="#F15A24"/>
+</svg>
