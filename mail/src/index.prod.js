@@ -1,3 +1,5 @@
+import { classifyEmail, CATEGORY_LABELS } from "./sorting.js";
+
 // node_modules/postal-mime/src/decode-strings.js
 var textEncoder = new TextEncoder();
 var base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -3969,6 +3971,13 @@ var APP_HTML = `<!doctype html>
   .rtags{display:flex;gap:6px;margin-top:6px;align-items:center}
   .tag{font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:4px;background:#0b1017;border:1px solid var(--line2);color:var(--txt2);display:inline-flex;align-items:center;gap:4px}
   .tag.acc{color:var(--acc);border-color:rgba(241,90,36,.35);background:rgba(241,90,36,.08)}
+  .tag.cat-priority{color:#ffd479;border-color:rgba(255,212,121,.35);background:rgba(255,212,121,.09)}
+  .tag.cat-sales{color:#69b7ff;border-color:rgba(105,183,255,.32);background:rgba(105,183,255,.08)}
+  .tag.cat-hosting{color:#c7a6ff;border-color:rgba(199,166,255,.32);background:rgba(199,166,255,.08)}
+  .tag.cat-spam{color:var(--err);border-color:rgba(255,92,116,.35);background:rgba(255,92,116,.08)}
+  .tag.cat-normal{color:var(--dim)}
+  .catbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+  .catbar .btn{height:30px;padding:0 10px;font-size:12px}
   .empty{padding:40px 20px;text-align:center;color:var(--dim);font-size:13px}
   .empty .big{font-size:34px;opacity:.35;margin-bottom:10px}
 
@@ -4113,6 +4122,25 @@ var APP_HTML = `<!doctype html>
         <span class="fico"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg></span>
         Wys\u0142ane <span class="fcount" id="c-sent">0</span>
       </button>
+      <div class="flabel">Sortowanie</div>
+      <button class="fitem citem" data-cat="priority">
+        <span class="fico">\u2605</span> Priorytet <span class="fcount" id="c-priority">0</span>
+      </button>
+      <button class="fitem citem" data-cat="sales">
+        <span class="fico">\u25C6</span> Sprzeda\u017C <span class="fcount" id="c-sales">0</span>
+      </button>
+      <button class="fitem citem" data-cat="hosting">
+        <span class="fico">\u25A0</span> Hosting <span class="fcount" id="c-hosting">0</span>
+      </button>
+      <button class="fitem citem" data-cat="spam">
+        <span class="fico">\u26A0</span> Spam <span class="fcount" id="c-spam">0</span>
+      </button>
+      <button class="fitem citem" data-cat="normal">
+        <span class="fico">\u25CB</span> Normalne <span class="fcount" id="c-normal">0</span>
+      </button>
+      <button class="fitem citem" data-cat="">
+        <span class="fico">\u2713</span> Wszystkie
+      </button>
       <div class="fnote">
         <b>Adresy:</b><br>contact@ \xB7 business@<br>important@<br><br>Za\u0142\u0105czniki i tre\u015B\u0107 s\u0105 przechowywane w Cloudflare KV.
       </div>
@@ -4129,6 +4157,9 @@ var APP_HTML = `<!doctype html>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
         </button>
         <button class="btn" id="reply">Odpowiedz</button>
+        <button class="btn ghost" id="markpriority" title="Oznacz jako priorytet">Priorytet</button>
+        <button class="btn ghost" id="markspam" title="Oznacz jako spam">Spam</button>
+        <button class="btn ghost" id="marknormal" title="To nie spam">Nie spam</button>
         <button class="btn ghost" id="toggleimgs" title="Poka\u017C/ukryj zdalne obrazy">Obrazy: off</button>
         <div class="hspacer"></div>
         <a class="btn ghost" id="dlraw" title="Pobierz orygina\u0142" style="display:none">.eml</a>
@@ -4182,7 +4213,8 @@ var APP_HTML = `<!doctype html>
 <script>
 (function(){
   "use strict";
-  var state = { folder:'inbox', q:'', items:[], current:null, showImgs:false, files:[], counts:{inbox:0,sent:0,dmarc:0,all:0}, loading:false };
+  var state = { folder:'inbox', cat:'', q:'', items:[], current:null, showImgs:false, files:[], counts:{inbox:0,sent:0,dmarc:0,all:0}, loading:false };
+  var CATS = { priority:'Priorytet', sales:'Sprzeda\u017C', hosting:'Hosting', normal:'Normalne', spam:'Spam' };
 
   function $(s){ return document.querySelector(s); }
   function el(tag, cls, html){ var e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
@@ -4225,6 +4257,10 @@ var APP_HTML = `<!doctype html>
         total+=(c[f]&&c[f].total)||0;
       });
       var a=$('#c-all'); if(a) a.textContent=total;
+      var cats=d.categories||{};
+      ['priority','sales','hosting','normal','spam'].forEach(function(k){
+        var e=$('#c-'+k); if(e) e.textContent=(cats[k]&&cats[k].total)||0;
+      });
     }).catch(function(){});
   }
 
@@ -4242,20 +4278,33 @@ var APP_HTML = `<!doctype html>
 
   /* ---------------- folders ---------------- */
   document.querySelectorAll('.fitem').forEach(function(b){
-    b.onclick = function(){ setFolder(b.dataset.folder); };
+    b.onclick = function(){ if(b.dataset.cat!==undefined) setCategory(b.dataset.cat); else setFolder(b.dataset.folder); };
   });
 
-  function setFolder(f){
-    if(state.folder===f && state.items.length) return;
-    state.folder=f; state.current=null;
-    document.querySelectorAll('.fitem').forEach(function(b){ b.classList.toggle('on', b.dataset.folder===f); });
-    var titles={inbox:'Odebrane',sent:'Wys\u0142ane',dmarc:'DMARC',all:'Wszystkie wiadomo\u015Bci'};
-    $('#listtitle').textContent = titles[f]||f;
-    var dl=$('#dmarcall'); if(dl) dl.style.display = f==='dmarc' ? '' : 'none';
+  function resetDetail(){
     $('#dbar').style.display='none';
     $('#dbody').innerHTML = '<div class="placeholder"><div>Wybierz wiadomo\u015B\u0107, aby j\u0105 przeczyta\u0107</div></div>';
     document.body.classList.remove('reading');
+  }
+
+  function setFolder(f){
+    if(state.folder===f && state.cat==='' && state.items.length) return;
+    state.folder=f; state.cat=''; state.current=null;
+    document.querySelectorAll('.fitem').forEach(function(b){ b.classList.toggle('on', b.dataset.folder===f && b.dataset.cat===undefined); });
+    var titles={inbox:'Odebrane',sent:'Wys\u0142ane',dmarc:'DMARC',all:'Wszystkie wiadomo\u015Bci'};
+    $('#listtitle').textContent = titles[f]||f;
+    var dl=$('#dmarcall'); if(dl) dl.style.display = f==='dmarc' ? '' : 'none';
+    resetDetail();
     load(f);
+  }
+
+  function setCategory(cat){
+    state.folder='inbox'; state.cat=cat||''; state.current=null;
+    document.querySelectorAll('.fitem').forEach(function(b){ b.classList.toggle('on', b.dataset.cat!==undefined && (b.dataset.cat||'')===state.cat); });
+    $('#listtitle').textContent = state.cat ? ('Odebrane \xB7 '+CATS[state.cat]) : 'Odebrane';
+    var dl=$('#dmarcall'); if(dl) dl.style.display='none';
+    resetDetail();
+    load('inbox');
   }
 
   /* ---------------- list ---------------- */
@@ -4272,12 +4321,12 @@ var APP_HTML = `<!doctype html>
     if(state.loading) return;
     state.loading=true;
     skeleton();
-    var url='/api/messages?folder='+encodeURIComponent(folder||state.folder)+(state.q?'&q='+encodeURIComponent(state.q):'');
+    var url='/api/messages?folder='+encodeURIComponent(folder||state.folder)+(state.q?'&q='+encodeURIComponent(state.q):'')+(state.cat?'&cat='+encodeURIComponent(state.cat):'');
     api(url).then(function(d){
       state.items = d.items||[];
       state.counts[folder||state.folder] = d.total!=null?d.total:state.items.length;
-      var cEl=$('#c-'+(folder||state.folder)); if(cEl) cEl.textContent = d.unread!=null && d.unread>0 ? d.unread : (d.total||state.items.length);
-      $('#listmeta').textContent = state.items.length + (state.q?' / szukanie':'');
+      if(!state.cat){ var cEl=$('#c-'+(folder||state.folder)); if(cEl) cEl.textContent = d.unread!=null && d.unread>0 ? d.unread : (d.total||state.items.length); }
+      $('#listmeta').textContent = state.items.length + (state.q?' / szukanie':'') + (state.cat?' / '+CATS[state.cat]:'');
       renderRows();
     }).catch(function(e){
       if(e.message!=='unauthorized') $('#rows').innerHTML='<div class="empty">Nie uda\u0142o si\u0119 wczyta\u0107: '+esc(e.message)+'</div>';
@@ -4343,7 +4392,7 @@ var APP_HTML = `<!doctype html>
   function renderRows(){
     var r=$('#rows');
     if(!state.items.length){
-      var emptyText = state.folder==='sent'?'Brak wys\u0142anych wiadomo\u015Bci':state.folder==='dmarc'?'Brak raport\xF3w DMARC':state.folder==='all'?'Brak wiadomo\u015Bci':'Brak odebranych wiadomo\u015Bci';
+      var emptyText = state.folder==='sent'?'Brak wys\u0142anych wiadomo\u015Bci':state.folder==='dmarc'?'Brak raport\xF3w DMARC':state.folder==='all'?'Brak wiadomo\u015Bci':state.cat?('Brak wiadomo\u015Bci w kategorii '+CATS[state.cat]):'Brak odebranych wiadomo\u015Bci';
       r.innerHTML='<div class="empty"><div class="big">\u2709</div>'+(state.q?'Brak wynik\xF3w dla \u201E'+esc(state.q)+'\u201D':emptyText)+'</div>';
       return;
     }
@@ -4356,6 +4405,9 @@ var APP_HTML = `<!doctype html>
         tags += stBadge(m.delivery.status);
         if(m.delivery.providerLabel) tags += '<span class="tag">'+esc(m.delivery.providerLabel)+'</span>';
         if(m.delivery.opens) tags += '<span class="tag">\u{1F441} '+m.delivery.opens+'</span>';
+      }
+      if(m.folder==='inbox' && m.category && m.category!=='normal'){
+        tags+='<span class="tag cat-'+esc(m.category)+'">'+esc(CATS[m.category]||m.category)+'</span>';
       }
       if(m.attachmentCount) tags+='<span class="tag acc">\u{1F4CE} '+m.attachmentCount+'</span>';
       if(m.html) tags+='<span class="tag">HTML</span>';
@@ -4393,6 +4445,12 @@ var APP_HTML = `<!doctype html>
     if(m.cc) h+='<div>DW: <b>'+esc(m.cc)+'</b></div>';
     h+='<div class="mono" style="font-size:11.5px">'+esc(new Date(m.date).toLocaleString())+'</div>';
     h+='</div>';
+    if(m.folder==='inbox' && m.category){
+      h+='<div class="catbar"><span class="tag cat-'+esc(m.category)+'">'+esc(CATS[m.category]||m.category)+'</span>';
+      if(m.sortReason) h+='<span style="font-size:11.5px;color:#6c7c8f">'+esc(m.sortReason)+'</span>';
+      if(m.sortLocked) h+='<span class="tag">r\u0119cznie</span>';
+      h+='</div>';
+    }
     if(m.folder==='sent' && m.delivery) h+=deliveryCard(m.delivery);
 
     if(m.html){
@@ -4429,6 +4487,9 @@ var APP_HTML = `<!doctype html>
 
     $('#dbar').style.display='flex';
     $('#reply').style.display = m.folder==='inbox' ? '' : 'none';
+    ['markpriority','markspam','marknormal'].forEach(function(id){
+      var b=$('#'+id); if(b) b.style.display = m.folder==='inbox' ? '' : 'none';
+    });
     $('#toggleimgs').style.display = m.html ? '' : 'none';
     $('#toggleimgs').textContent = 'Obrazy: '+(state.showImgs?'on':'off');
     $('#dlraw').style.display = (m.folder==='inbox' && m.hasRaw) ? '' : 'none';
@@ -4473,6 +4534,17 @@ var APP_HTML = `<!doctype html>
     var sig = '\\n\\n--- '+(m.fromName||m.from)+' napisa\u0142(a) '+(new Date(m.date).toLocaleString())+' ---\\n'+quote;
     openComposer({ to:m.from, subject:(/^re:/i.test(m.subject||'')?(m.subject):('Re: '+(m.subject||''))), body:sig });
   };
+
+  function overrideCategory(cat){
+    if(!state.current) return;
+    var m=state.current;
+    api('/api/messages/'+encodeURIComponent(m.folder)+'/'+encodeURIComponent(m.id)+'/category',{method:'POST',json:{category:cat}})
+      .then(function(){ m.category=cat; m.sortReason='r\u0119cznie: '+CATS[cat]; m.sortLocked=true; renderDetail(m); toast('Kategoria: '+CATS[cat],'ok'); state.loading=false; load(state.folder); loadCounts(); })
+      .catch(function(e){ toast(e.message,'err'); });
+  }
+  $('#markpriority').onclick=function(){ overrideCategory('priority'); };
+  $('#markspam').onclick=function(){ overrideCategory('spam'); };
+  $('#marknormal').onclick=function(){ overrideCategory('normal'); };
 
   /* ---------------- search ---------------- */
   var qT;
@@ -4849,6 +4921,73 @@ var DELIVERY_DDL = [
   `CREATE INDEX IF NOT EXISTS idx_delivery_msg ON delivery (msg_id)`,
   `CREATE INDEX IF NOT EXISTS idx_delivery_resend ON delivery (resend_id)`
 ];
+var SORT_DDL = [
+  "ALTER TABLE messages ADD COLUMN category TEXT NOT NULL DEFAULT 'normal'",
+  "ALTER TABLE messages ADD COLUMN sort_score INTEGER NOT NULL DEFAULT 0",
+  "ALTER TABLE messages ADD COLUMN sort_reason TEXT NOT NULL DEFAULT ''",
+  "ALTER TABLE messages ADD COLUMN sort_locked INTEGER NOT NULL DEFAULT 0"
+];
+var sortSchemaPromise = null;
+function ensureSortSchema(env) {
+  if (!env || !env.DB) return Promise.reject(new Error("brak bindingu D1"));
+  if (!sortSchemaPromise) {
+    sortSchemaPromise = (async () => {
+      for (const sql of SORT_DDL) {
+        try {
+          await env.DB.prepare(sql).run();
+        } catch (e) {
+          if (!/duplicate column/i.test(String(e && e.message || e))) throw e;
+        }
+      }
+      try {
+        await env.DB.prepare("CREATE INDEX IF NOT EXISTS idx_messages_sort ON messages (folder, category, date)").run();
+      } catch (e) {
+        console.warn("[sort] index:", String(e && e.message || e));
+      }
+    })().catch((e) => {
+      sortSchemaPromise = null;
+      throw e;
+    });
+  }
+  return sortSchemaPromise;
+}
+var sortBackfillPromise = null;
+function backfillSorting(env) {
+  if (!env || !env.DB) return Promise.resolve(0);
+  if (!sortBackfillPromise) {
+    sortBackfillPromise = (async () => {
+      await ensureSortSchema(env);
+      const rows = await env.DB.prepare(
+        `SELECT id, folder, from_addr, from_name, subject, preview, body_text, body_html
+         FROM messages WHERE sort_reason = '' AND sort_locked = 0 ORDER BY date DESC LIMIT 250`
+      ).all();
+      let n = 0;
+      for (const r of rows.results || []) {
+        const c = r.folder === "sent"
+          ? { category: "normal", spamScore: 0, reason: "wychodzące" }
+          : r.folder === "dmarc"
+            ? { category: "normal", spamScore: 0, reason: "raport DMARC" }
+            : classifyEmail({
+                from: r.from_addr,
+                fromName: r.from_name,
+                subject: r.subject,
+                text: r.body_text || r.preview || "",
+                html: r.body_html || ""
+              });
+        await env.DB.prepare(
+          `UPDATE messages SET category = ?, sort_score = ?, sort_reason = ? WHERE id = ?`
+        ).bind(c.category, c.spamScore, c.reason, r.id).run();
+        n++;
+      }
+      return n;
+    })().catch((e) => {
+      sortBackfillPromise = null;
+      console.warn("[sort] backfill:", String(e && e.message || e));
+      return 0;
+    });
+  }
+  return sortBackfillPromise;
+}
 var schemaPromise = null;
 function ensureDeliverySchema(env) {
   if (!env || !env.DB) return Promise.reject(new Error("brak bindingu D1"));
@@ -5300,10 +5439,14 @@ function rowToSummary(r) {
     attachmentNames: JSON.parse(r.attachments || "[]").slice(0, 3).map((a) => a.filename),
     read: Boolean(r.is_read),
     size: r.size || 0,
-    via: r.via || ""
+    via: r.via || "",
+    category: r.category || "normal",
+    sortScore: r.sort_score || 0,
+    sortReason: r.sort_reason || "",
+    sortLocked: Boolean(r.sort_locked)
   };
 }
-async function listFolder(env, folder, query, limit = 150) {
+async function listFolder(env, folder, query, category, limit = 150) {
   const all = folder === "all";
   const scope = all
     ? "folder IN ('inbox','sent','dmarc')"
@@ -5313,32 +5456,40 @@ async function listFolder(env, folder, query, limit = 150) {
         ? `(folder = 'inbox' AND NOT ${DMARC_MATCH})`
         : "folder = ?";
   const prefix = all || folder === "dmarc" || folder === "inbox" ? [] : [folder];
+  const where = [scope];
+  const binds = [...prefix];
+  const cat = folder === "inbox" ? String(category || "").trim().toLowerCase() : "";
+  if (cat && Object.prototype.hasOwnProperty.call(CATEGORY_LABELS, cat)) {
+    where.push("category = ?");
+    binds.push(cat);
+  }
   let rows;
   if (query) {
     const like = `%${query.replace(/[%_]/g, "")}%`;
-    rows = await env.DB.prepare(
-      `SELECT *, (body_html IS NOT NULL) AS has_html FROM messages
-       WHERE ${scope} AND (subject LIKE ? OR from_addr LIKE ? OR from_name LIKE ? OR preview LIKE ? OR body_text LIKE ?)
-       ORDER BY date DESC LIMIT ${limit}`
-    ).bind(...prefix, like, like, like, like, like).all();
-  } else {
-    rows = await env.DB.prepare(
-      `SELECT *, (body_html IS NOT NULL) AS has_html FROM messages
-       WHERE ${scope} ORDER BY date DESC LIMIT ${limit}`
-    ).bind(...prefix).all();
+    where.push("(subject LIKE ? OR from_addr LIKE ? OR from_name LIKE ? OR preview LIKE ? OR body_text LIKE ?)");
+    binds.push(like, like, like, like, like);
   }
+  const order = folder === "inbox"
+    ? `CASE category WHEN 'priority' THEN 0 WHEN 'sales' THEN 1 WHEN 'normal' THEN 2 WHEN 'hosting' THEN 3 WHEN 'spam' THEN 4 ELSE 5 END, date DESC`
+    : "date DESC";
+  rows = await env.DB.prepare(
+    `SELECT *, (body_html IS NOT NULL) AS has_html FROM messages
+     WHERE ${where.join(" AND ")} ORDER BY ${order} LIMIT ${limit}`
+  ).bind(...binds).all();
   const tracked = all ? new Map() : await deliveryMap(env, folder);
   const items = (rows.results || []).map((r) => ({
     ...rowToSummary(r),
     delivery: tracked.get(r.id) || null
   }));
+  const countWhere = where.slice(0, cat ? 2 : 1).join(" AND ");
+  const countBinds = binds.slice(0, cat ? 2 : 1);
   const unread = await env.DB.prepare(
-    `SELECT COUNT(*) AS n FROM messages WHERE ${scope} AND is_read = 0`
-  ).bind(...prefix).first();
+    `SELECT COUNT(*) AS n FROM messages WHERE ${countWhere} AND is_read = 0`
+  ).bind(...countBinds).first();
   const total = await env.DB.prepare(
-    `SELECT COUNT(*) AS n FROM messages WHERE ${scope}`
-  ).bind(...prefix).first();
-  return { items, total: total && total.n || items.length, unread: unread && unread.n || 0 };
+    `SELECT COUNT(*) AS n FROM messages WHERE ${countWhere}`
+  ).bind(...countBinds).first();
+  return { items, total: total && total.n || items.length, unread: unread && unread.n || 0, category: cat || "all" };
 }
 
 async function saveMessage(env, folder, msg) {
@@ -5367,8 +5518,8 @@ async function saveMessage(env, folder, msg) {
     `INSERT INTO messages
       (id, folder, from_addr, from_name, to_addr, to_name, cc, subject, preview,
        body_text, body_html, body_key, date, size, is_read, via, message_id,
-       attachment_count, attachments, has_raw)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+       attachment_count, attachments, has_raw, category, sort_score, sort_reason, sort_locked)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   ).bind(
     id,
     folder,
@@ -5389,7 +5540,11 @@ async function saveMessage(env, folder, msg) {
     msg.messageId || "",
     atts.length,
     JSON.stringify(atts),
-    msg.hasRaw ? 1 : 0
+    msg.hasRaw ? 1 : 0,
+    msg.category || "normal",
+    msg.sortScore || 0,
+    msg.sortReason || (msg.via === "smtp" ? "" : "wychodzące"),
+    msg.sortLocked ? 1 : 0
   ).run();
   return { id, folder, preview, attachmentCount: atts.length };
 }
@@ -5556,7 +5711,17 @@ async function handle(request, env) {
     const dmarc = counts.dmarc || { total: 0, unread: 0 };
     counts.inbox = { total: Math.max(0, inbox.total - moved), unread: Math.max(0, inbox.unread - movedUnread) };
     counts.dmarc = { total: dmarc.total + moved, unread: dmarc.unread + movedUnread };
-    return json({ ok: true, counts });
+    await ensureSortSchema(env);
+    await backfillSorting(env);
+    const catRows = await env.DB.prepare(
+      `SELECT category, COUNT(*) AS n, SUM(CASE WHEN is_read = 0 THEN 1 ELSE 0 END) AS u
+       FROM messages WHERE folder = 'inbox' AND NOT ${DMARC_MATCH} GROUP BY category`
+    ).all();
+    const categories = { all: { total: counts.inbox.total, unread: counts.inbox.unread } };
+    for (const r of catRows.results || []) {
+      categories[r.category || "normal"] = { total: r.n || 0, unread: r.u || 0 };
+    }
+    return json({ ok: true, counts, categories, labels: CATEGORY_LABELS });
   }
   if (path === "/api/dmarc/all" && request.method === "GET") {
     const rows = await env.DB.prepare(
@@ -5588,10 +5753,29 @@ async function handle(request, env) {
     });
   }
   if (path === "/api/messages" && request.method === "GET") {
+    await ensureSortSchema(env);
+    await backfillSorting(env);
     const requested = url.searchParams.get("folder");
     const folder = ["sent", "dmarc", "all"].includes(requested) ? requested : "inbox";
     const q = (url.searchParams.get("q") || "").trim();
-    return json({ ok: true, ...await listFolder(env, folder, q) });
+    const cat = (url.searchParams.get("cat") || url.searchParams.get("category") || "").trim().toLowerCase();
+    return json({ ok: true, ...await listFolder(env, folder, q, cat) });
+  }
+  let sm = path.match(/^\/api\/messages\/(inbox|sent|dmarc)\/([\w-]+)\/category$/);
+  if (sm && request.method === "POST") {
+    const [, folder, id] = sm;
+    const body = await request.json().catch(() => ({}));
+    const category = String(body.category || "").trim().toLowerCase();
+    if (!Object.prototype.hasOwnProperty.call(CATEGORY_LABELS, category)) {
+      return fail("nieznana kategoria", 400);
+    }
+    const r = await env.DB.prepare(`SELECT id FROM messages WHERE id = ? AND folder = ?`).bind(id, folder).first();
+    if (!r) return fail("nie znaleziono wiadomości", 404);
+    await ensureSortSchema(env);
+    await env.DB.prepare(
+      `UPDATE messages SET category = ?, sort_locked = 1, sort_reason = ? WHERE id = ? AND folder = ?`
+    ).bind(category, `ręcznie: ${CATEGORY_LABELS[category]}`, id, folder).run();
+    return json({ ok: true, category });
   }
   let m = path.match(/^\/api\/messages\/(inbox|sent|dmarc)\/([\w-]+)$/);
   if (m && request.method === "GET") {
@@ -5777,7 +5961,9 @@ async function handle(request, env) {
       size: total,
       via: delivered.via,
       messageId: delivered.messageId || "",
-      read: true
+      read: true,
+      category: "normal",
+      sortReason: "wychodzące"
     });
     await createDeliveryRow(env, {
       trackId,
@@ -5834,6 +6020,15 @@ var index_default = {
         /report\s*domain|dmarc/i.test(String(parsed && parsed.subject || "")) ||
         attachments.some((a) => /dmarc/i.test(a.filename) || /\.xml(\.gz)?$/i.test(a.filename));
       if (dmarcSignal) folder = "dmarc";
+      const sort = folder === "dmarc"
+        ? { category: "normal", spamScore: 0, reason: "raport DMARC" }
+        : classifyEmail({
+            from: fromAddr && fromAddr.address || message.from,
+            fromName: fromAddr && fromAddr.name || "",
+            subject: parsed && parsed.subject || "",
+            text: parsed && parsed.text || "",
+            html: parsed && parsed.html || ""
+          });
       const keepRaw = rawBuf.byteLength <= 20 * 1024 * 1024;
       if (keepRaw) {
         await env.KV.put(`raw:${folder}:${id}`, b64encode(rawBuf));
@@ -5853,7 +6048,10 @@ var index_default = {
         size: attachments.reduce((s, a) => s + (a.size || 0), 0),
         via: "smtp",
         hasRaw: keepRaw,
-        read: false
+        read: false,
+        category: sort.category,
+        sortScore: sort.spamScore,
+        sortReason: sort.reason
       });
     } catch (e) {
       await env.DB.prepare(
