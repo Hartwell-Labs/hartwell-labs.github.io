@@ -71,3 +71,37 @@
     });
   })();
 })();
+/* --- /firmware: kafel otwiera wieksze okno ze szczegolami ---------------- */
+(function () {
+  var cards = document.querySelectorAll(".fw-card[data-fw]");
+  var dlg = document.getElementById("fw-dialog");
+  if (!cards.length || !dlg || typeof dlg.showModal !== "function") return;
+  var titleEl = dlg.querySelector("#fw-dialog-title");
+  var tagEl = dlg.querySelector("#fw-dialog-tag");
+  var bodyEl = dlg.querySelector("#fw-dialog-body");
+  var lastName = "";
+  function open(card) {
+    var tpl = card.querySelector("template.fw-more");
+    if (!tpl) return;
+    lastName = (card.querySelector("h4") || {}).textContent || "";
+    titleEl.textContent = card.getAttribute("data-title") || lastName;
+    tagEl.textContent = card.getAttribute("data-tag") || "";
+    tagEl.style.display = tagEl.textContent ? "" : "none";
+    bodyEl.textContent = "";
+    bodyEl.appendChild(tpl.content.cloneNode(true));
+    dlg.showModal();
+    dlg.scrollTop = 0;
+  }
+  cards.forEach(function (card) {
+    card.addEventListener("click", function () { open(card); });
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        open(card);
+      }
+    });
+  });
+  dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  var closeBtn = dlg.querySelector(".fw-dialog-x");
+  if (closeBtn) closeBtn.addEventListener("click", function () { dlg.close(); });
+})();

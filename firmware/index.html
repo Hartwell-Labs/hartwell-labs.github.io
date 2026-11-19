@@ -31,12 +31,15 @@
 <meta name="theme-color" content="#0a0e14" />
 <link rel="stylesheet" href="/assets/site.css" />
 <style>
+  /* --- /firmware --- */
   .fw-sec { text-align: center; }
-  .fw-sec p { max-width: 760px; margin: 0 auto 16px; }
+  .fw-sec p { max-width: 760px; margin: 0 auto 16px; color: var(--txt-2); }
   .fw-title { text-align: center; }
+
+  /* kafle: wjazd po kolei + wysuniecie przy najechaniu */
   .fw-cards { perspective: 1000px; }
-  @keyframes fwRise { from { opacity: 0; transform: translateY(22px) scale(.97); } to { opacity: 1; transform: none; } }
   .fw-card {
+    cursor: pointer;
     animation: fwRise .5s cubic-bezier(.2,.7,.3,1) backwards;
     transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s ease, border-color .25s ease;
   }
@@ -46,15 +49,73 @@
   .fw-card:nth-child(4) { animation-delay: .28s; }
   .fw-card:nth-child(5) { animation-delay: .36s; }
   .fw-card:nth-child(6) { animation-delay: .44s; }
-  .fw-card:hover, .fw-card:focus-within {
+  .fw-card:hover, .fw-card:focus-visible {
     transform: translateY(-10px) scale(1.03);
     box-shadow: 0 28px 52px -22px rgba(79,70,229,.55);
     border-color: var(--accent);
     z-index: 2;
   }
+  .fw-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .fw-more-hint { display: block; margin-top: 12px; font-size: 12.5px; font-weight: 600; color: var(--accent); }
+  @keyframes fwRise { from { opacity: 0; transform: translateY(22px) scale(.97); } to { opacity: 1; transform: none; } }
+
+  /* okno ze szczegolami */
+  .fw-dialog {
+    width: min(680px, calc(100vw - 32px));
+    max-height: min(84vh, 780px);
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--bg);
+    color: var(--txt);
+    box-shadow: 0 40px 90px -30px rgba(15,23,42,.55);
+    overflow: auto;
+  }
+  .fw-dialog::backdrop { background: rgba(10,14,20,.55); backdrop-filter: blur(3px); }
+  .fw-dialog[open] { animation: fwPop .26s cubic-bezier(.2,.7,.3,1) both; }
+  @keyframes fwPop { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+  .fw-dialog-in { position: relative; padding: 26px 28px 28px; }
+  .fw-dialog-x {
+    position: absolute; top: 14px; right: 14px;
+    width: 32px; height: 32px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg);
+    font-size: 18px; line-height: 1; color: var(--txt-2); cursor: pointer;
+  }
+  .fw-dialog-x:hover { color: var(--txt); border-color: var(--accent); }
+  .fw-dialog-tag {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--txt-3);
+    border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; margin-bottom: 10px;
+  }
+  .fw-dialog h3 { font-size: 22px; letter-spacing: -.02em; margin-bottom: 12px; padding-right: 40px; }
+  .fw-dialog-body p { font-size: 14.5px; line-height: 1.65; color: var(--txt-2); margin-bottom: 12px; }
+  .fw-dialog-body ul { margin: 0 0 14px 18px; }
+  .fw-dialog-body li { font-size: 14px; line-height: 1.6; color: var(--txt-2); margin-bottom: 6px; }
+  .fw-dialog-body li b { color: var(--txt); font-weight: 600; }
+  .fw-dialog-body h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--txt-3); margin: 18px 0 8px; }
+  .fw-dialog-body code { font-family: "JetBrains Mono", monospace; font-size: 12.5px; background: #f1f5f9; padding: 1px 5px; border-radius: 4px; }
+
+  /* kto, granice, faq */
+  .fw-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; }
+  .fw-box { border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; background: var(--bg); }
+  .fw-box h4 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .fw-box p { font-size: 14px; line-height: 1.6; color: var(--txt-2); }
+  .fw-line { display: grid; gap: 14px; max-width: 860px; margin: 0 auto; }
+  .fw-line div { border-left: 2px solid var(--border); padding-left: 16px; }
+  .fw-line b { font-size: 14.5px; }
+  .fw-line span { display: block; font-size: 14px; line-height: 1.6; color: var(--txt-2); margin-top: 2px; }
+  .fw-faq { max-width: 860px; margin: 0 auto; }
+  .fw-faq details { border-bottom: 1px solid var(--border); padding: 16px 0; }
+  .fw-faq summary { font-size: 15px; font-weight: 600; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+  .fw-faq summary::-webkit-details-marker { display: none; }
+  .fw-faq summary::after { content: "+"; color: var(--accent); font-weight: 600; }
+  .fw-faq details[open] summary::after { content: "–"; }
+  .fw-faq p { font-size: 14px; line-height: 1.65; color: var(--txt-2); margin-top: 10px; }
+
   @media (prefers-reduced-motion: reduce) {
     .fw-card { animation: none; }
-    .fw-card, .fw-card:hover, .fw-card:focus-within { transition: none; transform: none; }
+    .fw-card, .fw-card:hover { transition: none; transform: none; }
+    .fw-dialog[open] { animation: none; }
   }
 </style>
 </head>
@@ -91,41 +152,198 @@
   </div>
 </div>
 
-<section style="padding-top:56px;">
+<section style="padding-top:8px;">
+  <div class="container">
+    <div class="stats-in">
+      <div class="stat"><div class="n">24 h</div><div class="l">Early warning to ENISA and the national CSIRT for an actively exploited vulnerability (Art. 14)</div></div>
+      <div class="stat"><div class="n">72 h</div><div class="l">Full vulnerability notification, with severity and mitigation</div></div>
+      <div class="stat"><div class="n">14 days</div><div class="l">Final report, including the fix and what was learned</div></div>
+      <div class="stat"><div class="n">5 years</div><div class="l">Minimum support period, free security updates, signed and installable</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
   <div class="container fw-sec">
     <h2 style="font-size:24px; margin-bottom:18px;">Why this is where products fail</h2>
-    <p style="color:var(--txt-2); max-width:760px;">The reporting duty under Article 14 has applied since 11 September 2026: an actively exploited vulnerability has to reach ENISA and the national CSIRT within 24 hours, with a notification at 72 hours and a final report at 14 days. That clock does not start in a policy document — it starts with someone being able to answer, within an hour, whether a given CVE affects a given release. If the answer requires rebuilding an image to find out, the deadline is already gone.</p>
-    <p style="color:var(--txt-2); max-width:760px;">The same gap shows up earlier, in the radio equipment route: EN 18031 has applied since 1 August 2025, and its clauses on secure updates, access control, key storage and network monitoring are firmware clauses. Products that claim them without a signed update path and a protected key store do not survive a technical review.</p>
+    <p>The reporting duty under Article 14 has applied since 11 September 2026: an actively exploited vulnerability has to reach ENISA and the national CSIRT within 24 hours, with a notification at 72 hours and a final report at 14 days. That clock does not start in a policy document — it starts with someone being able to answer, within an hour, whether a given CVE affects a given release. If the answer requires rebuilding an image to find out, the deadline is already gone.</p>
+    <p>The same gap shows up earlier, in the radio equipment route: EN 18031 has applied since 1 August 2025, and its clauses on secure updates, access control, key storage and network monitoring are firmware clauses. Products that claim them without a signed update path and a protected key store do not survive a technical review.</p>
   </div>
 </section>
 
 <section id="delivery">
   <div class="container">
-    <h2 class="fw-title" style="font-size:24px; margin-bottom:18px;">What we deliver</h2>
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:6px;">What we deliver</h2>
+    <p style="text-align:center; color:var(--txt-3); font-size:13.5px; margin-bottom:22px;">Click a tile for the detail — scope, artefacts and the method behind each one.</p>
     <div class="prod-grid fw-cards">
-      <div class="prod fw-card">
+
+      <div class="prod fw-card" data-fw data-title="Signed update chain" data-tag="engineering" role="button" tabindex="0">
         <div class="row"><h4>Signed update chain</h4><span class="lang">engineering</span></div>
-        <p>Ed25519 or RSA-3072 image signing, verified in the bootloader before execution; signed manifest over every partition; A/B slots with atomic switch and rollback; anti-rollback counter in OTP fuses; staged rollout and recovery path. Key ceremony and offline signing procedure included.</p>
+        <p>Ed25519 or RSA-3072 image signing, verified in the bootloader before execution; signed manifest over every partition; A/B slots with atomic switch and rollback; anti-rollback counter in OTP fuses; staged rollout and recovery path.</p>
+        <span class="fw-more-hint">Details →</span>
+        <template class="fw-more">
+          <p>The update path is the first thing an assessor tests, and the first thing an attacker looks for. It is built as one chain, not as a feature bolted onto an existing updater.</p>
+          <h4>Signing</h4>
+          <ul>
+            <li><b>Algorithm and keys.</b> Ed25519 by default, RSA-3072 or ECDSA P-256 where the boot ROM requires it. Private keys live in an HSM or on an offline machine, never on the build server.</li>
+            <li><b>Manifest.</b> Every partition and every file hashed; manifest carries version, target device model, minimum bootloader version and the security-relevant change flag.</li>
+            <li><b>Key ceremony.</b> Written procedure for generation, backup and rotation, including what happens to devices in the field when a key is rotated or a key is compromised.</li>
+          </ul>
+          <h4>On the device</h4>
+          <ul>
+            <li><b>Verification before execution.</b> The bootloader verifies the manifest signature and each hash before jumping; a failure leaves the device in the last known-good slot, never in an unbootable state.</li>
+            <li><b>Rollback.</b> A/B slots with an atomic switch, a boot-success flag and an automatic revert if the new image fails to start twice.</li>
+            <li><b>Anti-rollback.</b> A monotonic counter in OTP fuses or a secure element, so a signed but older image is refused — the attack that signing alone does not stop.</li>
+          </ul>
+          <h4>What you get</h4>
+          <ul>
+            <li>Working update path in your build, not a reference implementation.</li>
+            <li>Signing pipeline integrated with your CI, plus the offline procedure for production keys.</li>
+            <li>Test record: successful update, corrupt image, truncated image, wrong model, downgrade attempt, power loss mid-write.</li>
+          </ul>
+        </template>
       </div>
-      <div class="prod fw-card">
+
+      <div class="prod fw-card" data-fw data-title="Secure boot" data-tag="engineering" role="button" tabindex="0">
         <div class="row"><h4>Secure boot</h4><span class="lang">engineering</span></div>
-        <p>Root of trust pinned to what the silicon already has: boot ROM, OTP fuses, TPM 2.0 or a secure element. Measured boot with a signed event log where available, plus the factory provisioning procedure and a written key-loss and recovery path.</p>
+        <p>Root of trust pinned to what the silicon already has: boot ROM, OTP fuses, TPM 2.0 or a secure element. Measured boot with a signed event log where available, plus the factory provisioning procedure.</p>
+        <span class="fw-more-hint">Details →</span>
+        <template class="fw-more">
+          <p>Secure boot is a decision about which key the device trusts before any of your code runs. On most shipped hardware that decision is already made by the silicon — the work is using it correctly instead of adding a second, weaker check on top.</p>
+          <h4>Root of trust</h4>
+          <ul>
+            <li><b>Boot ROM verification.</b> Where the ROM checks a signature, the public key hash goes into OTP. That write is irreversible; it is planned, tested on a sample, then locked.</li>
+            <li><b>TPM 2.0 or secure element.</b> Used for measured boot and sealed secrets where the SoC does not provide a ROM root, or where the key must survive flash replacement.</li>
+            <li><b>Where there is no root.</b> Some parts cannot verify anything at boot. We say so at scope time rather than selling a signature check that an attacker can patch out.</li>
+          </ul>
+          <h4>Provisioning</h4>
+          <ul>
+            <li>Per-device key injection on the production line, with a log that ties a serial number to a key.</li>
+            <li>Secure debug locked at the same station, so JTAG cannot be used after provisioning.</li>
+            <li>Failure handling: what the line does with a device that fails provisioning, and how that is recorded.</li>
+          </ul>
+          <h4>What you get</h4>
+          <ul>
+            <li>Boot chain implementation with the fuse map documented.</li>
+            <li>Provisioning procedure and the test that proves a tampered image is rejected.</li>
+            <li>A written key-loss and recovery path — required by auditors, usually missing.</li>
+          </ul>
+        </template>
       </div>
-      <div class="prod fw-card">
+
+      <div class="prod fw-card" data-fw data-title="Firmware review" data-tag="assessment" role="button" tabindex="0">
         <div class="row"><h4>Firmware review</h4><span class="lang">assessment</span></div>
-        <p>Boot chain, update path, key and credential storage, debug and recovery interfaces (JTAG, UART console, factory and service modes), update server authentication. Every finding carries the evidence and the exact steps an assessor can repeat.</p>
+        <p>Boot chain, update path, key and credential storage, debug and recovery interfaces (JTAG, UART console, factory and service modes), update server authentication. Every finding carries the evidence.</p>
+        <span class="fw-more-hint">Details →</span>
+        <template class="fw-more">
+          <p>A review of the image that ships, not of the source you wish you had. It works on a firmware binary and a device, so it applies to products with third-party components and to code written years ago by someone who has left.</p>
+          <h4>What is examined</h4>
+          <ul>
+            <li><b>Boot chain.</b> What runs first, what verifies what, and where verification can be skipped.</li>
+            <li><b>Update path.</b> Transport authentication, signature check, downgrade protection, and the recovery mode that bypasses all three.</li>
+            <li><b>Secrets.</b> Keys and passwords in flash, in NVRAM, in the filesystem and in the update server API; hardcoded credentials in the binary.</li>
+            <li><b>Interfaces.</b> JTAG, UART console, telnet or SSH with default credentials, factory and service modes, hidden HTTP endpoints.</li>
+            <li><b>Network services.</b> What listens, on which interface, with which authentication — including services that only start in a debug build.</li>
+          </ul>
+          <h4>Method</h4>
+          <ul>
+            <li>Static analysis of the image, then dynamic testing on hardware: memory and flash dumps, emulation where the part allows it, traffic capture on the update channel.</li>
+            <li>No source code required, though it shortens the work when available.</li>
+          </ul>
+          <h4>Output</h4>
+          <ul>
+            <li>Findings with severity, evidence and reproducible steps, written so an assessor or your own team can repeat each one.</li>
+            <li>A short list of what to fix first, priced: what a hardware change costs versus what a software mitigation buys.</li>
+          </ul>
+        </template>
       </div>
-      <div class="prod fw-card">
+
+      <div class="prod fw-card" data-fw data-title="SBOM and vulnerability handling" data-tag="process" role="button" tabindex="0">
         <div class="row"><h4>SBOM and vulnerability handling</h4><span class="lang">process</span></div>
-        <p>SBOM generated at build time in SPDX or CycloneDX and stored with the released artifact; dependency monitoring mapped to the versions actually shipped; triage that separates not-affected from exploitable; CVD policy with a working intake channel and a rehearsed 24-hour reporting path.</p>
+        <p>SBOM generated at build time in SPDX or CycloneDX and stored with the released artifact; dependency monitoring mapped to the versions actually shipped; triage and a rehearsed 24-hour reporting path.</p>
+        <span class="fw-more-hint">Details →</span>
+        <template class="fw-more">
+          <p>The requirement is not "have an SBOM". It is: given a CVE published this morning, know within the hour whether it affects a release you shipped three years ago, and be able to say so to a customer and to a regulator.</p>
+          <h4>SBOM</h4>
+          <ul>
+            <li>Generated during the build, in SPDX or CycloneDX, one file per release, stored next to the artefact you signed.</li>
+            <li>At least top-level dependencies, with versions and package identifiers — for firmware that often means Yocto or Buildroot manifests, vendor SDK components and third-party libraries linked into the image.</li>
+            <li>A mapping from release version to SBOM that survives a rebuild, so "which SBOM belongs to the device in the field" has one answer.</li>
+          </ul>
+          <h4>Monitoring and triage</h4>
+          <ul>
+            <li>Dependency monitoring against the versions you actually shipped, not the ones in the repository today.</li>
+            <li>Triage in four states: not present, present but not reachable, reachable but not exploitable, exploitable. Documented per case, because the difference decides whether the 24-hour clock starts.</li>
+            <li>VEX statements for the "not affected" cases, so the same question is not answered from scratch next month.</li>
+          </ul>
+          <h4>Reporting readiness</h4>
+          <ul>
+            <li>CVD policy and a public intake channel — a security contact and a <code>security.txt</code> that a researcher can actually find.</li>
+            <li>Who decides, who writes, who signs off — named roles, not a department.</li>
+            <li>A rehearsal against a real scenario, timed: detection, decision, early warning at 24 hours, notification at 72, final report at 14 days.</li>
+          </ul>
+        </template>
       </div>
-      <div class="prod fw-card">
+
+      <div class="prod fw-card" data-fw data-title="Assessment evidence" data-tag="documentation" role="button" tabindex="0">
         <div class="row"><h4>Assessment evidence</h4><span class="lang">documentation</span></div>
-        <p>Architecture and data flow, requirement-to-artefact mapping, test records, and the rationale wherever a requirement is not applicable. Written so an assessor can test the claim without us in the room, and so it still holds up at the five-year support date.</p>
+        <p>Architecture and data flow, requirement-to-artefact mapping, test records, and the rationale wherever a requirement is not applicable. Written so an assessor can test the claim without us in the room.</p>
+        <span class="fw-more-hint">Details →</span>
+        <template class="fw-more">
+          <p>The technical documentation is where a good product and a compliant product diverge. It has to be readable by an assessor who will try to falsify each claim, and it has to still make sense at the five-year support date.</p>
+          <h4>Contents</h4>
+          <ul>
+            <li><b>Architecture and data flow.</b> What the product does, what it connects to, which data crosses which boundary, and where the security functions sit.</li>
+            <li><b>Requirement mapping.</b> Each essential requirement traced to the artefact that satisfies it: a design section, a test record, a configuration, a procedure.</li>
+            <li><b>Risk assessment.</b> Threats considered, assumptions made, and the residual risk the manufacturer accepts and why.</li>
+            <li><b>Test records.</b> What was tested, on which hardware and firmware version, with the result and the date.</li>
+            <li><b>Not applicable, and why.</b> A requirement that is genuinely out of scope is argued in writing, not left blank.</li>
+          </ul>
+          <h4>Retention and update</h4>
+          <ul>
+            <li>Documentation kept for the period the regulation requires — ten years for the technical file — in a form that survives staff turnover.</li>
+            <li>Updated when the product changes, not reconstructed when someone asks.</li>
+          </ul>
+        </template>
       </div>
-      <div class="prod fw-card">
+
+      <div class="prod fw-card" data-fw data-title="Retrofit on shipped products" data-tag="engineering" role="button" tabindex="0">
         <div class="row"><h4>Retrofit on shipped products</h4><span class="lang">engineering</span></div>
-        <p>Where the boot ROM verifies a signature, a signed update path can be added to hardware already in the field without a board revision. Where it cannot, we say so at scope time and price the board change or a compensating control instead of selling a review that ends in a dead end.</p>
+        <p>Where the boot ROM verifies a signature, a signed update path can be added to hardware already in the field without a board revision. Where it cannot, we say so at scope time.</p>
+        <span class="fw-more-hint">Details →</span>
+        <template class="fw-more">
+          <p>Most products that need this were designed before anyone asked. The question is whether the existing hardware can be brought up to a defensible update path, or whether the honest answer is a board change.</p>
+          <h4>The decision, in order</h4>
+          <ul>
+            <li><b>Does the boot ROM verify a signature?</b> If yes, a signed update path is usually achievable in firmware alone.</li>
+            <li><b>Is there an OTP area or secure element for the key?</b> If yes, the root of trust can be anchored without new silicon.</li>
+            <li><b>Is there a spare slot or enough flash for A/B?</b> If not, a single-slot updater with a verified recovery path is the fallback.</li>
+            <li><b>Can the update server authenticate the device?</b> Without it, a signed image still leaks version information and allows targeted rollback attempts.</li>
+          </ul>
+          <h4>When the answer is no</h4>
+          <p>If the part cannot verify anything at boot and the flash is readable, we say that in the first week and price the alternatives: a board revision, an external secure element, or a compensating control with the residual risk written down. A review that ends in "you cannot fix this" is still worth more than a report claiming otherwise.</p>
+        </template>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:18px;">Who this is for</h2>
+    <div class="fw-two">
+      <div class="fw-box">
+        <h4>Manufacturers</h4>
+        <p>You ship a connected device or an embedded system and someone has now asked you for an SBOM, an update policy and a vulnerability process. We build the technical part and leave you the file that proves it.</p>
+      </div>
+      <div class="fw-box">
+        <h4>Test laboratories and notified bodies</h4>
+        <p>You assess radio equipment or products with digital elements and the file arrives with firmware claims nobody on the team can test. We take that section, under your procedure and your template.</p>
+      </div>
+      <div class="fw-box">
+        <h4>Consultancies and law firms</h4>
+        <p>You sell the compliance project and need an engineering answer for the parts that are not legal questions. Fixed-price line items, your client relationship, our name absent from the report.</p>
       </div>
     </div>
   </div>
@@ -133,21 +351,19 @@
 
 <section>
   <div class="container">
-    <h2 style="font-size:24px; margin-bottom:12px;">Working with assessment bodies</h2>
-    <p style="color:var(--txt-2); max-width:760px;">A large part of this work is delivered behind someone else's name. If you assess products, sell compliance work or run a test laboratory, you own the client relationship and the report — we deliver the firmware analysis, the fixes and the evidence sections, on a fixed scope and a fixed price. You do not need to keep an embedded engineer on payroll to accept a firmware-heavy file, and we do not contact your client.</p>
-    <div class="prod-grid" style="margin-top:16px;">
-      <div class="prod" style="border-style:dashed;">
-        <div class="row"><h4>Subcontract terms</h4><span class="lang">white label</span></div>
-        <p>Fixed-price line items, 14-day payment from the partner, no exclusivity unless it comes with a volume commitment, and a written boundary on scope changes. Delivered under your documentation template where you have one.</p>
-      </div>
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:18px;">Where the line is</h2>
+    <div class="fw-line">
+      <div><b>We are not a notified body.</b><span>We prepare a product for assessment and answer the technical questions during it. We do not issue certificates, and we do not pretend an assessment has happened.</span></div>
+      <div><b>We do not write the legal opinion.</b><span>Classification, the declaration of conformity and the regulatory argument belong to a lawyer or your compliance function. We supply the technical facts they argue from.</span></div>
+      <div><b>We do not sell "compliance" without the fix.</b><span>If a review finds that updates are unsigned, the finding comes with the work to sign them and the price of that work. A report alone is a document, not a fix.</span></div>
     </div>
   </div>
 </section>
 
 <section>
   <div class="container">
-    <h2 style="font-size:24px; margin-bottom:12px;">How an engagement runs</h2>
-    <div class="tl" style="max-width:760px;">
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:18px;">How an engagement runs</h2>
+    <div class="tl" style="max-width:760px; margin:0 auto;">
       <div class="tl-item"><div class="d">Day 1</div><div class="w"><b>Scope.</b> <span>One call, then a written scope: product, silicon, whether the update path already exists, and which claims in the file need evidence.</span></div></div>
       <div class="tl-item"><div class="d">Days 2–3</div><div class="w"><b>Fixed price.</b> <span>A priced list, not an estimate. Nothing starts until the scope is agreed in writing.</span></div></div>
       <div class="tl-item"><div class="d">Weeks 1–4</div><div class="w"><b>Work.</b> <span>Review, then implementation, then re-test. Findings are delivered as they are confirmed, not saved for a final presentation.</span></div></div>
@@ -158,15 +374,52 @@
 
 <section>
   <div class="container">
-    <h2 style="font-size:24px; margin-bottom:12px;">What we work with</h2>
-    <p style="color:var(--txt-2); max-width:760px;">Bare-metal and RTOS on Cortex-M and RISC-V; embedded Linux built with Yocto or Buildroot; U-Boot and TF-A boot chains; TPM 2.0, secure elements and fuse-based verification; HSM-backed or offline signing; OTA over HTTPS, MQTT or a vendor channel. If your platform is outside that list, the first answer will say so rather than the third invoice.</p>
-    <div class="hero-actions" style="margin-top:24px;">
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:18px;">Questions that come up first</h2>
+    <div class="fw-faq">
+      <details>
+        <summary>Is an SBOM enough for the vulnerability requirement?</summary>
+        <p>No. It answers "what is inside", which is necessary and is what most teams start with. The requirement is the handling process around it: who watches for a new CVE, how you decide whether your release is affected, who starts the 24-hour clock, and who writes the report. An SBOM without that process is a file nobody opens.</p>
+      </details>
+      <details>
+        <summary>How long does a signed update path take?</summary>
+        <p>On hardware whose boot ROM already verifies a signature and where a spare slot exists, four to six weeks including the test record. Without a spare slot, or with a production line that has to change its provisioning station, add two to three weeks. If the silicon cannot verify anything at boot, the honest answer is a hardware change, and that is a different project.</p>
+      </details>
+      <details>
+        <summary>Our product has been in the field for years. Is it too late?</summary>
+        <p>No, and it is the common case. The reporting duty covers products already on the market, including those placed before December 2027. What changes is the starting point: an existing fleet with no update path is a different engagement from a new design, and the first deliverable is usually a decision on whether the current hardware can be retrofitted.</p>
+      </details>
+      <details>
+        <summary>Do you work under NDA and under a partner's name?</summary>
+        <p>Yes to both. Work is delivered under the partner's documentation template, with our name absent from the client-facing report. White-label, fixed scope, 14-day payment from the partner, no exclusivity unless it comes with a volume commitment.</p>
+      </details>
+      <details>
+        <summary>What does it cost?</summary>
+        <p>Firmware review of a single product: quoted per product after the scope call, typically a few days of work. Signed update path: fixed price per platform, agreed before anything starts. Vulnerability handling and reporting readiness: priced as a package with the rehearsal included. The first conversation is a scope call, not a sales call, and it ends with a number or with "this is not our work".</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container" style="text-align:center;">
+    <h2 style="font-size:24px; margin-bottom:12px;">Tell us what ships, and what it runs on.</h2>
+    <p style="color:var(--txt-2); max-width:620px; margin:0 auto 22px;">Product, silicon, and whether an update path already exists. That is enough for a scope and a price, usually within two working days.</p>
+    <div class="hero-actions" style="justify-content:center;">
       <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement">business@hartwell-labs.pl</a>
       <a class="btn btn-secondary" href="/security">Coordinated disclosure</a>
     </div>
-    <p style="color:var(--txt-3); font-size:13px; max-width:760px; margin-top:18px;">Hartwell Labs is an engineering company in Szczecin, Poland. Work is delivered in English or Polish. For assessment bodies and consultancies, ask for the subcontract sheet with line items and turnaround times.</p>
   </div>
 </section>
+
+<dialog id="fw-dialog" class="fw-dialog" aria-labelledby="fw-dialog-title">
+  <div class="fw-dialog-in">
+    <button class="fw-dialog-x" type="button" aria-label="Close">×</button>
+    <div class="fw-dialog-tag" id="fw-dialog-tag"></div>
+    <h3 id="fw-dialog-title"></h3>
+    <div class="fw-dialog-body" id="fw-dialog-body"></div>
+    <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement" style="margin-top:8px;">Ask about this</a>
+  </div>
+</dialog>
 
 <footer>
   <div class="container footer-grid">

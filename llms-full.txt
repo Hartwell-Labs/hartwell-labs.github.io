@@ -1184,6 +1184,15 @@ Most of a cyber-resilience file can be written by a lawyer. The parts that get r
 
 [Describe the product](mailto:business@hartwell-labs.pl?subject=Firmware%20engagement) → [What we deliver](#delivery)
 
+24 h
+Early warning to ENISA and the national CSIRT for an actively exploited vulnerability (Art. 14)
+72 h
+Full vulnerability notification, with severity and mitigation
+14 days
+Final report, including the fix and what was learned
+5 years
+Minimum support period, free security updates, signed and installable
+
 ## Why this is where products fail
 
 The reporting duty under Article 14 has applied since 11 September 2026: an actively exploited vulnerability has to reach ENISA and the national CSIRT within 24 hours, with a notification at 72 hours and a final report at 14 days. That clock does not start in a policy document — it starts with someone being able to answer, within an hour, whether a given CVE affects a given release. If the answer requires rebuilding an image to find out, the deadline is already gone.
@@ -1192,51 +1201,185 @@ The same gap shows up earlier, in the radio equipment route: EN 18031 has applie
 
 ## What we deliver
 
+Click a tile for the detail — scope, artefacts and the method behind each one.
+
 #### Signed update chain
 
 engineering
 
-Ed25519 or RSA-3072 image signing, verified in the bootloader before execution; signed manifest over every partition; A/B slots with atomic switch and rollback; anti-rollback counter in OTP fuses; staged rollout and recovery path. Key ceremony and offline signing procedure included.
+Ed25519 or RSA-3072 image signing, verified in the bootloader before execution; signed manifest over every partition; A/B slots with atomic switch and rollback; anti-rollback counter in OTP fuses; staged rollout and recovery path.
+
+Details →
+
+The update path is the first thing an assessor tests, and the first thing an attacker looks for. It is built as one chain, not as a feature bolted onto an existing updater.
+
+##### Signing
+
+          - Algorithm and keys. Ed25519 by default, RSA-3072 or ECDSA P-256 where the boot ROM requires it. Private keys live in an HSM or on an offline machine, never on the build server.
+          - Manifest. Every partition and every file hashed; manifest carries version, target device model, minimum bootloader version and the security-relevant change flag.
+          - Key ceremony. Written procedure for generation, backup and rotation, including what happens to devices in the field when a key is rotated or a key is compromised.
+
+##### On the device
+
+          - Verification before execution. The bootloader verifies the manifest signature and each hash before jumping; a failure leaves the device in the last known-good slot, never in an unbootable state.
+          - Rollback. A/B slots with an atomic switch, a boot-success flag and an automatic revert if the new image fails to start twice.
+          - Anti-rollback. A monotonic counter in OTP fuses or a secure element, so a signed but older image is refused — the attack that signing alone does not stop.
+
+##### What you get
+
+          - Working update path in your build, not a reference implementation.
+          - Signing pipeline integrated with your CI, plus the offline procedure for production keys.
+          - Test record: successful update, corrupt image, truncated image, wrong model, downgrade attempt, power loss mid-write.
 
 #### Secure boot
 
 engineering
 
-Root of trust pinned to what the silicon already has: boot ROM, OTP fuses, TPM 2.0 or a secure element. Measured boot with a signed event log where available, plus the factory provisioning procedure and a written key-loss and recovery path.
+Root of trust pinned to what the silicon already has: boot ROM, OTP fuses, TPM 2.0 or a secure element. Measured boot with a signed event log where available, plus the factory provisioning procedure.
+
+Details →
+
+Secure boot is a decision about which key the device trusts before any of your code runs. On most shipped hardware that decision is already made by the silicon — the work is using it correctly instead of adding a second, weaker check on top.
+
+##### Root of trust
+
+          - Boot ROM verification. Where the ROM checks a signature, the public key hash goes into OTP. That write is irreversible; it is planned, tested on a sample, then locked.
+          - TPM 2.0 or secure element. Used for measured boot and sealed secrets where the SoC does not provide a ROM root, or where the key must survive flash replacement.
+          - Where there is no root. Some parts cannot verify anything at boot. We say so at scope time rather than selling a signature check that an attacker can patch out.
+
+##### Provisioning
+
+          - Per-device key injection on the production line, with a log that ties a serial number to a key.
+          - Secure debug locked at the same station, so JTAG cannot be used after provisioning.
+          - Failure handling: what the line does with a device that fails provisioning, and how that is recorded.
+
+##### What you get
+
+          - Boot chain implementation with the fuse map documented.
+          - Provisioning procedure and the test that proves a tampered image is rejected.
+          - A written key-loss and recovery path — required by auditors, usually missing.
 
 #### Firmware review
 
 assessment
 
-Boot chain, update path, key and credential storage, debug and recovery interfaces (JTAG, UART console, factory and service modes), update server authentication. Every finding carries the evidence and the exact steps an assessor can repeat.
+Boot chain, update path, key and credential storage, debug and recovery interfaces (JTAG, UART console, factory and service modes), update server authentication. Every finding carries the evidence.
+
+Details →
+
+A review of the image that ships, not of the source you wish you had. It works on a firmware binary and a device, so it applies to products with third-party components and to code written years ago by someone who has left.
+
+##### What is examined
+
+          - Boot chain. What runs first, what verifies what, and where verification can be skipped.
+          - Update path. Transport authentication, signature check, downgrade protection, and the recovery mode that bypasses all three.
+          - Secrets. Keys and passwords in flash, in NVRAM, in the filesystem and in the update server API; hardcoded credentials in the binary.
+          - Interfaces. JTAG, UART console, telnet or SSH with default credentials, factory and service modes, hidden HTTP endpoints.
+          - Network services. What listens, on which interface, with which authentication — including services that only start in a debug build.
+
+##### Method
+
+          - Static analysis of the image, then dynamic testing on hardware: memory and flash dumps, emulation where the part allows it, traffic capture on the update channel.
+          - No source code required, though it shortens the work when available.
+
+##### Output
+
+          - Findings with severity, evidence and reproducible steps, written so an assessor or your own team can repeat each one.
+          - A short list of what to fix first, priced: what a hardware change costs versus what a software mitigation buys.
 
 #### SBOM and vulnerability handling
 
 process
 
-SBOM generated at build time in SPDX or CycloneDX and stored with the released artifact; dependency monitoring mapped to the versions actually shipped; triage that separates not-affected from exploitable; CVD policy with a working intake channel and a rehearsed 24-hour reporting path.
+SBOM generated at build time in SPDX or CycloneDX and stored with the released artifact; dependency monitoring mapped to the versions actually shipped; triage and a rehearsed 24-hour reporting path.
+
+Details →
+
+The requirement is not "have an SBOM". It is: given a CVE published this morning, know within the hour whether it affects a release you shipped three years ago, and be able to say so to a customer and to a regulator.
+
+##### SBOM
+
+          - Generated during the build, in SPDX or CycloneDX, one file per release, stored next to the artefact you signed.
+          - At least top-level dependencies, with versions and package identifiers — for firmware that often means Yocto or Buildroot manifests, vendor SDK components and third-party libraries linked into the image.
+          - A mapping from release version to SBOM that survives a rebuild, so "which SBOM belongs to the device in the field" has one answer.
+
+##### Monitoring and triage
+
+          - Dependency monitoring against the versions you actually shipped, not the ones in the repository today.
+          - Triage in four states: not present, present but not reachable, reachable but not exploitable, exploitable. Documented per case, because the difference decides whether the 24-hour clock starts.
+          - VEX statements for the "not affected" cases, so the same question is not answered from scratch next month.
+
+##### Reporting readiness
+
+          - CVD policy and a public intake channel — a security contact and a security.txt that a researcher can actually find.
+          - Who decides, who writes, who signs off — named roles, not a department.
+          - A rehearsal against a real scenario, timed: detection, decision, early warning at 24 hours, notification at 72, final report at 14 days.
 
 #### Assessment evidence
 
 documentation
 
-Architecture and data flow, requirement-to-artefact mapping, test records, and the rationale wherever a requirement is not applicable. Written so an assessor can test the claim without us in the room, and so it still holds up at the five-year support date.
+Architecture and data flow, requirement-to-artefact mapping, test records, and the rationale wherever a requirement is not applicable. Written so an assessor can test the claim without us in the room.
+
+Details →
+
+The technical documentation is where a good product and a compliant product diverge. It has to be readable by an assessor who will try to falsify each claim, and it has to still make sense at the five-year support date.
+
+##### Contents
+
+          - Architecture and data flow. What the product does, what it connects to, which data crosses which boundary, and where the security functions sit.
+          - Requirement mapping. Each essential requirement traced to the artefact that satisfies it: a design section, a test record, a configuration, a procedure.
+          - Risk assessment. Threats considered, assumptions made, and the residual risk the manufacturer accepts and why.
+          - Test records. What was tested, on which hardware and firmware version, with the result and the date.
+          - Not applicable, and why. A requirement that is genuinely out of scope is argued in writing, not left blank.
+
+##### Retention and update
+
+          - Documentation kept for the period the regulation requires — ten years for the technical file — in a form that survives staff turnover.
+          - Updated when the product changes, not reconstructed when someone asks.
 
 #### Retrofit on shipped products
 
 engineering
 
-Where the boot ROM verifies a signature, a signed update path can be added to hardware already in the field without a board revision. Where it cannot, we say so at scope time and price the board change or a compensating control instead of selling a review that ends in a dead end.
+Where the boot ROM verifies a signature, a signed update path can be added to hardware already in the field without a board revision. Where it cannot, we say so at scope time.
 
-## Working with assessment bodies
+Details →
 
-A large part of this work is delivered behind someone else's name. If you assess products, sell compliance work or run a test laboratory, you own the client relationship and the report — we deliver the firmware analysis, the fixes and the evidence sections, on a fixed scope and a fixed price. You do not need to keep an embedded engineer on payroll to accept a firmware-heavy file, and we do not contact your client.
+Most products that need this were designed before anyone asked. The question is whether the existing hardware can be brought up to a defensible update path, or whether the honest answer is a board change.
 
-#### Subcontract terms
+##### The decision, in order
 
-white label
+          - Does the boot ROM verify a signature? If yes, a signed update path is usually achievable in firmware alone.
+          - Is there an OTP area or secure element for the key? If yes, the root of trust can be anchored without new silicon.
+          - Is there a spare slot or enough flash for A/B? If not, a single-slot updater with a verified recovery path is the fallback.
+          - Can the update server authenticate the device? Without it, a signed image still leaks version information and allows targeted rollback attempts.
 
-Fixed-price line items, 14-day payment from the partner, no exclusivity unless it comes with a volume commitment, and a written boundary on scope changes. Delivered under your documentation template where you have one.
+##### When the answer is no
+
+If the part cannot verify anything at boot and the flash is readable, we say that in the first week and price the alternatives: a board revision, an external secure element, or a compensating control with the residual risk written down. A review that ends in "you cannot fix this" is still worth more than a report claiming otherwise.
+
+## Who this is for
+
+##### Manufacturers
+
+You ship a connected device or an embedded system and someone has now asked you for an SBOM, an update policy and a vulnerability process. We build the technical part and leave you the file that proves it.
+
+##### Test laboratories and notified bodies
+
+You assess radio equipment or products with digital elements and the file arrives with firmware claims nobody on the team can test. We take that section, under your procedure and your template.
+
+##### Consultancies and law firms
+
+You sell the compliance project and need an engineering answer for the parts that are not legal questions. Fixed-price line items, your client relationship, our name absent from the report.
+
+## Where the line is
+We are not a notified body.
+We prepare a product for assessment and answer the technical questions during it. We do not issue certificates, and we do not pretend an assessment has happened.
+We do not write the legal opinion.
+Classification, the declaration of conformity and the regulatory argument belong to a lawyer or your compliance function. We supply the technical facts they argue from.
+We do not sell "compliance" without the fix.
+If a review finds that updates are unsigned, the finding comes with the work to sign them and the price of that work. A report alone is a document, not a fix.
 
 ## How an engagement runs
 Day 1
@@ -1252,11 +1395,32 @@ Handover
 Evidence.
 Documents, test records and the signing or provisioning procedure, in a form your assessor can follow without us in the room.
 
-## What we work with
+## Questions that come up first
+Is an SBOM enough for the vulnerability requirement?
 
-Bare-metal and RTOS on Cortex-M and RISC-V; embedded Linux built with Yocto or Buildroot; U-Boot and TF-A boot chains; TPM 2.0, secure elements and fuse-based verification; HSM-backed or offline signing; OTA over HTTPS, MQTT or a vendor channel. If your platform is outside that list, the first answer will say so rather than the third invoice.
+No. It answers "what is inside", which is necessary and is what most teams start with. The requirement is the handling process around it: who watches for a new CVE, how you decide whether your release is affected, who starts the 24-hour clock, and who writes the report. An SBOM without that process is a file nobody opens.
 
-Hartwell Labs is an engineering company in Szczecin, Poland. Work is delivered in English or Polish. For assessment bodies and consultancies, ask for the subcontract sheet with line items and turnaround times.
+How long does a signed update path take?
+
+On hardware whose boot ROM already verifies a signature and where a spare slot exists, four to six weeks including the test record. Without a spare slot, or with a production line that has to change its provisioning station, add two to three weeks. If the silicon cannot verify anything at boot, the honest answer is a hardware change, and that is a different project.
+
+Our product has been in the field for years. Is it too late?
+
+No, and it is the common case. The reporting duty covers products already on the market, including those placed before December 2027. What changes is the starting point: an existing fleet with no update path is a different engagement from a new design, and the first deliverable is usually a decision on whether the current hardware can be retrofitted.
+
+Do you work under NDA and under a partner's name?
+
+Yes to both. Work is delivered under the partner's documentation template, with our name absent from the client-facing report. White-label, fixed scope, 14-day payment from the partner, no exclusivity unless it comes with a volume commitment.
+
+What does it cost?
+
+Firmware review of a single product: quoted per product after the scope call, typically a few days of work. Signed update path: fixed price per platform, agreed before anything starts. Vulnerability handling and reporting readiness: priced as a package with the rehearsal included. The first conversation is a scope call, not a sales call, and it ends with a number or with "this is not our work".
+
+## Tell us what ships, and what it runs on.
+
+Product, silicon, and whether an update path already exists. That is enough for a scope and a price, usually within two working days.
+
+####
 
 ---
 ## Visual specification
@@ -1307,16 +1471,20 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
    - Lede (`--txt-2`, ~19px): _Most of a cyber-resilience file can be written by a lawyer. The parts that get rejected are the ones that need someone to read the boot chain: is the update act_
    - przycisk główny: **Describe the product** → `mailto:business@hartwell-labs.pl?subject=Firmware%20engagement`
    - przycisk drugorzędny: **What we deliver** → `#delivery`
-3. **Sekcja `#—`** — *Why this is where products fail*
+3. **Sekcja `#—`** — *(bez nagłówka)*
+4. **Sekcja `#—`** — *Why this is where products fail*
    - Zawartość: tekst (2 akapitów)
-4. **Sekcja `#delivery`** — *What we deliver*
+5. **Sekcja `#delivery`** — *What we deliver*
    - Zawartość: 6 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
-5. **Sekcja `#—`** — *Working with assessment bodies*
-   - Zawartość: 1 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
-6. **Sekcja `#—`** — *How an engagement runs*
-7. **Sekcja `#—`** — *What we work with*
-   - Zawartość: tekst (2 akapitów)
-8. **Footer** — tło `--bg-subtle`, kolumny: Products, Services, Resources, Company (13 linków), na dobie fine-print z licencją i krajem.
+6. **Sekcja `#—`** — *Who this is for*
+   - Zawartość: tekst (3 akapitów)
+7. **Sekcja `#—`** — *Where the line is*
+8. **Sekcja `#—`** — *How an engagement runs*
+9. **Sekcja `#—`** — *Questions that come up first*
+   - Zawartość: tekst (5 akapitów)
+10. **Sekcja `#—`** — *Tell us what ships, and what it runs on.*
+   - Zawartość: tekst (1 akapitów)
+11. **Footer** — tło `--bg-subtle`, kolumny: Products, Services, Resources, Company (13 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 
