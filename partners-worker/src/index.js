@@ -495,7 +495,7 @@ ${body}
 <div class="foot-grid">
   <div>
     <a class="logo" href="https://hartwell-labs.pl/" style="margin-bottom:14px">
-      <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/></svg>
+      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Hartwell Labs
     </a>
     <p class="about">Affiliate program for Talus — behavioral ransomware detection and response for Linux.</p>
