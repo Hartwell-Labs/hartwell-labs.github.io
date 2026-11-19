@@ -30,6 +30,15 @@
 <link rel="manifest" href="/assets/site.webmanifest" />
 <meta name="theme-color" content="#0a0e14" />
 <link rel="stylesheet" href="/assets/site.css" />
+<style>
+  .fw-sec { text-align: center; }
+  .fw-sec p { max-width: 760px; margin: 0 auto 16px; }
+  .fw-title { text-align: center; }
+  .fw-cards { perspective: 1000px; }
+  .fw-card { transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, border-color .22s ease; transform: translateZ(0); }
+  .fw-card:hover, .fw-card:focus-within { transform: translateY(-8px) scale(1.015); box-shadow: 0 20px 44px -20px rgba(15,23,42,.5); border-color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .fw-card, .fw-card:hover, .fw-card:focus-within { transition: none; transform: none; } }
+</style>
 </head>
 <body>
 
@@ -65,8 +74,8 @@
 </div>
 
 <section style="padding-top:56px;">
-  <div class="container">
-    <h2 style="font-size:24px; margin-bottom:12px;">Why this is where products fail</h2>
+  <div class="container fw-sec">
+    <h2 style="font-size:24px; margin-bottom:18px;">Why this is where products fail</h2>
     <p style="color:var(--txt-2); max-width:760px;">The reporting duty under Article 14 has applied since 11 September 2026: an actively exploited vulnerability has to reach ENISA and the national CSIRT within 24 hours, with a notification at 72 hours and a final report at 14 days. That clock does not start in a policy document — it starts with someone being able to answer, within an hour, whether a given CVE affects a given release. If the answer requires rebuilding an image to find out, the deadline is already gone.</p>
     <p style="color:var(--txt-2); max-width:760px;">The same gap shows up earlier, in the radio equipment route: EN 18031 has applied since 1 August 2025, and its clauses on secure updates, access control, key storage and network monitoring are firmware clauses. Products that claim them without a signed update path and a protected key store do not survive a technical review.</p>
   </div>
@@ -74,31 +83,31 @@
 
 <section id="delivery">
   <div class="container">
-    <h2 style="font-size:24px; margin-bottom:18px;">What we deliver</h2>
-    <div class="prod-grid">
-      <div class="prod">
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:18px;">What we deliver</h2>
+    <div class="prod-grid fw-cards">
+      <div class="prod fw-card">
         <div class="row"><h4>Signed update chain</h4><span class="lang">engineering</span></div>
-        <p>Key hierarchy, image signing, on-device verification, rollback and anti-rollback protection, staged rollout, recovery path. Implemented in the build, not described in a slide.</p>
+        <p>Ed25519 or RSA-3072 image signing, verified in the bootloader before execution; signed manifest over every partition; A/B slots with atomic switch and rollback; anti-rollback counter in OTP fuses; staged rollout and recovery path. Key ceremony and offline signing procedure included.</p>
       </div>
-      <div class="prod">
+      <div class="prod fw-card">
         <div class="row"><h4>Secure boot</h4><span class="lang">engineering</span></div>
-        <p>Root of trust selection for the silicon you already ship: boot ROM, fuse-based verification, TPM or secure element, measured boot where it is available. Includes the provisioning procedure and what happens when a key is lost.</p>
+        <p>Root of trust pinned to what the silicon already has: boot ROM, OTP fuses, TPM 2.0 or a secure element. Measured boot with a signed event log where available, plus the factory provisioning procedure and a written key-loss and recovery path.</p>
       </div>
-      <div class="prod">
+      <div class="prod fw-card">
         <div class="row"><h4>Firmware review</h4><span class="lang">assessment</span></div>
-        <p>Boot chain, update path, credential and key storage, debug and recovery interfaces, factory and service modes, update server authentication. Written up as findings an assessor can follow, with the reproduction each one needs.</p>
+        <p>Boot chain, update path, key and credential storage, debug and recovery interfaces (JTAG, UART console, factory and service modes), update server authentication. Every finding carries the evidence and the exact steps an assessor can repeat.</p>
       </div>
-      <div class="prod">
+      <div class="prod fw-card">
         <div class="row"><h4>SBOM and vulnerability handling</h4><span class="lang">process</span></div>
-        <p>SBOM generated at build time and stored with the release, dependency monitoring, triage that separates not-affected from exploitable, a CVD policy with a working intake channel, and a rehearsed 24-hour reporting path.</p>
+        <p>SBOM generated at build time in SPDX or CycloneDX and stored with the released artifact; dependency monitoring mapped to the versions actually shipped; triage that separates not-affected from exploitable; CVD policy with a working intake channel and a rehearsed 24-hour reporting path.</p>
       </div>
-      <div class="prod">
+      <div class="prod fw-card">
         <div class="row"><h4>Assessment evidence</h4><span class="lang">documentation</span></div>
-        <p>The technical sections of the file: architecture and data flow, security requirements mapping, test records, and a traceable link from each requirement to the artefact that satisfies it. Built to be read by someone who will test the claim.</p>
+        <p>Architecture and data flow, requirement-to-artefact mapping, test records, and the rationale wherever a requirement is not applicable. Written so an assessor can test the claim without us in the room, and so it still holds up at the five-year support date.</p>
       </div>
-      <div class="prod">
+      <div class="prod fw-card">
         <div class="row"><h4>Retrofit on shipped products</h4><span class="lang">engineering</span></div>
-        <p>For hardware already in the field. Where the boot ROM allows it, a signed update path can be added without a board revision; where it does not, we say so early and price the alternative honestly.</p>
+        <p>Where the boot ROM verifies a signature, a signed update path can be added to hardware already in the field without a board revision. Where it cannot, we say so at scope time and price the board change or a compensating control instead of selling a review that ends in a dead end.</p>
       </div>
     </div>
   </div>
