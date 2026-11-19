@@ -7,7 +7,7 @@ page_type: product
 description: "TrustNode is a Solana-style validator built from scratch in Rust: PoH clock, Tower BFT consensus, Sealevel-style parallel execution, Turbine propagation with Reed-Solomon erasure coding, CRDS gossip over real UDP, fee-priority mempool, 228 tests, MIT."
 source_html: https://hartwell-labs.pl/trustnode/
 markdown_twin: https://hartwell-labs.pl/trustnode.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
@@ -112,7 +112,7 @@ No SBF runtime, no QUIC (the transport is real UDP), no snapshot loading, and no
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
@@ -139,7 +139,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↩` → `https://github.com/BartoszOsiej/TrustNode`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↩` → `https://github.com/BartoszOsiej/TrustNode`
 2. **Hero** — blok `max-width: 760px`, padding `88px 0 72px`.
    - Eyebrow (kicker, `--txt-3`, wersaliki): _Trusted compute · Rust_
    - H1: _Built to understand, not to fork._ (krój 44–68px, `letter-spacing: -.02em`)
@@ -160,7 +160,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 6. **Sekcja `#honest`** — *Research-grade, on purpose.*
    - Kicker: _What it is not_ (11–12px, wersaliki, `--txt-3`)
    - Zawartość: tekst (1 akapitów)
-7. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (8 linków), na dobie fine-print z licencją i krajem.
+7. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (9 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 

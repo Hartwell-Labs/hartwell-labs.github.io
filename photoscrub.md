@@ -7,7 +7,7 @@ page_type: product
 description: "photoscrub finds GPS coordinates, embedded thumbnails, body serial numbers, XMP and IPTC fields, appended data and PII in free text — then writes metadata-free copies. Passive, local, no upload. Windows and Linux."
 source_html: https://hartwell-labs.pl/photoscrub/
 markdown_twin: https://hartwell-labs.pl/photoscrub.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
@@ -26,7 +26,7 @@ generator: tools/build-ai-pages.py
 
 Stripping EXIF is not enough. A JPEG can carry a second complete copy of the image, a PNG hides text in chunks, a video keeps GPS in its container, and the address in the caption is plain text. photoscrub finds all of it, then writes clean copies — passive, local, no upload, no account.
 
-[Source & releases ↩](https://github.com/BartoszOsiej/photoscrub) → [Full catalog](https://hartwell-labs.pl/products)
+[Source & releases ↩](https://github.com/Hartwell-Labs/photoscrub) → [Full catalog](https://hartwell-labs.pl/products)
 
 | Value | Label |
 |---|---|
@@ -118,7 +118,7 @@ Licence keys are Ed25519-signed payloads bound to one machine, and activation wo
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
@@ -145,12 +145,12 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↩` → `https://github.com/BartoszOsiej/photoscrub`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↩` → `https://github.com/Hartwell-Labs/photoscrub`
 2. **Hero** — blok `max-width: 760px`, padding `88px 0 72px`.
    - Eyebrow (kicker, `--txt-3`, wersaliki): _Privacy tooling · Windows & Linux_
    - H1: _See what your photos leak. Then remove it._ (krój 44–68px, `letter-spacing: -.02em`)
    - Lede (`--txt-2`, ~19px): _Stripping EXIF is not enough. A JPEG can carry a second complete copy of the image, a PNG hides text in chunks, a video keeps GPS in its container, and the addr_
-   - przycisk główny: **Source & releases ↩** → `https://github.com/BartoszOsiej/photoscrub`
+   - przycisk główny: **Source & releases ↩** → `https://github.com/Hartwell-Labs/photoscrub`
    - przycisk drugorzędny: **Full catalog** → `https://hartwell-labs.pl/products`
 3. **Pasek statystyk** — pełna szerokość, tło `--bg-subtle`, linie `--border` góra/dół, 4 kafelków. Każdy kafelek: duża liczba (`.n`, akcent/tekst) + podpis (`.l`, `--txt-3`).
    - **12** — classes of finding, incl. free-text PII
@@ -166,7 +166,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 6. **Sekcja `#model`** — *A classifier you can read.*
    - Kicker: _The model_ (11–12px, wersaliki, `--txt-3`)
    - Zawartość: tekst (2 akapitów)
-7. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (8 linków), na dobie fine-print z licencją i krajem.
+7. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (9 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 

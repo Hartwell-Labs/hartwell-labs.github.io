@@ -7,7 +7,7 @@ page_type: guide
 description: "A practical, honest playbook for deploying and tuning Talus eBPF ransomware protection on real Linux servers: deployment modes, installation, threshold tuning, MeMLP, enterprise wiring and the alert runbook."
 source_html: https://hartwell-labs.pl/talus-process-monitor/field-guide.html
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor/field-guide.html.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
@@ -145,7 +145,7 @@ Product page & pricingSource ↗
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
@@ -172,7 +172,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
 2. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (12 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements

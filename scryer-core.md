@@ -1,17 +1,17 @@
 ---
-title: "scryer-core — internal intelligence platform | Hartwell Labs"
+title: "scryer-core — intelligence platform | Hartwell Labs"
 url: https://hartwell-labs.pl/scryer-core/
 canonical: https://hartwell-labs.pl/scryer-core/
 lang: en
 page_type: product
-description: "Hartwell Labs' internal intelligence platform: public-procurement ingestion, KSC/NIS2 risk scoring and campaign export. Proprietary, access on request."
+description: "Hartwell Labs' intelligence platform: public-procurement ingestion, KSC/NIS2 risk scoring and campaign export. Proprietary, access on request."
 source_html: https://hartwell-labs.pl/scryer-core/
 markdown_twin: https://hartwell-labs.pl/scryer-core.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
-# scryer-core — internal intelligence platform | Hartwell Labs
+# scryer-core — intelligence platform | Hartwell Labs
 
 > Maszynowo czytelna wersja strony. Zawiera **pełną treść** oraz, niżej, **specyfikację wyglądu** — na wypadek, gdy AI nie może otworzyć strony.
 > Konwencja plików dla AI: https://llmstxt.org — indeks `llms.txt`, wszystko `llms-full.txt`.
@@ -20,11 +20,11 @@ generator: tools/build-ai-pages.py
 
 ## Page content
 
-*Intelligence platform · Rust · Proprietary*
+*Intelligence platform · Rust · MIT / dual licence*
 
 # Lead intelligence, built in-house.
 
-scryer-core is our internal intelligence platform: public-procurement ingestion, passive-DNS external attack surface mapping, KSC/NIS2-informed risk scoring and campaign-ready export with mail briefs. Proprietary — access on request for partners and clients.
+scryer-core is our intelligence platform: public-procurement ingestion, passive-DNS external attack surface mapping, KSC/NIS2-informed risk scoring and campaign-ready export with mail briefs. Proprietary — access on request for partners and clients.
 
 [Request access](mailto:important@hartwell-labs.pl?subject=Scryer%20Core%20%E2%80%94%20access%20request) → [About Hartwell Labs](https://hartwell-labs.pl/company)
 
@@ -33,7 +33,7 @@ scryer-core is our internal intelligence platform: public-procurement ingestion,
 | **Ingestion** | public procurement feeds |
 | **KSC · NIS2** | risk scoring |
 | **Export** | campaign-ready data |
-| **Proprietary** | Hartwell Labs internal |
+| **MIT** | Dual licensed with commercial terms |
 
 ## What it does, concretely.
 
@@ -55,11 +55,11 @@ Campaign-ready output with per-lead mail briefs feeds our outreach tooling — n
 
 Passive DNS audit maps the external attack surface of every organization — context for outreach and for security reviews.
 
-## Proprietary — access on request.
+## Open source, with commercial terms.
 
 *Access*
 
-scryer-core powers Hartwell Labs internal GTM and client engagements. We grant source access to partners under NDA — write to important@hartwell-labs.pl.
+scryer-core is MIT licensed and the source is public. The commercial licence applies if you want to embed it in a product or run it as a service. Contact contact@hartwell-labs.pl for that, or for support.
 
 ## CI on every push.
 
@@ -82,7 +82,7 @@ Tests, CodeQL static analysis and signed release assets with SBOM — enforced b
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
@@ -109,32 +109,32 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
 2. **Hero** — blok `max-width: 760px`, padding `88px 0 72px`.
-   - Eyebrow (kicker, `--txt-3`, wersaliki): _Intelligence platform · Rust · Proprietary_
+   - Eyebrow (kicker, `--txt-3`, wersaliki): _Intelligence platform · Rust · MIT / dual licence_
    - H1: _Lead intelligence, built in-house._ (krój 44–68px, `letter-spacing: -.02em`)
-   - Lede (`--txt-2`, ~19px): _scryer-core is our internal intelligence platform: public-procurement ingestion, passive-DNS external attack surface mapping, KSC/NIS2-informed risk scoring and_
+   - Lede (`--txt-2`, ~19px): _scryer-core is our intelligence platform: public-procurement ingestion, passive-DNS external attack surface mapping, KSC/NIS2-informed risk scoring and campaign_
    - przycisk główny: **Request access** → `mailto:important@hartwell-labs.pl?subject=Scryer%20Core%20%E2%80%94%20access%20request`
    - przycisk drugorzędny: **About Hartwell Labs** → `https://hartwell-labs.pl/company`
 3. **Pasek statystyk** — pełna szerokość, tło `--bg-subtle`, linie `--border` góra/dół, 4 kafelków. Każdy kafelek: duża liczba (`.n`, akcent/tekst) + podpis (`.l`, `--txt-3`).
    - **Ingestion** — public procurement feeds
    - **KSC · NIS2** — risk scoring
    - **Export** — campaign-ready data
-   - **Proprietary** — Hartwell Labs internal
+   - **MIT** — Dual licensed with commercial terms
 4. **Sekcja `#why`** — *What it does, concretely.*
    - Kicker: _Why scryer-core_ (11–12px, wersaliki, `--txt-3`)
    - Zawartość: 4 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
-5. **Sekcja `#start`** — *Proprietary — access on request.*
+5. **Sekcja `#start`** — *Open source, with commercial terms.*
    - Kicker: _Access_ (11–12px, wersaliki, `--txt-3`)
    - Zawartość: tekst (1 akapitów)
 6. **Sekcja `#standard`** — *CI on every push.*
    - Kicker: _Same discipline as everything we ship_ (11–12px, wersaliki, `--txt-3`)
    - Zawartość: tekst (1 akapitów)
-7. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (11 linków), na dobie fine-print z licencją i krajem.
+7. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (12 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 
-- 3 linków zewnętrznych (GitHub, PyPI, crates.io, sklepy) — otwierane w tej samej karcie.
+- 4 linków zewnętrznych (GitHub, PyPI, crates.io, sklepy) — otwierane w tej samej karcie.
 - Brak formularzy, brak JS zależności poza `assets/site.js` i `challenge.js`.
 - `challenge.js` jest skryptem łupieżczym — nie ładuj go przy renderowaniu.
 

@@ -7,7 +7,7 @@ page_type: legal
 description: "Hartwell Labs privacy policy: what data we collect across our sites and bots (Talus Process Monitor, TrustNode, Scryer, Externum), how it is used, your GDPR/CCPA rights and contact information."
 source_html: https://hartwell-labs.pl/privacy/
 markdown_twin: https://hartwell-labs.pl/privacy.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
@@ -77,7 +77,7 @@ We may update this policy; the version date below governs. For any privacy reque
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
@@ -104,14 +104,14 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
 2. **Hero** — blok `max-width: 760px`, padding `88px 0 72px`.
    - Eyebrow (kicker, `--txt-3`, wersaliki): _Privacy_
    - H1: _Privacy Policy_ (krój 44–68px, `letter-spacing: -.02em`)
    - Lede (`--txt-2`, ~19px): _What we collect, why, and how you stay in control. Last updated: 9 October 2026._
 3. **Sekcja `#—`** — *Who we are*
    - Zawartość: tekst (9 akapitów)
-4. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (11 linków), na dobie fine-print z licencją i krajem.
+4. **Footer** — tło `--bg-subtle`, kolumny: Products, Resources, Company (12 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 

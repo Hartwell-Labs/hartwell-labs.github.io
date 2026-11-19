@@ -7,7 +7,7 @@ page_type: product
 description: "Externum to nowy polski język programowania kompilujący do czytelnego Pythona, Bash i natywnego bytecode EXBC. Pipeline'y, pattern matching, REPL w przeglądarce, 400+ testów. Open source, licencja MIT."
 source_html: https://hartwell-labs.pl/pl/externum/
 markdown_twin: https://hartwell-labs.pl/pl/externum.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
@@ -77,7 +77,7 @@ Externum jest open source (MIT). Zacznij od repozytorium albo przeczytaj dokumen
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
@@ -104,7 +104,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/pl/`, `Produkty` → `https://hartwell-labs.pl/products`, `Katalog` → `https://hartwell-labs.pl/catalog`, `Dokumentacja` → `https://hartwell-labs.pl/docs`, `Bezpieczeństwo` → `https://hartwell-labs.pl/security`, `Firma` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/pl/`, `Produkty` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Katalog` → `https://hartwell-labs.pl/catalog`, `Dokumentacja` → `https://hartwell-labs.pl/docs`, `Bezpieczeństwo` → `https://hartwell-labs.pl/security`, `Firma` → `https://hartwell-labs.pl/company`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
 2. **Hero** — blok `max-width: 760px`, padding `88px 0 72px`.
    - Eyebrow (kicker, `--txt-3`, wersaliki): _Język programowania · Rust · MIT_
    - H1: _Externum — nowy polski język programowania._ (krój 44–68px, `letter-spacing: -.02em`)
@@ -116,7 +116,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
    - Zawartość: 6 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
 4. **Sekcja `#cta`** — *(bez nagłówka)*
    - Zawartość: 1 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
-5. **Footer** — tło `--bg-subtle`, kolumny: Produkty, Zasoby, Firma (11 linków), na dobie fine-print z licencją i krajem.
+5. **Footer** — tło `--bg-subtle`, kolumny: Produkty, Zasoby, Firma (12 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 

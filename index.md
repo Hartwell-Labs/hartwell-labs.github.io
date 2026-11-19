@@ -7,7 +7,7 @@ page_type: landing
 description: "Hartwell Labs is an independent engineering company from Szczecin, Poland building eBPF threat detection (talus-process-monitor), post-quantum cryptography and a self-hosted programming language. Open source, MIT licensed, CI on everything."
 source_html: https://hartwell-labs.pl/
 markdown_twin: https://hartwell-labs.pl.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
@@ -98,7 +98,7 @@ Use the products, read the source, or try to break them — we pay attention to 
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
@@ -125,7 +125,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `PL` → `https://hartwell-labs.pl/pl/`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `PL` → `https://hartwell-labs.pl/pl/`, `GitHub ↗` → `https://github.com/Hartwell-Labs`
 2. **Hero** — blok `max-width: 760px`, padding `88px 0 72px`.
    - Eyebrow (kicker, `--txt-3`, wersaliki): _Independent engineering company_
    - H1: _Infrastructure-grade open source._ (krój 44–68px, `letter-spacing: -.02em`)
@@ -145,7 +145,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
    - Zawartość: 6 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
 6. **Sekcja `#cta`** — *(bez nagłówka)*
    - Zawartość: 1 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
-7. **Footer** — tło `--bg-subtle`, kolumny: Data, Products, Resources, Company (12 linków), na dobie fine-print z licencją i krajem.
+7. **Footer** — tło `--bg-subtle`, kolumny: Data, Products, Resources, Company (13 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 

@@ -7,7 +7,7 @@ page_type: product
 description: "Passive DNS audit of 2,229 US county and K-12 government domains. SPF, DMARC and CAA records exactly as published, confirmed against two independent resolvers. No scanning."
 source_html: https://hartwell-labs.pl/report/gov-ranking.html
 markdown_twin: https://hartwell-labs.pl/report/gov-ranking.html.md
-last_generated: 2026-10-15
+last_generated: 2026-11-19
 generator: tools/build-ai-pages.py
 ---
 
@@ -291,7 +291,7 @@ exact change to make.
 | `--border-strong` | `#cbd5e1` | obramowania wzmocnione |
 | `--txt` | `#0f172a` | tekst główny |
 | `--txt-2` | `#475569` | tekst drugorzędny (nav, opisy) |
-| `--txt-3` | `#94a3b8` | tekst trzeciorzędny (kicker, stopka) |
+| `--txt-3` | `#64748b` | tekst trzeciorzędny (kicker, stopka) |
 | `--accent` | `#4f46e5` | akcent / CTA / hover |
 | `--accent-hover` | `#4338ca` | akcent po najechaniu |
 | `--accent-soft` | `#eef2ff` | tło akcentowe (blockquote) |
