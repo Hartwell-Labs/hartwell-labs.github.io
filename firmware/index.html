@@ -20,7 +20,7 @@
 <meta name="twitter:title" content="Firmware engineering for CRA and RED assessment — Hartwell Labs" />
 <meta name="twitter:description" content="The firmware part of a conformity file: signed updates, secure boot, SBOM, vulnerability handling and review evidence." />
 <meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Firmware engineering and assessment support","provider":{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/","email":"mod@hartwell-labs.pl","address":{"@type":"PostalAddress","addressLocality":"Szczecin","addressCountry":"PL"}},"serviceType":"Firmware security engineering","areaServed":"EU","description":"Signed update chains, secure boot, SBOM, vulnerability handling and firmware review evidence for products assessed under the Cyber Resilience Act and the Radio Equipment Directive."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Firmware engineering and assessment support","provider":{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/","email":"business@hartwell-labs.pl","address":{"@type":"PostalAddress","addressLocality":"Szczecin","addressCountry":"PL"}},"serviceType":"Firmware security engineering","areaServed":"EU","description":"Signed update chains, secure boot, SBOM, vulnerability handling and firmware review evidence for products assessed under the Cyber Resilience Act and the Radio Equipment Directive."}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
@@ -35,9 +35,27 @@
   .fw-sec p { max-width: 760px; margin: 0 auto 16px; }
   .fw-title { text-align: center; }
   .fw-cards { perspective: 1000px; }
-  .fw-card { transition: transform .22s cubic-bezier(.2,.7,.3,1), box-shadow .22s ease, border-color .22s ease; transform: translateZ(0); }
-  .fw-card:hover, .fw-card:focus-within { transform: translateY(-8px) scale(1.015); box-shadow: 0 20px 44px -20px rgba(15,23,42,.5); border-color: var(--accent); }
-  @media (prefers-reduced-motion: reduce) { .fw-card, .fw-card:hover, .fw-card:focus-within { transition: none; transform: none; } }
+  @keyframes fwRise { from { opacity: 0; transform: translateY(22px) scale(.97); } to { opacity: 1; transform: none; } }
+  .fw-card {
+    animation: fwRise .5s cubic-bezier(.2,.7,.3,1) backwards;
+    transition: transform .25s cubic-bezier(.2,.7,.3,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .fw-card:nth-child(1) { animation-delay: .04s; }
+  .fw-card:nth-child(2) { animation-delay: .12s; }
+  .fw-card:nth-child(3) { animation-delay: .20s; }
+  .fw-card:nth-child(4) { animation-delay: .28s; }
+  .fw-card:nth-child(5) { animation-delay: .36s; }
+  .fw-card:nth-child(6) { animation-delay: .44s; }
+  .fw-card:hover, .fw-card:focus-within {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 28px 52px -22px rgba(79,70,229,.55);
+    border-color: var(--accent);
+    z-index: 2;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fw-card { animation: none; }
+    .fw-card, .fw-card:hover, .fw-card:focus-within { transition: none; transform: none; }
+  }
 </style>
 </head>
 <body>
@@ -59,7 +77,7 @@
       <a href="/security">Security</a>
       <a href="/company">Company</a>
     </nav>
-    <a class="header-cta" href="mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement">Talk to us ↗</a>
+    <a class="header-cta" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement">Talk to us ↗</a>
   </div>
 </header>
 
@@ -68,7 +86,7 @@
   <h1>The firmware part <span class="dim">is the hard part.</span></h1>
   <p class="lede">Most of a cyber-resilience file can be written by a lawyer. The parts that get rejected are the ones that need someone to read the boot chain: is the update actually signed, does the device refuse an old image, can a key be extracted from flash, and can you prove it three years later when a component you shipped has a CVE.</p>
   <div class="hero-actions">
-    <a class="btn btn-primary" href="mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement">Describe the product</a>
+    <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement">Describe the product</a>
     <a class="btn btn-secondary" href="#delivery">What we deliver</a>
   </div>
 </div>
@@ -143,7 +161,7 @@
     <h2 style="font-size:24px; margin-bottom:12px;">What we work with</h2>
     <p style="color:var(--txt-2); max-width:760px;">Bare-metal and RTOS on Cortex-M and RISC-V; embedded Linux built with Yocto or Buildroot; U-Boot and TF-A boot chains; TPM 2.0, secure elements and fuse-based verification; HSM-backed or offline signing; OTA over HTTPS, MQTT or a vendor channel. If your platform is outside that list, the first answer will say so rather than the third invoice.</p>
     <div class="hero-actions" style="margin-top:24px;">
-      <a class="btn btn-primary" href="mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement">mod@hartwell-labs.pl</a>
+      <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement">business@hartwell-labs.pl</a>
       <a class="btn btn-secondary" href="/security">Coordinated disclosure</a>
     </div>
     <p style="color:var(--txt-3); font-size:13px; max-width:760px; margin-top:18px;">Hartwell Labs is an engineering company in Szczecin, Poland. Work is delivered in English or Polish. For assessment bodies and consultancies, ask for the subcontract sheet with line items and turnaround times.</p>

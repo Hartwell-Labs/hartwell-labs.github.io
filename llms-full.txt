@@ -1182,7 +1182,7 @@ generator: tools/build-ai-pages.py
 
 Most of a cyber-resilience file can be written by a lawyer. The parts that get rejected are the ones that need someone to read the boot chain: is the update actually signed, does the device refuse an old image, can a key be extracted from flash, and can you prove it three years later when a component you shipped has a CVE.
 
-[Describe the product](mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement) → [What we deliver](#delivery)
+[Describe the product](mailto:business@hartwell-labs.pl?subject=Firmware%20engagement) → [What we deliver](#delivery)
 
 ## Why this is where products fail
 
@@ -1300,12 +1300,12 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 ### 3. Page structure (in document order)
 
 1. **Header** — sticky, logo (SVG sześciokąt + zygzak sygnału) po lewej, nawigacja pośrodku, przycisk GitHub po prawej.
-   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `Talk to us ↗` → `mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement`
+   - Elementy: `Hartwell Labs` → `https://hartwell-labs.pl/`, `Products` → `https://hartwell-labs.pl/products`, `Firmware` → `https://hartwell-labs.pl/firmware`, `Catalog` → `https://hartwell-labs.pl/catalog`, `Docs` → `https://hartwell-labs.pl/docs`, `Security` → `https://hartwell-labs.pl/security`, `Company` → `https://hartwell-labs.pl/company`, `Talk to us ↗` → `mailto:business@hartwell-labs.pl?subject=Firmware%20engagement`
 2. **Hero** — blok `max-width: 760px`, padding `88px 0 72px`.
    - Eyebrow (kicker, `--txt-3`, wersaliki): _Firmware_
    - H1: _The firmware part is the hard part._ (krój 44–68px, `letter-spacing: -.02em`)
    - Lede (`--txt-2`, ~19px): _Most of a cyber-resilience file can be written by a lawyer. The parts that get rejected are the ones that need someone to read the boot chain: is the update act_
-   - przycisk główny: **Describe the product** → `mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement`
+   - przycisk główny: **Describe the product** → `mailto:business@hartwell-labs.pl?subject=Firmware%20engagement`
    - przycisk drugorzędny: **What we deliver** → `#delivery`
 3. **Sekcja `#—`** — *Why this is where products fail*
    - Zawartość: tekst (2 akapitów)
