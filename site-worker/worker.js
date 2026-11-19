@@ -199,9 +199,13 @@ function respond(request, path, body, ctx) {
   // HTML musi byc walidowany, inaczej zmiana na GitHub Pages bywa widoczna
   // dopiero po godzinie i przy okazji wyglada jak wpadka.
   const isHtml = extOf(path) === ".html" || extOf(path) === ".htm";
-  headers.set("cache-control", isHtml ? "public, max-age=300, must-revalidate" : "public, max-age=600");
+  headers.set("cache-control", isHtml ? "public, max-age=120, must-revalidate" : "public, max-age=600");
   const res = new Response(request.method === "HEAD" ? null : body.body, { status: 200, headers });
-  if (request.method === "GET") ctx.waitUntil(caches.default.put(cacheKey(request), secure(res.clone())));
+  // HTML never enters the Workers cache: the cache key only changes on a worker
+  // deploy, so a content commit stayed invisible until the next deploy even
+  // though the edge TTL was short. The edge cache with a 120s TTL is enough for
+  // HTML, and it lapses on its own.
+  if (request.method === "GET" && !isHtml) ctx.waitUntil(caches.default.put(cacheKey(request), secure(res.clone())));
   return res;
 }
 
