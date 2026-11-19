@@ -77,7 +77,9 @@
   .fw-dialog::backdrop { background: rgba(10,14,20,.55); backdrop-filter: blur(3px); }
   .fw-dialog[open] { animation: fwPop .26s cubic-bezier(.2,.7,.3,1) both; }
   @keyframes fwPop { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
-  .fw-dialog-in { position: relative; padding: 26px 28px 28px; }
+  .fw-dialog-in { position: relative; display: flex; flex-direction: column; max-height: min(84vh, 780px); }
+  .fw-dialog-head { padding: 24px 28px 10px; }
+  .fw-dialog-foot { padding: 14px 28px 20px; border-top: 1px solid var(--border); background: var(--bg); border-radius: 0 0 16px 16px; }
   .fw-dialog-x {
     position: absolute; top: 14px; right: 14px;
     width: 32px; height: 32px; border-radius: 8px;
@@ -91,6 +93,7 @@
     border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; margin-bottom: 10px;
   }
   .fw-dialog h3 { font-size: 22px; letter-spacing: -.02em; margin-bottom: 12px; padding-right: 40px; }
+  .fw-dialog-body { overflow-y: auto; padding: 0 28px 6px; }
   .fw-dialog-body p { font-size: 14.5px; line-height: 1.65; color: var(--txt-2); margin-bottom: 12px; }
   .fw-dialog-body ul { margin: 0 0 14px 18px; }
   .fw-dialog-body li { font-size: 14px; line-height: 1.6; color: var(--txt-2); margin-bottom: 6px; }
@@ -417,10 +420,14 @@
 <dialog id="fw-dialog" class="fw-dialog" aria-labelledby="fw-dialog-title">
   <div class="fw-dialog-in">
     <button class="fw-dialog-x" type="button" aria-label="Close">×</button>
-    <div class="fw-dialog-tag" id="fw-dialog-tag"></div>
-    <h3 id="fw-dialog-title"></h3>
+    <div class="fw-dialog-head">
+      <div class="fw-dialog-tag" id="fw-dialog-tag"></div>
+      <h3 id="fw-dialog-title"></h3>
+    </div>
     <div class="fw-dialog-body" id="fw-dialog-body"></div>
-    <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement" style="margin-top:8px;">Ask about this</a>
+    <div class="fw-dialog-foot">
+      <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement">Ask about this</a>
+    </div>
   </div>
 </dialog>
 
