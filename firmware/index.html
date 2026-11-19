@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'sha256-d5VMkplmqZ2ztN6bcgE6xYZw8ueyYFCkLiPiQs3x978='; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>Firmware engineering for CRA and RED assessment — Hartwell Labs</title>
+<meta name="description" content="Signed updates, secure boot, SBOM, vulnerability handling and firmware review for products under the Cyber Resilience Act and the Radio Equipment Directive. Technical delivery for assessment bodies, test labs and consultancies." />
+<link rel="canonical" href="https://hartwell-labs.pl/firmware/" />
+<meta property="og:site_name" content="Hartwell Labs" />
+<meta property="og:title" content="Firmware engineering for CRA and RED assessment — Hartwell Labs" />
+<meta property="og:description" content="The firmware part of a conformity file: signed updates, secure boot, SBOM, vulnerability handling and review evidence." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hartwell-labs.pl/firmware/" />
+<meta property="og:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Firmware engineering for CRA and RED assessment — Hartwell Labs" />
+<meta name="twitter:description" content="The firmware part of a conformity file: signed updates, secure boot, SBOM, vulnerability handling and review evidence." />
+<meta name="twitter:image" content="https://hartwell-labs.pl/assets/og-cover.png" />
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"Firmware engineering and assessment support","provider":{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/","email":"mod@hartwell-labs.pl","address":{"@type":"PostalAddress","addressLocality":"Szczecin","addressCountry":"PL"}},"serviceType":"Firmware security engineering","areaServed":"EU","description":"Signed update chains, secure boot, SBOM, vulnerability handling and firmware review evidence for products assessed under the Cyber Resilience Act and the Radio Equipment Directive."}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/icon-192.png" />
+<link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+
+<header>
+  <div class="container header-in">
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+        <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
+        <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Hartwell Labs
+    </a>
+    <nav class="main">
+      <a href="/products">Products</a>
+      <a href="/firmware" aria-current="page">Firmware</a>
+      <a href="/catalog">Catalog</a>
+      <a href="/docs">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/company">Company</a>
+    </nav>
+    <a class="header-cta" href="mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement">Talk to us ↗</a>
+  </div>
+</header>
+
+<div class="container hero" style="padding-bottom:56px;">
+  <div class="eyebrow">Firmware</div>
+  <h1>The firmware part <span class="dim">is the hard part.</span></h1>
+  <p class="lede">Most of a cyber-resilience file can be written by a lawyer. The parts that get rejected are the ones that need someone to read the boot chain: is the update actually signed, does the device refuse an old image, can a key be extracted from flash, and can you prove it three years later when a component you shipped has a CVE.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement">Describe the product</a>
+    <a class="btn btn-secondary" href="#delivery">What we deliver</a>
+  </div>
+</div>
+
+<section style="padding-top:56px;">
+  <div class="container">
+    <h2 style="font-size:24px; margin-bottom:12px;">Why this is where products fail</h2>
+    <p style="color:var(--txt-2); max-width:760px;">The reporting duty under Article 14 has applied since 11 September 2026: an actively exploited vulnerability has to reach ENISA and the national CSIRT within 24 hours, with a notification at 72 hours and a final report at 14 days. That clock does not start in a policy document — it starts with someone being able to answer, within an hour, whether a given CVE affects a given release. If the answer requires rebuilding an image to find out, the deadline is already gone.</p>
+    <p style="color:var(--txt-2); max-width:760px;">The same gap shows up earlier, in the radio equipment route: EN 18031 has applied since 1 August 2025, and its clauses on secure updates, access control, key storage and network monitoring are firmware clauses. Products that claim them without a signed update path and a protected key store do not survive a technical review.</p>
+  </div>
+</section>
+
+<section id="delivery">
+  <div class="container">
+    <h2 style="font-size:24px; margin-bottom:18px;">What we deliver</h2>
+    <div class="prod-grid">
+      <div class="prod">
+        <div class="row"><h4>Signed update chain</h4><span class="lang">engineering</span></div>
+        <p>Key hierarchy, image signing, on-device verification, rollback and anti-rollback protection, staged rollout, recovery path. Implemented in the build, not described in a slide.</p>
+      </div>
+      <div class="prod">
+        <div class="row"><h4>Secure boot</h4><span class="lang">engineering</span></div>
+        <p>Root of trust selection for the silicon you already ship: boot ROM, fuse-based verification, TPM or secure element, measured boot where it is available. Includes the provisioning procedure and what happens when a key is lost.</p>
+      </div>
+      <div class="prod">
+        <div class="row"><h4>Firmware review</h4><span class="lang">assessment</span></div>
+        <p>Boot chain, update path, credential and key storage, debug and recovery interfaces, factory and service modes, update server authentication. Written up as findings an assessor can follow, with the reproduction each one needs.</p>
+      </div>
+      <div class="prod">
+        <div class="row"><h4>SBOM and vulnerability handling</h4><span class="lang">process</span></div>
+        <p>SBOM generated at build time and stored with the release, dependency monitoring, triage that separates not-affected from exploitable, a CVD policy with a working intake channel, and a rehearsed 24-hour reporting path.</p>
+      </div>
+      <div class="prod">
+        <div class="row"><h4>Assessment evidence</h4><span class="lang">documentation</span></div>
+        <p>The technical sections of the file: architecture and data flow, security requirements mapping, test records, and a traceable link from each requirement to the artefact that satisfies it. Built to be read by someone who will test the claim.</p>
+      </div>
+      <div class="prod">
+        <div class="row"><h4>Retrofit on shipped products</h4><span class="lang">engineering</span></div>
+        <p>For hardware already in the field. Where the boot ROM allows it, a signed update path can be added without a board revision; where it does not, we say so early and price the alternative honestly.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 style="font-size:24px; margin-bottom:12px;">Working with assessment bodies</h2>
+    <p style="color:var(--txt-2); max-width:760px;">A large part of this work is delivered behind someone else's name. If you assess products, sell compliance work or run a test laboratory, you own the client relationship and the report — we deliver the firmware analysis, the fixes and the evidence sections, on a fixed scope and a fixed price. You do not need to keep an embedded engineer on payroll to accept a firmware-heavy file, and we do not contact your client.</p>
+    <div class="prod-grid" style="margin-top:16px;">
+      <div class="prod" style="border-style:dashed;">
+        <div class="row"><h4>Subcontract terms</h4><span class="lang">white label</span></div>
+        <p>Fixed-price line items, 14-day payment from the partner, no exclusivity unless it comes with a volume commitment, and a written boundary on scope changes. Delivered under your documentation template where you have one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 style="font-size:24px; margin-bottom:12px;">How an engagement runs</h2>
+    <div class="tl" style="max-width:760px;">
+      <div class="tl-item"><div class="d">Day 1</div><div class="w"><b>Scope.</b> <span>One call, then a written scope: product, silicon, whether the update path already exists, and which claims in the file need evidence.</span></div></div>
+      <div class="tl-item"><div class="d">Days 2–3</div><div class="w"><b>Fixed price.</b> <span>A priced list, not an estimate. Nothing starts until the scope is agreed in writing.</span></div></div>
+      <div class="tl-item"><div class="d">Weeks 1–4</div><div class="w"><b>Work.</b> <span>Review, then implementation, then re-test. Findings are delivered as they are confirmed, not saved for a final presentation.</span></div></div>
+      <div class="tl-item"><div class="d">Handover</div><div class="w"><b>Evidence.</b> <span>Documents, test records and the signing or provisioning procedure, in a form your assessor can follow without us in the room.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2 style="font-size:24px; margin-bottom:12px;">What we work with</h2>
+    <p style="color:var(--txt-2); max-width:760px;">Bare-metal and RTOS on Cortex-M and RISC-V; embedded Linux built with Yocto or Buildroot; U-Boot and TF-A boot chains; TPM 2.0, secure elements and fuse-based verification; HSM-backed or offline signing; OTA over HTTPS, MQTT or a vendor channel. If your platform is outside that list, the first answer will say so rather than the third invoice.</p>
+    <div class="hero-actions" style="margin-top:24px;">
+      <a class="btn btn-primary" href="mailto:mod@hartwell-labs.pl?subject=Firmware%20engagement">mod@hartwell-labs.pl</a>
+      <a class="btn btn-secondary" href="/security">Coordinated disclosure</a>
+    </div>
+    <p style="color:var(--txt-3); font-size:13px; max-width:760px; margin-top:18px;">Hartwell Labs is an engineering company in Szczecin, Poland. Work is delivered in English or Polish. For assessment bodies and consultancies, ask for the subcontract sheet with line items and turnaround times.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:14px;">
+        <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Hartwell Labs
+      </div>
+      <p class="about">Independent engineering company. Security systems, languages and tools — built in the open, MIT licensed.</p>
+    </div>
+    <div>
+      <h5>Products</h5>
+      <a href="/products">Products</a>
+      <a href="/talus-process-monitor/">talus-process-monitor</a>
+      <a href="/externum/">externum</a>
+      <a href="/hack-the-lab/">hack-the-lab</a>
+    </div>
+    <div>
+      <h5>Services</h5>
+      <a href="/firmware/">Firmware engineering</a>
+      <a href="/security">Security &amp; disclosure</a>
+      <a href="/docs">Documentation</a>
+    </div>
+    <div>
+      <h5>Resources</h5>
+      <a href="/catalog">Catalog</a>
+      <a href="https://github.com/Hartwell-Labs">GitHub organization</a>
+      <a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">Releases</a>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <a href="/company">About</a>
+      <a href="/privacy/">Privacy policy</a>
+      <a href="/terms/">Terms</a>
+    </div>
+  </div>
+  <div class="container f-fine">
+    <span>© 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
+    <span>Szczecin, Poland</span>
+  </div>
+</footer>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>
