@@ -101,7 +101,12 @@
       }
     });
   });
-  dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  var backDown = false;
+  dlg.addEventListener("pointerdown", function (e) { backDown = e.target === dlg; });
+  dlg.addEventListener("click", function (e) {
+    if (e.target === dlg && backDown) dlg.close();
+    backDown = false;
+  });
   var closeBtn = dlg.querySelector(".fw-dialog-x");
   if (closeBtn) closeBtn.addEventListener("click", function () { dlg.close(); });
 })();
@@ -217,7 +222,12 @@
     });
   });
 
-  dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  var backDown = false;
+  dlg.addEventListener("pointerdown", function (e) { backDown = e.target === dlg; });
+  dlg.addEventListener("click", function (e) {
+    if (e.target === dlg && backDown) dlg.close();
+    backDown = false;
+  });
   var x = dlg.querySelector("[data-consult-close]");
   if (x) x.addEventListener("click", function () { dlg.close(); });
 })();
