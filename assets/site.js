@@ -123,6 +123,22 @@
     status.className = "fw-form-status on" + (isErr ? " err" : "");
   }
 
+  var RATE = 650;
+  var range = document.getElementById("fc-block");
+  var rangeOut = document.getElementById("fc-block-out");
+  function money(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, " "); }
+  function paintRange() {
+    if (!range) return;
+    var h = parseInt(range.value, 10) || 4;
+    var pct = (h - range.min) / (range.max - range.min) * 100;
+    range.style.setProperty("--p", pct + "%");
+    if (rangeOut) rangeOut.textContent = h + " hours · " + money(h * RATE) + " PLN";
+  }
+  if (range) {
+    paintRange();
+    range.addEventListener("input", paintRange);
+  }
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
     var name = val("fc-name");
@@ -130,7 +146,8 @@
     var product = val("fc-product");
     var problem = val("fc-problem");
     var help = val("fc-help");
-    var block = val("fc-block");
+    var hours = range ? parseInt(range.value, 10) || 4 : 4;
+    var block = hours + " hours (" + money(hours * RATE) + " PLN)";
     var when = val("fc-when");
 
     var missing = [];

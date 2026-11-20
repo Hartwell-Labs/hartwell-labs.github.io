@@ -144,6 +144,22 @@
   .fw-form-status.on { display: block; }
   .fw-form-status.err { color: #b42318; }
   .fw-cards .prod { text-align: left; }
+  .fw-range-out { color: var(--accent); font-weight: 600; }
+  .fw-form input.fw-range {
+    -webkit-appearance: none; appearance: none; height: 6px; padding: 0; border: 0;
+    border-radius: 99px; margin-top: 12px; cursor: pointer;
+    background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--p, 33%), #e2e8f0 var(--p, 33%), #e2e8f0 100%);
+  }
+  .fw-form input.fw-range::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+    background: #fff; border: 2px solid var(--accent); box-shadow: 0 1px 3px rgba(15,23,42,.25); cursor: grab;
+  }
+  .fw-form input.fw-range::-webkit-slider-thumb:active { cursor: grabbing; }
+  .fw-form input.fw-range::-moz-range-thumb {
+    width: 14px; height: 14px; border-radius: 50%; background: #fff;
+    border: 2px solid var(--accent); box-shadow: 0 1px 3px rgba(15,23,42,.25); cursor: grab;
+  }
+  .fw-form input.fw-range:focus { outline: 2px solid var(--accent); outline-offset: 6px; }
   .fw-dialog-body .fw-form-plain { border: 0; border-radius: 0; padding: 0; background: transparent; gap: 12px; }
   .fw-dialog-foot-stack { display: grid; gap: 10px; justify-items: start; }
   .fw-dialog-foot-stack .fw-form-status { margin: 0; }
@@ -492,12 +508,8 @@
           <textarea id="fc-help" name="help" required maxlength="450" placeholder="A decision on whether anti-rollback in OTP fuses is enough for the assessor, and what evidence to keep."></textarea>
         </label>
         <div class="fw-form-row">
-          <label for="fc-block">Block
-            <select id="fc-block" name="block">
-              <option value="4 hours">4 hours</option>
-              <option value="8 hours">8 hours</option>
-              <option value="other">Other / not sure</option>
-            </select>
+          <label for="fc-block">Block — <b class="fw-range-out" id="fc-block-out">8 hours · 5 200 PLN</b>
+            <input id="fc-block" name="block" type="range" min="4" max="16" step="1" value="8" class="fw-range" aria-describedby="fc-block-out">
           </label>
           <label for="fc-when">Preferred time
             <input id="fc-when" name="when" type="text" maxlength="80" placeholder="Next week, mornings CET">
@@ -578,6 +590,6 @@
     <span>Szczecin, Poland</span>
   </div>
 </footer>
-<script src="/assets/site.js?v=20261121" defer></script>
+<script src="/assets/site.js?v=20261122" defer></script>
 </body>
 </html>
