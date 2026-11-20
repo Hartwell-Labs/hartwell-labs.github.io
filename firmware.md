@@ -288,7 +288,7 @@ An outcome, not a topic: a yes/no decision, a list of steps, a risk call, or a s
 
 Open form →
 
-650 PLN per hour, four-hour minimum, invoiced and paid before the call. If the problem is bigger than a call, the reply names the engagement instead. JavaScript is off, so the form will not open — email business@hartwell-labs.pl with the same three answers.
+650 PLN per hour, four-hour minimum, paid in full before the call; a receipt follows the confirmation. If the problem is bigger than a call, the reply names the engagement instead. JavaScript is off, so the form will not open — email business@hartwell-labs.pl with the same three answers.
 
 consultation
 
@@ -304,11 +304,8 @@ What does not work
 *
 What you need from the call 
 *
-Block
-            
-4 hours
-8 hours
-Other / not sure
+Block — 
+8 hours · 5 200 PLN
 Preferred time
             
 
