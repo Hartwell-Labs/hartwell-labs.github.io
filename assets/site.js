@@ -176,3 +176,31 @@
     if (el) el.addEventListener("input", function () { if (status) status.className = "fw-form-status"; });
   });
 })();
+/* --- /firmware: kafle konsultacji otwieraja okno z formularzem ----------- */
+(function () {
+  var dlg = document.getElementById("fw-consult-dialog");
+  var triggers = document.querySelectorAll("[data-consult]");
+  if (!dlg || !triggers.length || typeof dlg.showModal !== "function") return;
+  var body = dlg.querySelector(".fw-dialog-body");
+
+  function open(focusId) {
+    dlg.showModal();
+    if (body) body.scrollTop = 0;
+    var el = focusId ? document.getElementById(focusId) : null;
+    if (el) setTimeout(function () { el.focus(); }, 60);
+  }
+
+  triggers.forEach(function (t) {
+    t.addEventListener("click", function () { open(t.getAttribute("data-focus")); });
+    t.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        open(t.getAttribute("data-focus"));
+      }
+    });
+  });
+
+  dlg.addEventListener("click", function (e) { if (e.target === dlg) dlg.close(); });
+  var x = dlg.querySelector("[data-consult-close]");
+  if (x) x.addEventListener("click", function () { dlg.close(); });
+})();

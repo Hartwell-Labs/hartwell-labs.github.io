@@ -143,6 +143,9 @@
   .fw-form-status { font-size: 13px; line-height: 1.55; color: var(--txt-2); display: none; }
   .fw-form-status.on { display: block; }
   .fw-form-status.err { color: #b42318; }
+  .fw-dialog-body .fw-form-plain { border: 0; border-radius: 0; padding: 0; background: transparent; gap: 12px; }
+  .fw-dialog-foot-stack { display: grid; gap: 10px; justify-items: start; }
+  .fw-dialog-foot-stack .fw-form-status { margin: 0; }
 
   @media (prefers-reduced-motion: reduce) {
     .fw-card { animation: none; }
@@ -436,21 +439,40 @@
 <section id="consultation">
   <div class="container fw-sec">
     <h2 class="fw-title" style="font-size:24px; margin-bottom:8px;">Book a consultation</h2>
-    <p style="text-align:center; color:var(--txt-3); font-size:13.5px; max-width:640px; margin:0 auto 26px;">One problem, one hour-block, a fixed rate. Fill the three fields below and the button opens your email client with the message written — nothing is sent to a server.</p>
+    <p style="text-align:center; color:var(--txt-3); font-size:13.5px; max-width:640px; margin:0 auto 22px;">One problem, one hour-block, a fixed rate. Three answers decide whether a call is worth booking. Open the form, fill it, and the button writes the email — nothing is sent to a server.</p>
 
-    <div class="fw-consult">
-      <div>
-        <h3 style="font-size:16px; margin-bottom:6px;">What the email has to answer</h3>
-        <p style="font-size:14px; line-height:1.6; color:var(--txt-2);">A call without these three answers turns into a discovery session billed by the hour. With them, it is an hour that ends in a decision.</p>
-        <ol>
-          <li><b>Who you are.</b> Name, company, and whether you are the manufacturer, the partner, or the assessor.</li>
-          <li><b>The problem.</b> What does not work, what you already checked, and when it started.</li>
-          <li><b>What you need from the call.</b> An outcome, not a topic: a yes/no decision, a list of steps, a risk call, or a second opinion on an existing report.</li>
-        </ol>
-        <p style="font-size:13px; line-height:1.6; color:var(--txt-3); margin-top:16px;">Rate: 650 PLN per hour, four-hour minimum, invoiced and paid before the call. If the problem is bigger than a call, the reply names the engagement instead.</p>
+    <div class="prod-grid fw-cards">
+      <div class="prod fw-card" data-consult data-focus="fc-name" role="button" tabindex="0">
+        <div class="row"><h4>Who you are</h4><span class="lang">step 1</span></div>
+        <p>Name, company, and whether you are the manufacturer, the partner, or the assessor. It changes what I can say about your product.</p>
+        <span class="fw-more-hint">Open form →</span>
       </div>
+      <div class="prod fw-card" data-consult data-focus="fc-problem" role="button" tabindex="0">
+        <div class="row"><h4>The problem</h4><span class="lang">step 2</span></div>
+        <p>What does not work, what you already checked, and when it started. A symptom I can reproduce is worth more than an architecture diagram.</p>
+        <span class="fw-more-hint">Open form →</span>
+      </div>
+      <div class="prod fw-card" data-consult data-focus="fc-help" role="button" tabindex="0">
+        <div class="row"><h4>What you need from the call</h4><span class="lang">step 3</span></div>
+        <p>An outcome, not a topic: a yes/no decision, a list of steps, a risk call, or a second opinion on a report you already have.</p>
+        <span class="fw-more-hint">Open form →</span>
+      </div>
+    </div>
 
-      <form class="fw-form" id="fw-consult" novalidate>
+    <p style="text-align:center; font-size:13px; line-height:1.6; color:var(--txt-3); margin-top:20px; max-width:680px; margin-left:auto; margin-right:auto;">650 PLN per hour, four-hour minimum, invoiced and paid before the call. If the problem is bigger than a call, the reply names the engagement instead. <noscript>JavaScript is off, so the form will not open — email <a href="mailto:business@hartwell-labs.pl?subject=Consultation">business@hartwell-labs.pl</a> with the same three answers.</noscript></p>
+
+  </div>
+</section>
+
+<dialog id="fw-consult-dialog" class="fw-dialog" aria-labelledby="fw-consult-title">
+  <div class="fw-dialog-in">
+    <button class="fw-dialog-x" type="button" data-consult-close aria-label="Close">×</button>
+    <div class="fw-dialog-head">
+      <div class="fw-dialog-tag">consultation</div>
+      <h3 id="fw-consult-title">Book a consultation</h3>
+    </div>
+    <div class="fw-dialog-body">
+      <form class="fw-form fw-form-plain" id="fw-consult" novalidate>
         <div class="fw-form-row">
           <label for="fc-name">Name and company <span class="req">*</span>
             <input id="fc-name" name="name" type="text" required maxlength="120" autocomplete="name" placeholder="Anna Nowak, Acme Sp. z o.o.">
@@ -480,13 +502,15 @@
             <input id="fc-when" name="when" type="text" maxlength="80" placeholder="Next week, mornings CET">
           </label>
         </div>
-        <button class="btn btn-primary" type="submit">Open email draft ↗</button>
-        <p class="fw-form-status" id="fc-status" role="status" aria-live="polite"></p>
-        <p class="fw-form-note">This opens your email client with the text filled in; nothing is sent to a server. No email client? Write to <a href="mailto:business@hartwell-labs.pl?subject=Consultation">business@hartwell-labs.pl</a> with the same three answers.</p>
       </form>
     </div>
+    <div class="fw-dialog-foot fw-dialog-foot-stack">
+      <p class="fw-form-status" id="fc-status" role="status" aria-live="polite"></p>
+      <button class="btn btn-primary" type="submit" form="fw-consult">Open email draft ↗</button>
+      <p class="fw-form-note" style="margin:0;">This opens your email client with the text filled in; nothing is sent to a server. No email client? Write to <a href="mailto:business@hartwell-labs.pl?subject=Consultation">business@hartwell-labs.pl</a> with the same three answers.</p>
+    </div>
   </div>
-</section>
+</dialog>
 
 <section>
   <div class="container" style="text-align:center;">
@@ -553,6 +577,6 @@
     <span>Szczecin, Poland</span>
   </div>
 </footer>
-<script src="/assets/site.js?v=20261120" defer></script>
+<script src="/assets/site.js?v=20261121" defer></script>
 </body>
 </html>
