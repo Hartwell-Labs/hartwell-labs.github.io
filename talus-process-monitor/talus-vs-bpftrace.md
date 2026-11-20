@@ -7,7 +7,7 @@ page_type: product
 description: "Talus vs bpftrace: bpftrace is a CLI for one-off tracing; Talus is continuous eBPF process monitoring with alerts, kill and fleet view. Not a replacement, a product."
 source_html: https://hartwell-labs.pl/talus-process-monitor/talus-vs-bpftrace.html
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor/talus-vs-bpftrace.html.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

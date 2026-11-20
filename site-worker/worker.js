@@ -164,7 +164,13 @@ async function repoGet(repo, branch, dir, path) {
 
 async function rawGet(path) {
   const sep = path.includes("?") ? "&" : "?";
-  const url = encodeURI(RAW_BASE + path) + sep + "__b=" + BUILD_ID;
+  // HTML takes a per-minute cache buster. BUILD_ID alone only changes when the
+  // worker is deployed, so a content commit stayed invisible until the next
+  // deploy: the edge had cached the subrequest to raw under the old value.
+  // A minute bucket costs one extra fetch per minute per page and makes every
+  // content change visible within a minute, with no deploy and no purge.
+  const bust = extOf(path) === ".html" ? BUILD_ID + "-" + Math.floor(Date.now() / 60000).toString(36) : BUILD_ID;
+  const url = encodeURI(RAW_BASE + path) + sep + "__b=" + bust;
   const res = await fetch(url, { headers: { accept: "*/*" } });
   if (!res.ok) return null;
   return res;

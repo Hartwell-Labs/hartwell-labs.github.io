@@ -7,7 +7,7 @@ page_type: product
 description: "Terms for Linux Aegis: MIT licence, permitted use, support, liability and risk."
 source_html: https://hartwell-labs.pl/terms/linux-aegis/
 markdown_twin: https://hartwell-labs.pl/terms/linux-aegis.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

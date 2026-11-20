@@ -7,7 +7,7 @@ page_type: catalog
 description: "The Hartwell Labs product catalog: eBPF threat detection (talus-process-monitor), post-quantum cryptography, kernel security, programming languages and offensive-security tooling. Open source, MIT licensed."
 source_html: https://hartwell-labs.pl/products/
 markdown_twin: https://hartwell-labs.pl/products.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

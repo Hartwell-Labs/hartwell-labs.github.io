@@ -118,6 +118,30 @@
   .fw-faq details[open] summary::after { content: "–"; }
   .fw-faq p { font-size: 14px; line-height: 1.65; color: var(--txt-2); margin-top: 10px; }
 
+  /* konsultacja: formularz skladajacy maila */
+  .fw-consult { display: grid; grid-template-columns: minmax(280px, .85fr) minmax(320px, 1.15fr); gap: 28px; max-width: 980px; margin: 0 auto; align-items: start; }
+  @media (max-width: 760px) { .fw-consult { grid-template-columns: 1fr; gap: 20px; } }
+  .fw-consult ol { margin: 14px 0 0 18px; display: grid; gap: 10px; }
+  .fw-consult li { font-size: 14px; line-height: 1.6; color: var(--txt-2); }
+  .fw-consult li b { color: var(--txt); }
+  .fw-form { border: 1px solid var(--border); border-radius: 12px; padding: 22px; background: var(--bg); display: grid; gap: 14px; }
+  .fw-form label { display: grid; gap: 6px; font-size: 12.5px; font-weight: 600; letter-spacing: .02em; }
+  .fw-form label span.req { color: var(--accent); }
+  .fw-form input, .fw-form select, .fw-form textarea {
+    font: inherit; font-size: 14px; font-weight: 400; color: var(--txt); background: #fff;
+    border: 1px solid var(--border); border-radius: 8px; padding: 9px 11px; width: 100%;
+  }
+  .fw-form textarea { resize: vertical; min-height: 84px; line-height: 1.55; }
+  .fw-form input:focus, .fw-form select:focus, .fw-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+  .fw-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .fw-form-row { grid-template-columns: 1fr; } }
+  .fw-form button { justify-self: start; }
+  .fw-form-note { font-size: 12.5px; line-height: 1.55; color: var(--txt-3); }
+  .fw-form-note a { color: var(--accent); text-decoration: underline; }
+  .fw-form-status { font-size: 13px; line-height: 1.55; color: var(--txt-2); display: none; }
+  .fw-form-status.on { display: block; }
+  .fw-form-status.err { color: #b42318; }
+
   @media (prefers-reduced-motion: reduce) {
     .fw-card { animation: none; }
     .fw-card, .fw-card:hover { transition: none; transform: none; }
@@ -155,6 +179,7 @@
   <div class="hero-actions">
     <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Firmware%20engagement">Describe the product</a>
     <a class="btn btn-secondary" href="#delivery">What we deliver</a>
+    <a class="btn btn-secondary" href="#consultation">Book a consultation</a>
   </div>
 </div>
 
@@ -406,6 +431,61 @@
   </div>
 </section>
 
+<section id="consultation">
+  <div class="container fw-sec">
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:8px;">Book a consultation</h2>
+    <p style="text-align:center; color:var(--txt-3); font-size:13.5px; max-width:640px; margin:0 auto 26px;">One problem, one hour-block, a fixed rate. Fill the three fields below and the button opens your email client with the message written — nothing is sent to a server.</p>
+
+    <div class="fw-consult">
+      <div>
+        <h3 style="font-size:16px; margin-bottom:6px;">What the email has to answer</h3>
+        <p style="font-size:14px; line-height:1.6; color:var(--txt-2);">A call without these three answers turns into a discovery session billed by the hour. With them, it is an hour that ends in a decision.</p>
+        <ol>
+          <li><b>Who you are.</b> Name, company, and whether you are the manufacturer, the partner, or the assessor.</li>
+          <li><b>The problem.</b> What does not work, what you already checked, and when it started.</li>
+          <li><b>What you need from the call.</b> An outcome, not a topic: a yes/no decision, a list of steps, a risk call, or a second opinion on an existing report.</li>
+        </ol>
+        <p style="font-size:13px; line-height:1.6; color:var(--txt-3); margin-top:16px;">Rate: 650 PLN per hour, four-hour minimum, invoiced and paid before the call. If the problem is bigger than a call, the reply names the engagement instead.</p>
+      </div>
+
+      <form class="fw-form" id="fw-consult" novalidate>
+        <div class="fw-form-row">
+          <label for="fc-name">Name and company <span class="req">*</span>
+            <input id="fc-name" name="name" type="text" required maxlength="120" autocomplete="name" placeholder="Anna Nowak, Acme Sp. z o.o.">
+          </label>
+          <label for="fc-email">Email <span class="req">*</span>
+            <input id="fc-email" name="email" type="email" required maxlength="120" autocomplete="email" placeholder="anna@acme.pl">
+          </label>
+        </div>
+        <label for="fc-product">Product, version, silicon <span class="req">*</span>
+          <input id="fc-product" name="product" type="text" required maxlength="160" placeholder="Gateway G2 v1.4, STM32H7, FreeRTOS">
+        </label>
+        <label for="fc-problem">What does not work <span class="req">*</span>
+          <textarea id="fc-problem" name="problem" required maxlength="700" placeholder="The device accepts an older signed image after a failed update. We checked the bootloader signature check and it passes on the current image only."></textarea>
+        </label>
+        <label for="fc-help">What you need from the call <span class="req">*</span>
+          <textarea id="fc-help" name="help" required maxlength="450" placeholder="A decision on whether anti-rollback in OTP fuses is enough for the assessor, and what evidence to keep."></textarea>
+        </label>
+        <div class="fw-form-row">
+          <label for="fc-block">Block
+            <select id="fc-block" name="block">
+              <option value="4 hours">4 hours</option>
+              <option value="8 hours">8 hours</option>
+              <option value="other">Other / not sure</option>
+            </select>
+          </label>
+          <label for="fc-when">Preferred time
+            <input id="fc-when" name="when" type="text" maxlength="80" placeholder="Next week, mornings CET">
+          </label>
+        </div>
+        <button class="btn btn-primary" type="submit">Open email draft ↗</button>
+        <p class="fw-form-status" id="fc-status" role="status" aria-live="polite"></p>
+        <p class="fw-form-note">This opens your email client with the text filled in; nothing is sent to a server. No email client? Write to <a href="mailto:business@hartwell-labs.pl?subject=Consultation">business@hartwell-labs.pl</a> with the same three answers.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section>
   <div class="container" style="text-align:center;">
     <h2 style="font-size:24px; margin-bottom:12px;">Tell us what ships, and what it runs on.</h2>
@@ -471,6 +551,6 @@
     <span>Szczecin, Poland</span>
   </div>
 </footer>
-<script src="/assets/site.js?v=20261119" defer></script>
+<script src="/assets/site.js?v=20261120" defer></script>
 </body>
 </html>

@@ -7,7 +7,7 @@ page_type: product
 description: "Confirm your Talus Process Monitor purchase. Your license key is issued on payment and delivered by email. Activate in under five minutes with talus license activate."
 source_html: https://hartwell-labs.pl/talus-process-monitor/activated.html
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor/activated.html.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

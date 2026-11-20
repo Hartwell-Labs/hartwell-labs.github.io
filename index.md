@@ -7,7 +7,7 @@ page_type: landing
 description: "Hartwell Labs is an independent engineering company from Szczecin, Poland building eBPF threat detection (talus-process-monitor), post-quantum cryptography and a self-hosted programming language. Open source, MIT licensed, CI on everything."
 source_html: https://hartwell-labs.pl/
 markdown_twin: https://hartwell-labs.pl.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

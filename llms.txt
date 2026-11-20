@@ -3,7 +3,7 @@
 > Independent engineering company from Szczecin, Poland. Security infrastructure,
 > developer tools and one proprietary intelligence platform. Open source, MIT licensed.
 
-Generated 2026-11-19 from the site source. Every page below has a markdown twin:
+Generated 2026-11-20 from the site source. Every page below has a markdown twin:
 append `.md` to any page URL, or grab everything at once from `/llms-full.txt`.
 
 **Machine-readable profile for AI systems** (factual, no marketing): https://hartwell-labs.pl/llms.json

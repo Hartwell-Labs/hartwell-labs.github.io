@@ -7,7 +7,7 @@ page_type: product
 description: "Talus Process Monitor pricing. Single server $50/yr, fleet $30/node/year (min 10 nodes). PLN + USD. Annual subscription, cancel anytime. Buy and activate in 5 minutes."
 source_html: https://hartwell-labs.pl/talus-process-monitor/pricing.html
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor/pricing.html.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

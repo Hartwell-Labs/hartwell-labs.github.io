@@ -7,7 +7,7 @@ page_type: product
 description: "photoscrub finds GPS coordinates, embedded thumbnails, body serial numbers, XMP and IPTC fields, appended data and PII in free text — then writes metadata-free copies. Passive, local, no upload. Windows and Linux."
 source_html: https://hartwell-labs.pl/photoscrub/
 markdown_twin: https://hartwell-labs.pl/photoscrub.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

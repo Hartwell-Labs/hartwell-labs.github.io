@@ -7,7 +7,7 @@ page_type: product
 description: "Talus vs Tetragon: Tetragon needs Cilium + Kubernetes; Talus is a standalone eBPF binary for Linux servers. No sidecars required."
 source_html: https://hartwell-labs.pl/talus-process-monitor/talus-vs-tetragon.html
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor/talus-vs-tetragon.html.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

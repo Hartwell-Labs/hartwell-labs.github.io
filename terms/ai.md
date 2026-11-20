@@ -7,7 +7,7 @@ page_type: product
 description: "Terms for Hartwell AI: scope, acceptable use, content, availability and liability."
 source_html: https://hartwell-labs.pl/terms/ai/
 markdown_twin: https://hartwell-labs.pl/terms/ai.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

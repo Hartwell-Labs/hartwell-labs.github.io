@@ -7,7 +7,7 @@ page_type: product
 description: "Bare-metal RISC-V chain-of-trust: real SHA-256 + ML-KEM-768 post-quantum measured boot on QEMU virt. Built for verifiable boot chains."
 source_html: https://hartwell-labs.pl/fortis/
 markdown_twin: https://hartwell-labs.pl/fortis.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

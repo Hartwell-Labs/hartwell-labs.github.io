@@ -7,7 +7,7 @@ page_type: documentation
 description: "Hartwell Labs documentation lives on wiki.hartwell-labs.pl — installation, CLI reference, architecture, operations, licensing and supply chain for every product."
 source_html: https://hartwell-labs.pl/docs/
 markdown_twin: https://hartwell-labs.pl/docs.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

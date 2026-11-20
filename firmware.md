@@ -7,7 +7,7 @@ page_type: product
 description: "Signed updates, secure boot, SBOM, vulnerability handling and firmware review for products under the Cyber Resilience Act and the Radio Equipment Directive. Technical delivery for assessment bodies, test labs and consultancies."
 source_html: https://hartwell-labs.pl/firmware/
 markdown_twin: https://hartwell-labs.pl/firmware.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 
@@ -26,7 +26,7 @@ generator: tools/build-ai-pages.py
 
 Most of a cyber-resilience file can be written by a lawyer. The parts that get rejected are the ones that need someone to read the boot chain: is the update actually signed, does the device refuse an old image, can a key be extracted from flash, and can you prove it three years later when a component you shipped has a CVE.
 
-[Describe the product](mailto:business@hartwell-labs.pl?subject=Firmware%20engagement) → [What we deliver](#delivery)
+[Describe the product](mailto:business@hartwell-labs.pl?subject=Firmware%20engagement) → [What we deliver](#delivery) → [Book a consultation](#consultation)
 
 24 h
 Early warning to ENISA and the national CSIRT for an actively exploited vulnerability (Art. 14)
@@ -260,6 +260,40 @@ What does it cost?
 
 Firmware review of a single product: quoted per product after the scope call, typically a few days of work. Signed update path: fixed price per platform, agreed before anything starts. Vulnerability handling and reporting readiness: priced as a package with the rehearsal included. The first conversation is a scope call, not a sales call, and it ends with a number or with "this is not our work".
 
+## Book a consultation
+
+One problem, one hour-block, a fixed rate. Fill the three fields below and the button opens your email client with the message written — nothing is sent to a server.
+
+#### What the email has to answer
+
+A call without these three answers turns into a discovery session billed by the hour. With them, it is an hour that ends in a decision.
+
+        - Who you are. Name, company, and whether you are the manufacturer, the partner, or the assessor.
+        - The problem. What does not work, what you already checked, and when it started.
+        - What you need from the call. An outcome, not a topic: a yes/no decision, a list of steps, a risk call, or a second opinion on an existing report.
+
+Rate: 650 PLN per hour, four-hour minimum, invoiced and paid before the call. If the problem is bigger than a call, the reply names the engagement instead.
+
+Name and company 
+*
+Email 
+*
+Product, version, silicon 
+*
+What does not work 
+*
+What you need from the call 
+*
+Block
+            
+4 hours
+8 hours
+Other / not sure
+Preferred time
+            
+
+This opens your email client with the text filled in; nothing is sent to a server. No email client? Write to business@hartwell-labs.pl with the same three answers.
+
 ## Tell us what ships, and what it runs on.
 
 Product, silicon, and whether an update path already exists. That is enough for a scope and a price, usually within two working days.
@@ -315,6 +349,7 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
    - Lede (`--txt-2`, ~19px): _Most of a cyber-resilience file can be written by a lawyer. The parts that get rejected are the ones that need someone to read the boot chain: is the update act_
    - przycisk główny: **Describe the product** → `mailto:business@hartwell-labs.pl?subject=Firmware%20engagement`
    - przycisk drugorzędny: **What we deliver** → `#delivery`
+   - przycisk drugorzędny: **Book a consultation** → `#consultation`
 3. **Sekcja `#—`** — *(bez nagłówka)*
 4. **Sekcja `#—`** — *Why this is where products fail*
    - Zawartość: tekst (2 akapitów)
@@ -326,13 +361,15 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
 8. **Sekcja `#—`** — *How an engagement runs*
 9. **Sekcja `#—`** — *Questions that come up first*
    - Zawartość: tekst (5 akapitów)
-10. **Sekcja `#—`** — *Tell us what ships, and what it runs on.*
+10. **Sekcja `#consultation`** — *Book a consultation*
+   - Zawartość: tekst (5 akapitów)
+11. **Sekcja `#—`** — *Tell us what ships, and what it runs on.*
    - Zawartość: tekst (1 akapitów)
-11. **Footer** — tło `--bg-subtle`, kolumny: Products, Services, Resources, Company (13 linków), na dobie fine-print z licencją i krajem.
+12. **Footer** — tło `--bg-subtle`, kolumny: Products, Services, Resources, Company (13 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 
-- 1 linków-kotwic do sekcji na tej samej stronie (`#id`).
+- 2 linków-kotwic do sekcji na tej samej stronie (`#id`).
 - 2 linków zewnętrznych (GitHub, PyPI, crates.io, sklepy) — otwierane w tej samej karcie.
 - Brak formularzy, brak JS zależności poza `assets/site.js` i `challenge.js`.
 - `challenge.js` jest skryptem łupieżczym — nie ładuj go przy renderowaniu.

@@ -7,7 +7,7 @@ page_type: product
 description: "externum is a typed programming language compiling to readable Python, Bash and native EXBC bytecode. Pipelines, pattern matching, browser REPL. MIT licensed, 400+ tests, CI on every push."
 source_html: https://hartwell-labs.pl/externum/
 markdown_twin: https://hartwell-labs.pl/externum.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

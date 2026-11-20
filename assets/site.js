@@ -105,3 +105,74 @@
   var closeBtn = dlg.querySelector(".fw-dialog-x");
   if (closeBtn) closeBtn.addEventListener("click", function () { dlg.close(); });
 })();
+/* --- /firmware: formularz konsultacji sklada mailto ---------------------- */
+(function () {
+  var form = document.getElementById("fw-consult");
+  if (!form) return;
+  var status = document.getElementById("fc-status");
+  var TO = "business@hartwell-labs.pl";
+
+  function val(id) {
+    var el = document.getElementById(id);
+    return el ? el.value.trim() : "";
+  }
+
+  function say(msg, isErr) {
+    if (!status) return;
+    status.textContent = msg;
+    status.className = "fw-form-status on" + (isErr ? " err" : "");
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var name = val("fc-name");
+    var email = val("fc-email");
+    var product = val("fc-product");
+    var problem = val("fc-problem");
+    var help = val("fc-help");
+    var block = val("fc-block");
+    var when = val("fc-when");
+
+    var missing = [];
+    if (!name) missing.push("fc-name");
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) missing.push("fc-email");
+    if (!product) missing.push("fc-product");
+    if (!problem) missing.push("fc-problem");
+    if (!help) missing.push("fc-help");
+    if (missing.length) {
+      var el = document.getElementById(missing[0]);
+      if (el) el.focus();
+      say("Fill the marked fields before sending. Five short answers are enough.", true);
+      return;
+    }
+
+    var subject = "Consultation — " + product.slice(0, 70);
+    var body = [
+      "Consultation request",
+      "",
+      "Who: " + name,
+      "Email: " + email,
+      "Product: " + product,
+      "",
+      "What does not work:",
+      problem,
+      "",
+      "What I need from the call:",
+      help,
+      "",
+      "Block: " + block,
+      when ? "Preferred time: " + when : "",
+      "",
+      "— sent from hartwell-labs.pl/firmware"
+    ].join("\n").replace(/\n{3,}/g, "\n\n");
+
+    var href = "mailto:" + TO + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+    say("Opening your email client. If nothing happens, use business@hartwell-labs.pl and paste the same text.", false);
+    window.location.href = href;
+  });
+
+  ["fc-name", "fc-email", "fc-product", "fc-problem", "fc-help"].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener("input", function () { if (status) status.className = "fw-form-status"; });
+  });
+})();

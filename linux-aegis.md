@@ -7,7 +7,7 @@ page_type: product
 description: "A stackable Linux Security Module (LSM): in-tree upstream patches, feature-flagged layers, CI + QEMU tested. Policy enforcement where the attacks actually happen."
 source_html: https://hartwell-labs.pl/linux-aegis/
 markdown_twin: https://hartwell-labs.pl/linux-aegis.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

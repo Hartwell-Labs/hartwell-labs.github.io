@@ -7,7 +7,7 @@ page_type: product
 description: "Hartwell Labs' intelligence platform: public-procurement ingestion, KSC/NIS2 risk scoring and campaign export. Proprietary, access on request."
 source_html: https://hartwell-labs.pl/scryer-core/
 markdown_twin: https://hartwell-labs.pl/scryer-core.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 

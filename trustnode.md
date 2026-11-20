@@ -7,7 +7,7 @@ page_type: product
 description: "TrustNode is a Solana-style validator built from scratch in Rust: PoH clock, Tower BFT consensus, Sealevel-style parallel execution, Turbine propagation with Reed-Solomon erasure coding, CRDS gossip over real UDP, fee-priority mempool, 228 tests, MIT."
 source_html: https://hartwell-labs.pl/trustnode/
 markdown_twin: https://hartwell-labs.pl/trustnode.md
-last_generated: 2026-11-19
+last_generated: 2026-11-20
 generator: tools/build-ai-pages.py
 ---
 
