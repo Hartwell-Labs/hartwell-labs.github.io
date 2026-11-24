@@ -63,7 +63,7 @@
   .actions a:hover { border-color: var(--accent); color: var(--accent); }
   .actions a.primary { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 
-  .screen { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #0b0f14; }
+  .screen { border-radius: 8px; overflow: hidden; background: #0b0f14; box-shadow: 0 0 0 1px var(--border); }
   .screen canvas { display: block; width: 100%; height: auto; cursor: pointer; outline: none; }
   .screen canvas:focus-visible { outline: 1px solid var(--accent); outline-offset: -1px; }
   .screen-keys {
@@ -166,7 +166,7 @@
     </dl>
   </div>
 
-  <p class="foot-note">The screen above is the renderer from <code>src/fbui.c</code> compiled to JavaScript, drawing the same primitives, layout arithmetic and glyph bitmaps into a canvas. It is checked against a framebuffer capture from QEMU pixel by pixel, so what you see is the image and not an illustration of it. Memory, uptime and licence checks in this session are simulated; on the box they come from the kernel and an Ed25519 signature.</p>
+  <p class="foot-note">The screen above is the renderer from <code>src/fbui.c</code> compiled to JavaScript: the same primitives, the same layout arithmetic, the same glyph bitmaps — rasterised at 2× so it is sharp on the display you are reading this on. At 1× it matches a QEMU framebuffer capture pixel for pixel. Memory, uptime and licence checks in this session are simulated; on the box they come from the kernel and an Ed25519 signature.</p>
 </main>
 
 <footer>
@@ -210,7 +210,6 @@
   </div>
 </footer>
 
-<script src="/assets/hwo/font.js" defer></script>
 <script src="/assets/hwo/hwo-web.js" defer></script>
 <script>
 (function () {
@@ -218,7 +217,7 @@
     var canvas = document.getElementById("os");
     var unlicensed = new URLSearchParams(location.search).get("state") === "unlicensed";
     HartwellOS.start(canvas, {
-      font: "/assets/hwo/font.json",
+      font: "/assets/hwo/font.json.gz",
       content: "Station 04 - Line A\n" +
         "Output | 1 240 units/h\n" +
         "Shift | A  -  06:00-14:00\n" +

@@ -11,22 +11,24 @@
 (function (global) {
     "use strict";
 
-    var W = 1280, H = 800;
-
     /* ---------- palette (identical to fbui.c) ---------- */
     var BG = 0x0b0f14, BG2 = 0x0d131a, PANEL = 0x131a23, PANEL2 = 0x101720,
         LINE = 0x202d3b, TEXT = 0xe4ecf5, DIM = 0x8ca0b6, FAINT = 0x5b6f85,
         GREEN = 0x3ddc84, RED = 0xf2555f, AMBER = 0xf5b83d, CYAN = 0x4cc5e0;
 
-    /* ---------- framebuffer ---------- */
-    /* plain Uint8Array: assignments truncate like the C code, where a clamped
-       array would round and shift every antialiased glyph edge by one LSB */
-    var fb = new Uint8Array(W * H * 4);
+    /* The layout below is written for a 1280x800 appliance and is kept
+       unchanged; every primitive multiplies by S so the browser frame can be
+       rasterised at 2x and stay sharp on a HiDPI panel. */
+    var W = 1280, H = 800, S = 2;
+    var DW = W * S, DH = H * S;
+
+    var fb = new Uint8Array(DW * DH * 4);
+    var fb32 = new Uint32Array(fb.buffer);
     var img, ctx;
 
-    function blend(x, y, c, a) {
-        if (x < 0 || y < 0 || x >= W || y >= H || a === 0) return;
-        var i = (y * W + x) * 4;
+    function blendDev(dx, dy, c, a) {
+        if (dx < 0 || dy < 0 || dx >= DW || dy >= DH || a === 0) return;
+        var i = (dy * DW + dx) * 4;
         var sr = (c >> 16) & 255, sg = (c >> 8) & 255, sb = c & 255;
         if (a >= 255) { fb[i] = sr; fb[i + 1] = sg; fb[i + 2] = sb; fb[i + 3] = 255; return; }
         fb[i] = (sr * a + fb[i] * (255 - a)) / 255 | 0;
@@ -35,51 +37,55 @@
         fb[i + 3] = 255;
     }
 
-    function fill(x, y, w, h, c) {
-        if (x < 0) { w += x; x = 0; }
-        if (y < 0) { h += y; y = 0; }
-        if (x + w > W) w = W - x;
-        if (y + h > H) h = H - y;
-        if (w <= 0 || h <= 0) return;
-        var sr = (c >> 16) & 255, sg = (c >> 8) & 255, sb = c & 255;
-        for (var j = y; j < y + h; j++) {
-            var i = (j * W + x) * 4;
-            for (var k = 0; k < w; k++, i += 4) {
-                fb[i] = sr; fb[i + 1] = sg; fb[i + 2] = sb; fb[i + 3] = 255;
-            }
+    function fillDev(X, Y, WW, HH, c) {
+        if (X < 0) { WW += X; X = 0; }
+        if (Y < 0) { HH += Y; Y = 0; }
+        if (X + WW > DW) WW = DW - X;
+        if (Y + HH > DH) HH = DH - Y;
+        if (WW <= 0 || HH <= 0) return;
+        /* one packed 32-bit store per pixel: a 16 MB frame leaves no room for
+           per-channel writes if a keypress is to stay under a frame budget */
+        var packed = (255 << 24) | ((c & 255) << 16) | (((c >> 8) & 255) << 8) | ((c >> 16) & 255);
+        for (var j = Y; j < Y + HH; j++) {
+            var a = j * DW + X;
+            fb32.fill(packed, a, a + WW);
         }
     }
 
+    function fill(x, y, w, h, c) { fillDev(x * S, y * S, w * S, h * S, c); }
+
     function vgrad(x, y, w, h, top, bot) {
-        for (var j = 0; j < h; j++) {
-            var t = h > 1 ? j * 255 / (h - 1) | 0 : 0;
+        var n = h * S;
+        for (var j = 0; j < n; j++) {
+            var t = n > 1 ? j * 255 / (n - 1) | 0 : 0;
             var r = (((top >> 16) & 255) * (255 - t) + ((bot >> 16) & 255) * t) / 255 | 0;
             var g = (((top >> 8) & 255) * (255 - t) + ((bot >> 8) & 255) * t) / 255 | 0;
             var b = ((top & 255) * (255 - t) + (bot & 255) * t) / 255 | 0;
-            fill(x, y + j, w, 1, (r << 16) | (g << 8) | b);
+            fillDev(x * S, y * S + j, w * S, 1, (r << 16) | (g << 8) | b);
         }
     }
 
     function rrect(x, y, w, h, r, c) {
-        if (r * 2 > w) r = w / 2 | 0;
-        if (r * 2 > h) r = h / 2 | 0;
-        fill(x + r, y, w - 2 * r, h, c);
-        fill(x, y + r, r, h - 2 * r, c);
-        fill(x + w - r, y + r, r, h - 2 * r, c);
-        for (var j = 0; j < r; j++) {
-            for (var i = 0; i < r; i++) {
+        var X = x * S, Y = y * S, WW = w * S, HH = h * S, R = r * S;
+        if (R * 2 > WW) R = WW / 2 | 0;
+        if (R * 2 > HH) R = HH / 2 | 0;
+        fillDev(X + R, Y, WW - 2 * R, HH, c);
+        fillDev(X, Y + R, R, HH - 2 * R, c);
+        fillDev(X + WW - R, Y + R, R, HH - 2 * R, c);
+        for (var j = 0; j < R; j++) {
+            for (var i = 0; i < R; i++) {
                 var inside = 0;
                 for (var sy = 0; sy < 2; sy++)
                     for (var sx = 0; sx < 2; sx++) {
-                        var dx = (i * 2 + sx + 1) / 2 - r;
-                        var dy = (j * 2 + sy + 1) / 2 - r;
-                        if (dx * dx + dy * dy <= r * r) inside++;
+                        var dx = (i * 2 + sx + 1) / 2 - R;
+                        var dy = (j * 2 + sy + 1) / 2 - R;
+                        if (dx * dx + dy * dy <= R * R) inside++;
                     }
                 var a = inside * 255 / 4 | 0;
-                blend(x + r - 1 - i, y + r - 1 - j, c, a);
-                blend(x + w - r + i, y + r - 1 - j, c, a);
-                blend(x + r - 1 - i, y + h - r + j, c, a);
-                blend(x + w - r + i, y + h - r + j, c, a);
+                blendDev(X + R - 1 - i, Y + R - 1 - j, c, a);
+                blendDev(X + WW - R + i, Y + R - 1 - j, c, a);
+                blendDev(X + R - 1 - i, Y + HH - R + j, c, a);
+                blendDev(X + WW - R + i, Y + HH - R + j, c, a);
             }
         }
     }
@@ -89,7 +95,7 @@
         rrect(x + 1, y + 1, w - 2, h - 2, 11, bgc);
     }
 
-    /* ---------- text: same coverage blits as fbui.c ---------- */
+    /* ---------- text: 2x coverage blits, logical metrics ---------- */
     var faces = {};
 
     function textW(f, s) {
@@ -99,10 +105,11 @@
             if (ch < 32 || ch > 126) ch = 63;
             w += f.glyphs[ch - 32].adv;
         }
-        return w;
+        return Math.round(w / S);
     }
 
     function text(f, x, y, c, s) {
+        var dx = x * S, dy = y * S;
         for (var n = 0; n < s.length; n++) {
             var ch = s.charCodeAt(n);
             if (ch < 32 || ch > 126) ch = 63;
@@ -110,9 +117,9 @@
             for (var j = 0; j < g.h; j++)
                 for (var i = 0; i < g.w; i++) {
                     var a = f.px[g.off + j * g.w + i];
-                    if (a) blend(x + i, y + j, c, a);
+                    if (a) blendDev(dx + i, dy + j, c, a);
                 }
-            x += g.adv;
+            dx += g.adv;
         }
     }
 
@@ -449,9 +456,7 @@
         else drawMedia();
         drawFooter();
         img.data.set(fb);
-        baseCtx.putImageData(img, 0, 0);
-        if (scale === 1) ctx.drawImage(base, 0, 0);
-        else ctx.drawImage(base, 0, 0, W, H, 0, 0, W * scale, H * scale);
+        ctx.putImageData(img, 0, 0);
     }
 
     /* ---------- input, same keys as the appliance ---------- */
@@ -525,22 +530,44 @@
 
     /* ---------- start ---------- */
     var fontPromise = null;
+    function decodeFont(j) {
+        Object.keys(j.faces).forEach(function (k) {
+            var f = j.faces[k];
+            var bin = atob(f.px);
+            var px = new Uint8Array(bin.length);
+            for (var i = 0; i < bin.length; i++) px[i] = bin.charCodeAt(i);
+            faces[k] = { cell: f.cell, asc: f.asc, glyphs: f.glyphs, px: px };
+        });
+        S = j.scale || 1;
+        DW = W * S;
+        DH = H * S;
+        fb = new Uint8Array(DW * DH * 4);
+        fb32 = new Uint32Array(fb.buffer);
+    }
+
     function loadFont(url) {
         if (fontPromise) return fontPromise;
-        /* the demo page ships the atlas as assets/hwo/font.js (window.HWO_FONT)
-           so the first paint needs no extra round trip; the fetch path stays
-           for the local test harness */
-        if (global.HWO_FONT) fontPromise = Promise.resolve(global.HWO_FONT);
-        else fontPromise = fetch(url).then(function (r) { return r.json(); });
-        fontPromise = fontPromise.then(function (j) {
-            Object.keys(j.faces).forEach(function (k) {
-                var f = j.faces[k];
-                var bin = atob(f.px);
-                var px = new Uint8Array(bin.length);
-                for (var i = 0; i < bin.length; i++) px[i] = bin.charCodeAt(i);
-                faces[k] = { cell: f.cell, asc: f.asc, glyphs: f.glyphs, px: px };
-            });
-        });
+        /* The atlas ships gzipped (about 90 KB) because 2x glyph coverage is
+           four times the data; the page needs no extra fetch after this. */
+        if (global.HWO_FONT) {
+            decodeFont(global.HWO_FONT);
+            fontPromise = Promise.resolve();
+            return fontPromise;
+        }
+        var gz = /\.gz$/.test(url);
+        fontPromise = fetch(url).then(function (r) {
+            if (!r.ok) throw new Error("font atlas: HTTP " + r.status);
+            return r.arrayBuffer();
+        }).then(function (buf) {
+            /* The host may or may not send Content-Encoding: gzip for a .gz
+               file, so the compression is detected rather than assumed. */
+            var text = new TextDecoder().decode(buf);
+            try { return JSON.parse(text); } catch (e) { /* compressed */ }
+            if (!gz || !("DecompressionStream" in global))
+                throw new Error("font atlas is not readable JSON");
+            var stream = new Blob([buf]).stream().pipeThrough(new DecompressionStream("gzip"));
+            return new Response(stream).json();
+        }).then(decodeFont);
         return fontPromise;
     }
 
@@ -551,23 +578,11 @@
         });
     }
 
-    var base = null, baseCtx = null, scale = 1;
-
     function run(canvas, opts) {
-        /* The bitmap faces cannot be re-rasterised, so the only honest way to
-           look sharp on a HiDPI panel is an integer upscale of the finished
-           frame with smoothing off: each glyph pixel becomes a clean block
-           instead of a blurred one. */
-        scale = Math.min(2, Math.max(1, Math.round(global.devicePixelRatio || 1)));
-        base = document.createElement("canvas");
-        base.width = W;
-        base.height = H;
-        baseCtx = base.getContext("2d");
         ctx = canvas.getContext("2d", { alpha: false });
-        canvas.width = W * scale;
-        canvas.height = H * scale;
-        ctx.imageSmoothingEnabled = false;
-        img = baseCtx.createImageData(W, H);
+        canvas.width = DW;
+        canvas.height = DH;
+        img = ctx.createImageData(DW, DH);
         fill(0, 0, W, H, BG);
 
         if (opts.freeze) {
