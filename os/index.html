@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
+<title>Hartwell OS — the appliance, running in your browser</title>
+<meta name="description" content="Hartwell OS is a single-purpose appliance UI for production cells: no shell, no listening sockets, four screens. This page runs the actual framebuffer UI in a canvas — same palette, same layout code, same glyph bitmaps as the image." />
+<link rel="canonical" href="https://hartwell-labs.pl/os/" />
+<meta property="og:site_name" content="Hartwell Labs" />
+<meta property="og:title" content="Hartwell OS — the appliance, running in your browser" />
+<meta property="og:description" content="The real Hartwell OS framebuffer UI, ported to a canvas. Pixel-identical to the image we ship on a 27 MB ISO." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hartwell-labs.pl/os/" />
+<meta property="og:image" content="https://hartwell-labs.pl/assets/hwo/os-overview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Hartwell OS — the appliance, running in your browser" />
+<meta name="twitter:description" content="The real framebuffer UI of Hartwell OS in a canvas: same palette, layout code and glyph bitmaps. Keys 1–4." />
+<meta name="twitter:image" content="https://hartwell-labs.pl/assets/hwo/os-overview.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
+<link rel="apple-touch-icon" href="/assets/icon-192.png" />
+<link rel="manifest" href="/assets/site.webmanifest" />
+<meta name="theme-color" content="#0a0e14" />
+<link rel="stylesheet" href="/assets/site.css" />
+<style>
+  /* --- /os --- */
+  .os-hero { padding-bottom: 44px; }
+  .os-facts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+  .os-fact {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: 600 12.5px/1 "JetBrains Mono", ui-monospace, monospace;
+    color: var(--txt-2); border: 1px solid var(--border); border-radius: 999px;
+    padding: 8px 14px; background: var(--bg-subtle);
+  }
+  .os-fact::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  .os-stage { background: #070a0e; padding: 56px 0 60px; border-top: none; }
+  .os-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  .os-bezel {
+    background: #0b0f14; border: 1px solid #1d2937; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 50px 90px -45px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.03) inset;
+  }
+  .os-bar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; background: #0d131a; border-bottom: 1px solid #1d2937;
+    font: 600 11.5px/1 "JetBrains Mono", ui-monospace, monospace;
+    color: #8ca0b6; letter-spacing: .04em; text-transform: uppercase;
+  }
+  .os-bar .dot { width: 8px; height: 8px; border-radius: 4px; background: #3ddc84; box-shadow: 0 0 10px rgba(61,220,132,.55); }
+  .os-bar .live { margin-left: auto; color: #3ddc84; }
+  .os-bar .live::before { content: ""; display: inline-block; width: 5px; height: 5px; border-radius: 3px; background: #3ddc84; margin-right: 7px; vertical-align: 2px; }
+  .os-viewport { position: relative; background: #0b0f14; aspect-ratio: 16 / 10; }
+  .os-viewport canvas { display: block; width: 100%; height: 100%; outline: none; cursor: pointer; }
+  .os-viewport canvas:focus-visible { outline: 2px solid #3ddc84; outline-offset: -2px; }
+  .os-boot {
+    position: absolute; inset: 0; padding: 26px 30px; background: #0b0f14;
+    font: 13px/2 "JetBrains Mono", ui-monospace, monospace; color: #5b6f85;
+    pointer-events: none; animation: osFade .45s ease 1.15s forwards;
+  }
+  .os-boot b { color: #3ddc84; font-weight: 600; }
+  @keyframes osFade { to { opacity: 0; visibility: hidden; } }
+  .os-keys {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
+    padding: 12px 16px; border-top: 1px solid #1d2937; background: #0d131a;
+    font: 500 12px/1.4 "JetBrains Mono", ui-monospace, monospace; color: #5b6f85;
+  }
+  .os-keys kbd {
+    font: inherit; color: #cfe0f0; background: #131a23; border: 1px solid #22303f;
+    border-radius: 5px; padding: 3px 7px; margin-right: 2px;
+  }
+  .os-keys .sep { color: #2c3c4d; }
+  .os-links { display: flex; flex-wrap: wrap; gap: 10px 22px; margin-top: 16px; font-size: 13.5px; color: #5b6f85; }
+  .os-links a { color: #8ca0b6; text-decoration: none; border-bottom: 1px solid #22303f; padding-bottom: 1px; }
+  .os-links a:hover { color: #e4ecf5; border-color: #3ddc84; }
+
+  .os-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px,100%), 1fr)); gap: 16px; margin-top: 8px; }
+  .os-card { border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 24px; background: var(--bg); }
+  .os-card h3 { font-size: 15px; font-weight: 650; margin-bottom: 10px; letter-spacing: -.01em; }
+  .os-card p { font-size: 14px; line-height: 1.62; color: var(--txt-2); }
+  .os-card ul { margin: 10px 0 0 16px; }
+  .os-card li { font-size: 13.6px; line-height: 1.6; color: var(--txt-2); margin-bottom: 5px; }
+  .os-card code { font-size: 12.5px; background: #f1f5f9; padding: 1px 5px; border-radius: 4px; }
+  .os-tag { display: inline-block; font: 600 10.5px/1 "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--txt-3); border: 1px solid var(--border); border-radius: 5px; padding: 4px 7px; margin-bottom: 12px; }
+  @media (max-width: 720px) {
+    .os-stage { padding: 32px 0 40px; }
+    .os-boot { font-size: 11px; padding: 16px; }
+  }
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Hartwell OS","applicationCategory":"Operating System","operatingSystem":"x86_64, BIOS and UEFI","description":"Single-purpose appliance OS for production cells. Four screens, no shell, no listening sockets, signed licence keys.","url":"https://hartwell-labs.pl/os/","author":{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"EUR","description":"Image and documentation available on request."}}</script>
+</head>
+<body>
+
+<header>
+  <div class="container header-in">
+    <a class="logo" href="/">
+      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+        <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/>
+        <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Hartwell Labs
+    </a>
+    <nav class="main">
+      <a href="/products">Products</a>
+      <a href="/firmware">Firmware</a>
+      <a href="/catalog">Catalog</a>
+      <a href="/docs">Docs</a>
+      <a href="/security">Security</a>
+      <a href="/company">Company</a>
+    </nav>
+    <a class="header-cta" href="mailto:business@hartwell-labs.pl?subject=Hartwell%20OS">Request the image ↗</a>
+  </div>
+</header>
+
+<div class="container hero os-hero">
+  <div class="eyebrow">Hartwell OS 1.0</div>
+  <h1>The appliance, <span class="dim">in this tab.</span></h1>
+  <p class="lede">Most “product demos” are a video. This one is the interface itself: the same framebuffer renderer the image runs, ported function for function to a canvas — the same palette, the same layout arithmetic, the same glyph bitmaps generated from the build. We diffed the browser output against a capture taken off the real framebuffer in QEMU: zero differing pixels.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Hartwell%20OS%20image">Request the ISO</a>
+    <a class="btn btn-secondary" href="#how">How this works</a>
+  </div>
+  <div class="os-facts">
+    <span class="os-fact">27 MB image</span>
+    <span class="os-fact">512 MB RAM</span>
+    <span class="os-fact">BIOS + UEFI</span>
+    <span class="os-fact">4 screens</span>
+    <span class="os-fact">no shell</span>
+  </div>
+</div>
+
+<section class="os-stage" aria-label="Hartwell OS live session">
+  <div class="os-wrap">
+    <div class="os-bezel">
+      <div class="os-bar">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Hartwell OS — station 04</span>
+        <span class="live">live</span>
+      </div>
+      <div class="os-viewport">
+        <canvas id="os" width="1280" height="800" tabindex="0" role="img"
+          aria-label="Hartwell OS interface: Overview screen with the station title, output, shift, operator and maintenance rows, uptime, memory and fleet tiles."></canvas>
+        <div class="os-boot" id="os-boot" aria-hidden="true">
+          <div>hwo: framebuffer 1280x800, 32 bpp</div>
+          <div>hwo: licence <b>HWO-2026-V8NS</b> verified offline</div>
+          <div>hwo: supervisor up, no shell, no listening sockets</div>
+        </div>
+      </div>
+      <div class="os-keys">
+        <span><kbd>1</kbd>Overview</span>
+        <span><kbd>2</kbd>System</span>
+        <span><kbd>3</kbd>Licence</span>
+        <span><kbd>4</kbd>Media</span>
+        <span class="sep">|</span>
+        <span>click the tabs, or the screen, then use the keys</span>
+      </div>
+    </div>
+    <div class="os-links">
+      <a href="?state=unlicensed">Boot it unlicensed</a>
+      <a href="#how">What is real and what is simulated</a>
+      <a href="/docs">Documentation</a>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="container">
+    <div class="section-head">
+      <div class="kicker">Under the hood</div>
+      <h2>A demo you can diff, not just watch.</h2>
+      <p>Nothing here is a screenshot or a recorded clip. The page paints the interface pixel by pixel into a shadow buffer and blits it to the canvas, exactly the way the appliance paints into <code>/dev/fb0</code>.</p>
+    </div>
+    <div class="os-cards">
+      <div class="os-card">
+        <span class="os-tag">Real</span>
+        <h3>The interface</h3>
+        <ul>
+          <li>Renderer, palette and layout arithmetic ported from <code>src/fbui.c</code></li>
+          <li>Glyph coverage bitmaps generated from <code>src/font.h</code></li>
+          <li>Navigation, clock, licence states and the unlicensed boot path</li>
+          <li>Responsive tabs and the typed licence field</li>
+        </ul>
+      </div>
+      <div class="os-card">
+        <span class="os-tag">Simulated</span>
+        <h3>The machine around it</h3>
+        <ul>
+          <li>Memory and uptime come from the page, not from a kernel</li>
+          <li>Licence verification accepts any well-formed <code>HWO-XXXX-XXXX</code> key</li>
+          <li>No fleet agent, no media ingestion, no state partition</li>
+          <li>Boot lines are the page speaking, not a bootloader</li>
+        </ul>
+      </div>
+      <div class="os-card">
+        <span class="os-tag">Shipped</span>
+        <h3>What runs on hardware</h3>
+        <ul>
+          <li>A 27 MB ISO: Alpine base, kernel, DRM/evdev stack, one static binary</li>
+          <li>Ed25519 licence keys checked offline against the DMI UUID</li>
+          <li>No shell, no listening sockets, five UI exits then reboot</li>
+          <li>Media plays from PNG sequences on the state partition</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="logo" style="margin-bottom:14px;">
+        <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#4f46e5" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#4f46e5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Hartwell Labs
+      </div>
+      <p class="about">Independent engineering company. Security systems, languages and tools — built in the open, MIT licensed.</p>
+    </div>
+    <div>
+      <h5>Products</h5>
+      <a href="/products">Products</a>
+      <a href="/os/">Hartwell OS</a>
+      <a href="/talus-process-monitor/">talus-process-monitor</a>
+      <a href="/externum/">externum</a>
+    </div>
+    <div>
+      <h5>Services</h5>
+      <a href="/firmware/">Firmware engineering</a>
+      <a href="/security">Security &amp; disclosure</a>
+      <a href="/docs">Documentation</a>
+    </div>
+    <div>
+      <h5>Resources</h5>
+      <a href="/catalog">Catalog</a>
+      <a href="https://github.com/Hartwell-Labs">GitHub organization</a>
+      <a href="https://github.com/Hartwell-Labs/talus-process-monitor/releases">Releases</a>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <a href="/company">About</a>
+      <a href="/privacy/">Privacy policy</a>
+      <a href="/terms/">Terms</a>
+    </div>
+  </div>
+  <div class="container f-fine">
+    <span>© 2026 Hartwell Labs. All software released under the MIT License unless stated otherwise.</span>
+    <span>Szczecin, Poland</span>
+  </div>
+</footer>
+
+<script src="/assets/hwo/font.js" defer></script>
+<script src="/assets/hwo/hwo-web.js" defer></script>
+<script>
+(function () {
+  function boot() {
+    var canvas = document.getElementById("os");
+    var state = new URLSearchParams(location.search).get("state");
+    var unlicensed = state === "unlicensed";
+    HartwellOS.start(canvas, {
+      font: "/assets/hwo/font.json",
+      content: "Station 04 - Line A\n" +
+        "Output | 1 240 units/h\n" +
+        "Shift | A  -  06:00-14:00\n" +
+        "Operator | station 2\n" +
+        "Maintenance | next window 18:00\n" +
+        "Status | running - no faults",
+      licensed: !unlicensed
+    }).then(function (os) {
+      if (unlicensed) os.go(2);
+      canvas.addEventListener("pointerdown", function () { canvas.focus(); });
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
+</body>
+</html>
