@@ -32,5 +32,9 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
+      # Artefakt jest widoczny w API dopiero po chwili od finalizacji;
+      # deploy odpalany w tej samej sekundzie dostawal 0 artefaktow.
+      - name: Let the artifact register
+        run: sleep 15
       - id: deployment
         uses: actions/deploy-pages@v4
