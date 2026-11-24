@@ -449,7 +449,9 @@
         else drawMedia();
         drawFooter();
         img.data.set(fb);
-        ctx.putImageData(img, 0, 0);
+        baseCtx.putImageData(img, 0, 0);
+        if (scale === 1) ctx.drawImage(base, 0, 0);
+        else ctx.drawImage(base, 0, 0, W, H, 0, 0, W * scale, H * scale);
     }
 
     /* ---------- input, same keys as the appliance ---------- */
@@ -549,11 +551,23 @@
         });
     }
 
+    var base = null, baseCtx = null, scale = 1;
+
     function run(canvas, opts) {
+        /* The bitmap faces cannot be re-rasterised, so the only honest way to
+           look sharp on a HiDPI panel is an integer upscale of the finished
+           frame with smoothing off: each glyph pixel becomes a clean block
+           instead of a blurred one. */
+        scale = Math.min(2, Math.max(1, Math.round(global.devicePixelRatio || 1)));
+        base = document.createElement("canvas");
+        base.width = W;
+        base.height = H;
+        baseCtx = base.getContext("2d");
         ctx = canvas.getContext("2d", { alpha: false });
-        canvas.width = W;
-        canvas.height = H;
-        img = ctx.createImageData(W, H);
+        canvas.width = W * scale;
+        canvas.height = H * scale;
+        ctx.imageSmoothingEnabled = false;
+        img = baseCtx.createImageData(W, H);
         fill(0, 0, W, H, BG);
 
         if (opts.freeze) {

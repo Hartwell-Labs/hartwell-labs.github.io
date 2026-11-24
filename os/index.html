@@ -5,120 +5,110 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; img-src 'self' data:; manifest-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'" />
-<title>Hartwell OS — the appliance screen, running live</title>
-<meta name="description" content="Hartwell OS is a single-purpose appliance OS: one screen, no shell, no open ports, licences verified offline. The interface on this page is the real renderer from the image, running in a canvas." />
+<title>Hartwell OS — appliance interface</title>
+<meta name="description" content="Hartwell OS: 27 MB appliance image for x86_64, BIOS and UEFI. Framebuffer interface, no shell, no login, no listening sockets, Ed25519 licences verified offline." />
 <link rel="canonical" href="https://hartwell-labs.pl/os/" />
 <meta property="og:site_name" content="Hartwell Labs" />
-<meta property="og:title" content="Hartwell OS — the appliance screen, running live" />
-<meta property="og:description" content="The real framebuffer renderer from the image, in a canvas. Four screens, keyboard-first, pixel-identical to a QEMU capture." />
+<meta property="og:title" content="Hartwell OS — appliance interface" />
+<meta property="og:description" content="27 MB image, x86_64, BIOS and UEFI. Framebuffer UI, no shell, offline licence. The interface below is the image's own renderer." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://hartwell-labs.pl/os/" />
 <meta property="og:image" content="https://hartwell-labs.pl/assets/hwo/os-overview.png" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Hartwell OS — the appliance screen, running live" />
-<meta name="twitter:description" content="A single-purpose appliance OS. The interface on this page is the real renderer from the image." />
 <meta name="twitter:image" content="https://hartwell-labs.pl/assets/hwo/os-overview.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
 <link rel="icon" type="image/png" sizes="192x192" href="/assets/icon-192.png" />
 <link rel="apple-touch-icon" href="/assets/icon-192.png" />
 <link rel="manifest" href="/assets/site.webmanifest" />
-<meta name="theme-color" content="#0b0f14" />
+<meta name="theme-color" content="#0c1015" />
 <link rel="stylesheet" href="/assets/site.css" />
 <style>
-  /* The product page runs on the OS palette, not the marketing palette. */
   :root {
-    --bg: #0b0f14; --bg-subtle: #0d131a;
-    --border: #1d2937; --border-strong: #2a3a4c;
-    --txt: #e4ecf5; --txt-2: #9db0c4; --txt-3: #6c8095;
-    --accent: #3ddc84; --accent-hover: #35c876; --accent-soft: #12231b;
-    --green: #3ddc84; --red: #f2555f; --amber: #f5b83d;
+    --bg: #0c1015; --bg-subtle: #0f151c;
+    --border: #1c2632; --border-strong: #2b3a4b;
+    --txt: #dfe7f0; --txt-2: #99aab9; --txt-3: #6a7c8c;
+    --accent: #3ddc84; --accent-soft: #11241a;
   }
-  body { background: var(--bg); color: var(--txt); }
-  header {
-    background: rgba(11,15,20,.86); border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-  }
-  .logo svg path, .logo svg polyline { stroke: #3ddc84; }
-  nav.main a { color: var(--txt-2); }
-  nav.main a:hover, nav.main a[aria-current="page"] { color: var(--txt); }
-  .header-cta { background: #3ddc84; color: #08150d; }
-  .header-cta:hover { background: #35c876; }
-  .btn-primary { background: #3ddc84; color: #08150d; }
-  .btn-primary:hover { background: #35c876; }
-  .btn-secondary { border-color: var(--border-strong); color: var(--txt); }
-  .btn-secondary:hover { background: #131a23; }
+  body { background: var(--bg); color: var(--txt); font-size: 15px; }
+  header { background: rgba(12,16,21,.9); border-bottom: 1px solid var(--border); }
+  .logo svg path, .logo svg polyline { stroke: var(--accent); }
+  nav.main a { color: var(--txt-2); font-size: 13.5px; }
+  nav.main a[aria-current="page"], nav.main a:hover { color: var(--txt); }
+  .header-cta { background: transparent; border: 1px solid var(--border-strong); color: var(--txt); font-size: 13px; height: 32px; }
+  .header-cta:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
 
-  /* --- hero: one breath, then the screen --- */
-  .os-hero { max-width: 1328px; margin: 0 auto; padding: 52px 24px 26px; }
-  .os-hero .kicker {
-    font: 500 12px/1 "JetBrains Mono", ui-monospace, monospace; letter-spacing: .14em;
-    text-transform: uppercase; color: #3ddc84; margin-bottom: 16px;
-  }
-  .os-hero h1 { font-size: clamp(34px, 4.6vw, 52px); line-height: 1.02; letter-spacing: -.035em; }
-  .os-hero p { margin-top: 14px; max-width: 640px; color: var(--txt-2); font-size: 16.5px; line-height: 1.6; }
-  .os-hero p b { color: var(--txt); font-weight: 600; }
-  .os-hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+  /* the canvas has to sit at 1280 CSS px to stay 1:1 with the framebuffer
+     (and with a 2x backing store on HiDPI) — anything else blurs bitmap text */
+  .wrap { max-width: 1328px; margin: 0 auto; padding: 0 24px; }
+  .lede, .foot-note { max-width: 720px; }
+  .spec { max-width: 900px; }
 
-  /* --- the screen --- */
-  .os-demo { max-width: 1328px; margin: 0 auto; padding: 0 24px 12px; }
-  .os-screen { border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: #0b0f14; }
-  .os-screen-bar {
-    display: flex; align-items: center; gap: 14px;
-    padding: 10px 14px; border-bottom: 1px solid var(--border); background: #0d131a;
-    font: 500 11.5px/1 "JetBrains Mono", ui-monospace, monospace;
-    letter-spacing: .06em; text-transform: uppercase; color: var(--txt-3);
-  }
-  .os-screen-bar .id { color: var(--txt-2); }
-  .os-screen-bar .mode { margin-left: auto; }
-  .os-screen-bar .mode i { font-style: normal; color: #3ddc84; }
-  .os-screen canvas { display: block; width: 100%; height: auto; cursor: pointer; outline: none; }
-  .os-screen canvas:focus-visible { outline: 1px solid #3ddc84; outline-offset: -1px; }
-  .os-hint {
-    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px;
-    padding: 14px 2px 0; font: 400 12.5px/1.5 "JetBrains Mono", ui-monospace, monospace;
-    color: var(--txt-3);
-  }
-  .os-hint kbd {
-    font: inherit; color: var(--txt); background: #131a23; border: 1px solid var(--border);
-    border-bottom-width: 2px; border-radius: 4px; padding: 2px 6px; margin-right: 5px;
-  }
-  .os-hint .rest { margin-left: auto; }
-  .os-hint a { color: var(--txt-2); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
-  .os-hint a:hover { color: #3ddc84; border-color: #3ddc84; }
+  .title-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; padding: 26px 0 10px; }
+  .intro { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 18px 40px; }
+  .title-row h1 { font-size: 27px; font-weight: 600; letter-spacing: -.025em; line-height: 1.15; }
+  .title-row .ver { font: 500 12px/1 "JetBrains Mono", monospace; color: var(--txt-3); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; }
+  .lede { color: var(--txt-2); max-width: 720px; font-size: 15px; line-height: 1.6; }
+  .lede b { color: var(--txt); font-weight: 500; }
 
-  /* --- notes --- */
-  .os-notes { max-width: 1328px; margin: 0 auto; padding: 56px 24px 64px; }
-  .os-notes-in { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
-  .os-note { background: var(--bg); padding: 24px 24px 26px; }
-  .os-note h3 { font: 600 11px/1 "JetBrains Mono", monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--txt-3); margin-bottom: 14px; }
-  .os-note.real h3 { color: #3ddc84; }
-  .os-note p { color: var(--txt-2); font-size: 13.8px; line-height: 1.62; }
-  .os-note ul { margin: 0; padding: 0; list-style: none; }
-  .os-note li { color: var(--txt-2); font-size: 13.8px; line-height: 1.55; padding-left: 14px; position: relative; margin-bottom: 7px; }
-  .os-note li::before { content: ""; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--border-strong); }
-  .os-note code { font: 500 12.4px/1 "JetBrains Mono", monospace; color: var(--txt); }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding-top: 2px; }
+  .actions a {
+    display: inline-flex; align-items: center; height: 34px; padding: 0 13px;
+    border: 1px solid var(--border-strong); border-radius: 7px;
+    font-size: 13.5px; font-weight: 500; color: var(--txt); text-decoration: none;
+    transition: border-color .15s, color .15s;
+  }
+  .actions a:hover { border-color: var(--accent); color: var(--accent); }
+  .actions a.primary { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
 
-  footer { border-top: 1px solid var(--border); background: #0a0e13; }
-  .footer-grid a, .f-fine { color: var(--txt-3); }
-  .footer-grid a:hover { color: var(--txt); }
+  .screen { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #0b0f14; }
+  .screen canvas { display: block; width: 100%; height: auto; cursor: pointer; outline: none; }
+  .screen canvas:focus-visible { outline: 1px solid var(--accent); outline-offset: -1px; }
+  .screen-keys {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px;
+    margin-top: 9px; font-size: 12.5px; color: var(--txt-3);
+  }
+  .screen-keys kbd {
+    font: 500 11.5px/1 "JetBrains Mono", monospace; color: var(--txt-2);
+    border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 3px;
+    padding: 2px 5px; margin-right: 4px;
+  }
+  .screen-keys .right { margin-left: auto; }
+  .screen-keys a { color: var(--txt-3); text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  .screen-keys a:hover { color: var(--txt); }
 
-  @media (max-width: 860px) {
-    .os-hero { padding-top: 36px; }
-    .os-hero-actions { width: 100%; margin-top: 20px; }
-    .os-hint .rest { margin-left: 0; width: 100%; }
+  .spec { margin: 40px 0 0; border-top: 1px solid var(--border); max-width: 880px; }
+  .spec dl { display: grid; grid-template-columns: 168px 1fr; margin: 0; }
+  .spec dt, .spec dd { padding: 11px 0; border-bottom: 1px solid var(--border); margin: 0; font-size: 14px; }
+  .spec dt { color: var(--txt-3); }
+  .spec dd { color: var(--txt-2); }
+  .spec dd b { color: var(--txt); font-weight: 500; }
+  .spec code { font: 400 13px/1 "JetBrains Mono", monospace; color: var(--txt); }
+
+  .foot-note { padding: 26px 0 60px; font-size: 13.5px; color: var(--txt-3); max-width: 760px; line-height: 1.6; }
+  .foot-note a { color: var(--txt-2); }
+
+  footer { border-top: 1px solid var(--border); background: #0a0e12; }
+  footer .footer-grid a, footer .f-fine { color: var(--txt-3); }
+  footer .footer-grid a:hover { color: var(--txt); }
+
+  @media (max-width: 640px) {
+    .title-row { padding-top: 30px; }
+    .spec dl { grid-template-columns: 1fr; }
+    .spec dt { padding-bottom: 0; border-bottom: 0; }
+    .screen-keys .right { margin-left: 0; width: 100%; }
   }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Hartwell OS","applicationCategory":"Operating System","operatingSystem":"x86_64, BIOS and UEFI","description":"Single-purpose appliance OS for production cells. Four screens, no shell, no listening sockets, offline Ed25519 licences.","url":"https://hartwell-labs.pl/os/","author":{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Hartwell OS","applicationCategory":"Operating System","operatingSystem":"x86_64, BIOS and UEFI","description":"Single-purpose appliance OS. Framebuffer interface, no shell, no listening sockets, offline Ed25519 licences.","url":"https://hartwell-labs.pl/os/","author":{"@type":"Organization","@id":"https://hartwell-labs.pl/#org","name":"Hartwell Labs","url":"https://hartwell-labs.pl/"}}</script>
 </head>
 <body>
 
 <header>
   <div class="container header-in">
     <a class="logo" href="/">
-      <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true">
         <path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#3ddc84" stroke-width="3.4" stroke-linejoin="round"/>
         <polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#3ddc84" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
@@ -136,73 +126,54 @@
   </div>
 </header>
 
-<div class="os-hero">
-  <div>
-    <div class="kicker">Hartwell OS 1.0 · x86_64</div>
-    <h1>One screen.<br />Nothing behind it.</h1>
-    <p>An appliance OS for a production cell: <b>no shell, no login, no listening socket</b>. What you see below is not a video — it is the same renderer the image runs, ported to a canvas, down to the glyph bitmaps. Four screens, keys 1–4.</p>
+<main class="wrap">
+  <div class="title-row">
+    <h1>Hartwell OS</h1>
+    <span class="ver">1.0 · x86_64</span>
   </div>
-  <div class="os-hero-actions">
-    <a class="btn btn-primary" href="mailto:business@hartwell-labs.pl?subject=Hartwell%20OS%20image">Request the ISO</a>
-    <a class="btn btn-secondary" href="https://github.com/Hartwell-Labs/hartwell-os">Source ↗</a>
+  <div class="intro">
+  <p class="lede">An appliance image that boots into one screen and offers nothing behind it: <b>no shell, no login, no listening socket</b>. 27 MB, BIOS and UEFI, licence checked offline against the board's UUID.</p>
+  <div class="actions">
+    <a class="primary" href="mailto:business@hartwell-labs.pl?subject=Hartwell%20OS%20image">Request the ISO</a>
+    <a href="https://github.com/Hartwell-Labs/hartwell-os">Source</a>
+    <a href="https://github.com/Hartwell-Labs/hartwell-os/releases">Releases</a>
+    <a href="/docs">Documentation</a>
   </div>
-</div>
+  </div>
 
-<div class="os-demo">
-  <div class="os-screen">
-    <div class="os-screen-bar">
-      <span class="id">HWO-3DD5-B123</span>
-      <span>1280×800 · 32 bpp</span>
-      <span class="mode">browser session · <i>live</i></span>
-    </div>
+  <div class="screen" style="margin-top:22px;">
     <canvas id="os" width="1280" height="800" tabindex="0" role="img"
-      aria-label="Hartwell OS interface: Overview screen with the station title, output, shift, operator and maintenance rows, uptime, memory and fleet tiles."></canvas>
+      aria-label="Hartwell OS Overview screen: station title, output, shift, operator and maintenance rows, uptime, memory and fleet tiles."></canvas>
   </div>
-  <div class="os-hint">
+  <div class="screen-keys">
     <span><kbd>1</kbd>Overview</span>
     <span><kbd>2</kbd>System</span>
     <span><kbd>3</kbd>Licence</span>
     <span><kbd>4</kbd>Media</span>
-    <span class="rest">click the screen, then use the keys · <a href="?state=unlicensed">boot unlicensed</a></span>
+    <span class="right">click the screen, then use the keys · <a href="?state=unlicensed">unlicensed boot</a></span>
   </div>
-</div>
 
-<div class="os-notes">
-  <div class="os-notes-in">
-    <div class="os-note real">
-      <h3>Real</h3>
-      <ul>
-        <li>Primitives, palette and layout arithmetic ported from <code>src/fbui.c</code></li>
-        <li>Glyph coverage bitmaps generated from <code>src/font.h</code></li>
-        <li>Navigation, clock, licence states, unlicensed boot path</li>
-        <li>Diffed against a QEMU framebuffer capture: zero differing pixels</li>
-      </ul>
-    </div>
-    <div class="os-note">
-      <h3>Simulated</h3>
-      <ul>
-        <li>Memory and uptime come from the page, not a kernel</li>
-        <li>Any well-formed <code>HWO-XXXX-XXXX</code> key is accepted</li>
-        <li>No fleet agent, no media ingestion, no state partition</li>
-      </ul>
-    </div>
-    <div class="os-note">
-      <h3>On the box</h3>
-      <ul>
-        <li>27 MB ISO, Alpine base, one static binary, BIOS + UEFI</li>
-        <li>Ed25519 licence bound to the DMI UUID, checked offline</li>
-        <li>Five UI exits → reboot. Media plays from a PNG sequence</li>
-        <li>Source is MIT; keys and signed images are the product</li>
-      </ul>
-    </div>
+  <div class="spec">
+    <dl>
+      <dt>Image</dt><dd><b>27 MB</b> ISO, El Torito, BIOS + UEFI; 126 MB disk image</dd>
+      <dt>Runtime</dt><dd>one static binary, PID 1 supervisor, no libc on target</dd>
+      <dt>Interface</dt><dd>1280×800, 32 bpp, drawn by the binary — no X, no Wayland</dd>
+      <dt>Licence</dt><dd>Ed25519, bound to the DMI UUID, verified offline; <code>HWO-YYYY-XXXX</code></dd>
+      <dt>Exposure</dt><dd>no shell, no package manager, no remote login, no open port</dd>
+      <dt>Media</dt><dd>PNG frame sequence from the state partition, 1–60 fps</dd>
+      <dt>Fleet</dt><dd>optional outbound HTTP every 30 s; no inbound listener</dd>
+      <dt>Source</dt><dd>MIT in <a href="https://github.com/Hartwell-Labs/hartwell-os">Hartwell-Labs/hartwell-os</a>; keys and signed images are commercial</dd>
+    </dl>
   </div>
-</div>
+
+  <p class="foot-note">The screen above is the renderer from <code>src/fbui.c</code> compiled to JavaScript, drawing the same primitives, layout arithmetic and glyph bitmaps into a canvas. It is checked against a framebuffer capture from QEMU pixel by pixel, so what you see is the image and not an illustration of it. Memory, uptime and licence checks in this session are simulated; on the box they come from the kernel and an Ed25519 signature.</p>
+</main>
 
 <footer>
   <div class="container footer-grid">
     <div>
       <div class="logo" style="margin-bottom:14px;">
-        <svg width="22" height="22" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#3ddc84" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#3ddc84" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg width="20" height="20" viewBox="0 0 46 46" aria-hidden="true"><path d="M23,2 L42,13 L42,33 L23,44 L4,33 L4,13 Z" fill="none" stroke="#3ddc84" stroke-width="3.4" stroke-linejoin="round"/><polyline points="13,26 19,26 22,17 26,29 29,24 33,24" fill="none" stroke="#3ddc84" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Hartwell Labs
       </div>
       <p class="about">Independent engineering company. Security systems, languages and tools — built in the open, MIT licensed.</p>
