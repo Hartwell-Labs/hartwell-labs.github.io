@@ -67,6 +67,12 @@ const CSP = [
   "upgrade-insecure-requests",
 ].join("; ");
 
+const CSP_REPLACE = (scriptSrc) =>
+  CSP.replace("script-src 'self'", "script-src " + scriptSrc).replace(
+    "connect-src 'self' https://static.cloudflareinsights.com",
+    "connect-src 'self' https://static.cloudflareinsights.com " + CONNECT_EXTRA,
+  );
+
 const SECURITY_HEADERS = {
   "content-security-policy": CSP,
   "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
@@ -77,10 +83,25 @@ const SECURITY_HEADERS = {
   "x-frame-options": "DENY",
 };
 
+// Strony sprzedazowe maja wlasne skrypty inline, podpisane hashem w meta CSP.
+// Naglowek z tego pliku nadpisywal ich liste, wiec przegladarka blokowala
+// obsluge przycisku kupna: klikniecie nie robilo nic, a Stripe wygladal na
+// zepsuty. Hashe bierzemy z tresci strony, wiec zmiana skryptu nie wymaga
+// deployu workera. Licencje i partnerski checkout to jedyne hosty, do ktorych
+// strona woli wolac z JS.
+const CONNECT_EXTRA = "https://lic.hartwell-labs.pl https://partners.hartwell-labs.pl";
+
+function cspForHtml(html) {
+  const hashes = [...new Set(html.match(/sha256-[A-Za-z0-9+/=]+/g) || [])];
+  const scriptSrc = ["'self'", ...hashes.map((h) => `'${h}'`)].join(" ");
+  return CSP_REPLACE(scriptSrc);
+}
+
 function secure(res) {
-  if (res.headers.get("content-security-policy")) return res;
   const h = new Headers(res.headers);
-  for (const [k, v] of Object.entries(SECURITY_HEADERS)) h.set(k, v);
+  // Naglowki bezpieczenstwa dokladamy zawsze; CSP tylko wtedy, gdy odpowiedz
+  // go nie ma (HTML dostaje wlasny, policzony z tresci).
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) if (!h.has(k)) h.set(k, v);
   return new Response(res.body, { status: res.status, statusText: res.statusText, headers: h });
 }
 
@@ -199,13 +220,19 @@ async function serveFile(request, path, ctx) {
   return null;
 }
 
-function respond(request, path, body, ctx) {
+async function respond(request, path, body, ctx) {
   const headers = new Headers();
   headers.set("content-type", typeFor(path));
   // HTML musi byc walidowany, inaczej zmiana na GitHub Pages bywa widoczna
   // dopiero po godzinie i przy okazji wyglada jak wpadka.
   const isHtml = extOf(path) === ".html" || extOf(path) === ".htm";
   headers.set("cache-control", isHtml ? "public, max-age=120, must-revalidate" : "public, max-age=600");
+  if (isHtml) {
+    const html = request.method === "HEAD" ? "" : await body.text();
+    headers.set("content-security-policy", cspForHtml(html));
+    const htmlRes = new Response(request.method === "HEAD" ? null : html, { status: 200, headers });
+    return htmlRes;
+  }
   const res = new Response(request.method === "HEAD" ? null : body.body, { status: 200, headers });
   // HTML never enters the Workers cache: the cache key only changes on a worker
   // deploy, so a content commit stayed invisible until the next deploy even
