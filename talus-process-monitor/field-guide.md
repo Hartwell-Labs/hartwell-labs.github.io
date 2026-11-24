@@ -7,7 +7,7 @@ page_type: guide
 description: "A practical, honest playbook for deploying and tuning Talus eBPF ransomware protection on real Linux servers: deployment modes, installation, threshold tuning, MeMLP, enterprise wiring and the alert runbook."
 source_html: https://hartwell-labs.pl/talus-process-monitor/field-guide.html
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor/field-guide.html.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

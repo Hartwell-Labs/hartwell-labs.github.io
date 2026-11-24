@@ -7,7 +7,7 @@ page_type: product
 description: "Terms for Externum: MIT licence, permitted use, support, liability and risk."
 source_html: https://hartwell-labs.pl/terms/externum/
 markdown_twin: https://hartwell-labs.pl/terms/externum.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

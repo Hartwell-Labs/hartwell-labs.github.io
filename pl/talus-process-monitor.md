@@ -7,7 +7,7 @@ page_type: product
 description: "Talus Process Monitor to anty-ransomware dla Linuksa oparty na eBPF: behawioralne wykrywanie ransomware, samosandboxing seccomp i Landlock, ~280 tys. zdarzeń/s, jeden statyczny plik binarny bez modułów jądra. Open source, MIT."
 source_html: https://hartwell-labs.pl/pl/talus-process-monitor/
 markdown_twin: https://hartwell-labs.pl/pl/talus-process-monitor.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

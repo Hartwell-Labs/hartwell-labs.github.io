@@ -7,7 +7,7 @@ page_type: product
 description: "Signed updates, secure boot, SBOM, vulnerability handling and firmware review for products under the Cyber Resilience Act and the Radio Equipment Directive. Technical delivery for assessment bodies, test labs and consultancies."
 source_html: https://hartwell-labs.pl/firmware/
 markdown_twin: https://hartwell-labs.pl/firmware.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 
@@ -217,6 +217,51 @@ You assess radio equipment or products with digital elements and the file arrive
 
 You sell the compliance project and need an engineering answer for the parts that are not legal questions. Fixed-price line items, your client relationship, our name absent from the report.
 
+## The firmware evidence pack
+
+For an assessment body or consultancy that has the file but needs the firmware section tested, not rewritten. We work on the image the manufacturer already holds — a build image, an OTA package, a vendor portal download — so nothing has to be unscrewed. Fixed price per device, ten business days from image to report, delivered under your brand.
+
+1. Image structure.
+Partitions, file systems, binaries, configuration, and what is encrypted or unreadable without a key.
+2. SBOM, SPDX and CycloneDX.
+Components and versions as they actually appear in the image, including static and vendored libraries the build system does not list.
+3. CVE match against this image.
+Which advisories apply, whether the component is reachable, and whether the vulnerable path is compiled in at all.
+4. Keys and credentials.
+Passwords, private keys, API tokens, debug accounts, test certificates — with the offset where each was found.
+5. Secure boot and the chain of trust.
+Whether a root of trust is wired in, whether every stage is verified, and where the chain can be skipped.
+6. Update path.
+Signature verification, whether an older signed image is accepted, what a power loss mid-write leaves behind. Where no device or test environment is supplied, this control is marked untested in the report, with what is needed to test it.
+7. SBOM versus build.
+Whether the declared component list matches the bytes in the image — the check that catches a file signed off two releases ago.
+
+##### What arrives with it
+
+        - Report as PDF plus editable source, on your template and under your name.
+        - One-page summary for management: risk, decision, priorities.
+        - Evidence list: SHA-256 of the image and every partition, tool output, file offsets.
+        - What was not checked, and what would be needed to check it.
+
+##### What stays outside
+
+        - Teardown, chip-off, decapping, physical SPI flash dump.
+        - Side-channel and fault injection, radio and EMC testing.
+        - Mobile app and cloud backend, exploit development, full device pentest.
+        - Certification — we are not a notified body and issue no certificates.
+
+##### Worked example, not a claim
+
+A 25 MB appliance image we build ourselves, audited on 24.11.2026 with syft 1.57.2 and grype 0.122.1 against the Alpine advisory feed:
+
+      - 16 packages declared in the package database, 67 in the SPDX file — the build recipe understates the image by 51 entries — kernel modules and an application binary no package manager tracks.
+      - 164 findings, 82 unique CVEs, 13 critical. Twelve of the criticals are one OpenSSL 3.5.0 build shipped under two package names; the thirteenth is zlib. All have an upstream fix.
+      - No listening socket, root password locked, no login service — so the reachable path is the outbound TLS client, not a remote listener. That distinction is what turns a scanner count into a decision.
+
+Read the sample extract (PDF, 3 pages) — image hash, tool output, one finding expanded with its evidence, and the list of what we did not check.
+
+If you resell it, the client sees your document, your contact and your price. We are named in the NDA and in nothing else. Ask for a partner scope.
+
 ## Where the line is
 We are not a notified body.
 We prepare a product for assessment and answer the technical questions during it. We do not issue certificates, and we do not pretend an assessment has happened.
@@ -374,15 +419,17 @@ Motyw jest **jasny** (białe tło). Uwaga: `<meta name="theme-color">` na stroni
    - Zawartość: 6 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
 6. **Sekcja `#—`** — *Who this is for*
    - Zawartość: tekst (3 akapitów)
-7. **Sekcja `#—`** — *Where the line is*
-8. **Sekcja `#—`** — *How an engagement runs*
-9. **Sekcja `#—`** — *Questions that come up first*
+7. **Sekcja `#evidence`** — *The firmware evidence pack*
+   - Zawartość: tekst (4 akapitów)
+8. **Sekcja `#—`** — *Where the line is*
+9. **Sekcja `#—`** — *How an engagement runs*
+10. **Sekcja `#—`** — *Questions that come up first*
    - Zawartość: tekst (5 akapitów)
-10. **Sekcja `#consultation`** — *Book a consultation*
+11. **Sekcja `#consultation`** — *Book a consultation*
    - Zawartość: 3 kart `.prod` (siatka, obramowanie 1px, `border-radius: 12px`, padding 20/22px, hover = zmiana koloru obramowania + cień)
-11. **Sekcja `#—`** — *Tell us what ships, and what it runs on.*
+12. **Sekcja `#—`** — *Tell us what ships, and what it runs on.*
    - Zawartość: tekst (1 akapitów)
-12. **Footer** — tło `--bg-subtle`, kolumny: Products, Services, Resources, Company (13 linków), na dobie fine-print z licencją i krajem.
+13. **Footer** — tło `--bg-subtle`, kolumny: Products, Services, Resources, Company (13 linków), na dobie fine-print z licencją i krajem.
 
 ### 4. Interactive elements
 

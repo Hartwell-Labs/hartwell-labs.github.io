@@ -7,7 +7,7 @@ page_type: product
 description: "Post-quantum file encryption CLI: ML-KEM-768 key encapsulation combined with AES-256-GCM authenticated encryption. Rust, MIT licensed, CI on every push."
 source_html: https://hartwell-labs.pl/quantum-shield/
 markdown_twin: https://hartwell-labs.pl/quantum-shield.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

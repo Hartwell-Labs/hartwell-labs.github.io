@@ -7,7 +7,7 @@ page_type: product
 description: "Terms for CyberForge: MIT licence, permitted use, support, liability and risk."
 source_html: https://hartwell-labs.pl/terms/cyberforge/
 markdown_twin: https://hartwell-labs.pl/terms/cyberforge.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

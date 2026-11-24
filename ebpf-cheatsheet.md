@@ -7,7 +7,7 @@ page_type: product
 description: "Free eBPF cheat sheet — 20 essential commands for Linux process monitoring: tracepoints, kprobes, USDT, maps, and Talus commands."
 source_html: https://hartwell-labs.pl/ebpf-cheatsheet.html
 markdown_twin: https://hartwell-labs.pl/ebpf-cheatsheet.html.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

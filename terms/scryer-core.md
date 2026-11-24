@@ -7,7 +7,7 @@ page_type: product
 description: "Terms for Scryer Core: dual licence, access on request, permitted use, data accuracy and confidentiality."
 source_html: https://hartwell-labs.pl/terms/scryer-core/
 markdown_twin: https://hartwell-labs.pl/terms/scryer-core.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

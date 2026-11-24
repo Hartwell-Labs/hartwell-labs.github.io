@@ -1,0 +1,5 @@
+#set par(justify: false)
+#set text(size: 10pt)
+#set page(paper: "a4", margin: (x: 2.2cm, y: 2.2cm))
+#show table.cell: set par(justify: false)
+#set table(inset: (x: 6pt, y: 5pt), stroke: 0.4pt + luma(160))

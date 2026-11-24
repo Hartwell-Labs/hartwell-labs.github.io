@@ -7,7 +7,7 @@ page_type: product
 description: "LabBridge translates Hartwell Labs Rust to runnable Ruby and loads Ruby plugins back into Rust through the LabPlugin trait. Targets verified against the Products Registry."
 source_html: https://hartwell-labs.pl/labbridge/
 markdown_twin: https://hartwell-labs.pl/labbridge.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

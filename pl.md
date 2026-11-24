@@ -7,7 +7,7 @@ page_type: landing
 description: "Hartwell Labs — niezależna firma inżynierska ze Szczecina: Talus (anty-ransomware dla Linuksa oparty na eBPF) oraz Externum (nowy polski język programowania). Kryptografia postkwantowa, testy penetracyjne, open source, licencja MIT."
 source_html: https://hartwell-labs.pl/pl/
 markdown_twin: https://hartwell-labs.pl/pl.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

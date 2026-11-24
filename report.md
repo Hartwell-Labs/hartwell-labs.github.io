@@ -7,7 +7,7 @@ page_type: report
 description: "Passive DNS audit of 700 US county and K-12 government domains: 286 (41%) publish no DMARC record, only 97 (14%) enforce p=reject. Method, full numbers and free per-domain records."
 source_html: https://hartwell-labs.pl/report/
 markdown_twin: https://hartwell-labs.pl/report.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

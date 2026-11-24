@@ -7,7 +7,7 @@ page_type: product
 description: "Talus vs Falco: standalone Linux server monitoring with eBPF, vs Falco which targets Kubernetes. No sidecars, no cluster, $50/node/year."
 source_html: https://hartwell-labs.pl/talus-process-monitor/talus-vs-falco.html
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor/talus-vs-falco.html.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

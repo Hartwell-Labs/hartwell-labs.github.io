@@ -7,7 +7,7 @@ page_type: product
 description: "Your Talus Process Monitor Enterprise licence is being issued. Download the binary, activate your key, and you are running."
 source_html: https://hartwell-labs.pl/talus/aktywacja.html
 markdown_twin: https://hartwell-labs.pl/talus/aktywacja.html.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

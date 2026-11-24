@@ -7,7 +7,7 @@ page_type: product
 description: "LabTrace turns a raw auditd JSONL event stream into ranked incident reports: rule signals LT001-LT010, taint tracking across process chains, full process chains. Zero agent required."
 source_html: https://hartwell-labs.pl/labtrace/
 markdown_twin: https://hartwell-labs.pl/labtrace.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

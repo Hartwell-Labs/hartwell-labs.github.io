@@ -7,7 +7,7 @@ page_type: product
 description: "Externum to nowy polski język programowania kompilujący do czytelnego Pythona, Bash i natywnego bytecode EXBC. Pipeline'y, pattern matching, REPL w przeglądarce, 400+ testów. Open source, licencja MIT."
 source_html: https://hartwell-labs.pl/pl/externum/
 markdown_twin: https://hartwell-labs.pl/pl/externum.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

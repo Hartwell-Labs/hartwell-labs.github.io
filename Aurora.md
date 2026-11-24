@@ -7,7 +7,7 @@ page_type: product
 description: "A complete operating system in the browser: kernel, window manager, virtual filesystem, 8 apps and procedural audio. Zero runtime dependencies, TypeScript."
 source_html: https://hartwell-labs.pl/Aurora/
 markdown_twin: https://hartwell-labs.pl/Aurora.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

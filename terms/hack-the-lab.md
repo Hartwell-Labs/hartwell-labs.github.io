@@ -7,7 +7,7 @@ page_type: product
 description: "Rules for hack-the-lab challenges: authorised scope, flags, disclosure, CVE credit and prohibited conduct."
 source_html: https://hartwell-labs.pl/terms/hack-the-lab/
 markdown_twin: https://hartwell-labs.pl/terms/hack-the-lab.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

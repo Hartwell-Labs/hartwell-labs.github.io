@@ -7,7 +7,7 @@ page_type: legal
 description: "Hartwell Labs privacy policy: what data we collect across our sites and bots (Talus Process Monitor, TrustNode, Scryer, Externum), how it is used, your GDPR/CCPA rights and contact information."
 source_html: https://hartwell-labs.pl/privacy/
 markdown_twin: https://hartwell-labs.pl/privacy.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

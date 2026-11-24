@@ -7,7 +7,7 @@ page_type: product
 description: "Hartwell Labs terms of service: products and their licences, accounts, payments, consumer withdrawal, liability and complaints."
 source_html: https://hartwell-labs.pl/terms/
 markdown_twin: https://hartwell-labs.pl/terms.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

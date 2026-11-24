@@ -7,7 +7,7 @@ page_type: company
 description: "About Hartwell Labs: an independent engineering company from Szczecin, Poland building eBPF security systems, programming languages and penetration testing services. Open source, MIT licensed."
 source_html: https://hartwell-labs.pl/company/
 markdown_twin: https://hartwell-labs.pl/company.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

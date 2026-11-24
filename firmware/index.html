@@ -402,6 +402,57 @@
   </div>
 </section>
 
+<section id="evidence">
+  <div class="container">
+    <h2 class="fw-title" style="font-size:24px; margin-bottom:6px;">The firmware evidence pack</h2>
+    <p style="text-align:center; color:var(--txt-3); font-size:14px; max-width:740px; margin:0 auto 22px;">
+      For an assessment body or consultancy that has the file but needs the firmware section tested, not rewritten. We work on the image the manufacturer already holds &mdash; a build image, an OTA package, a vendor portal download &mdash; so nothing has to be unscrewed. Fixed price per device, ten business days from image to report, delivered under your brand.
+    </p>
+    <div class="fw-line">
+      <div><b>1. Image structure.</b><span>Partitions, file systems, binaries, configuration, and what is encrypted or unreadable without a key.</span></div>
+      <div><b>2. SBOM, SPDX and CycloneDX.</b><span>Components and versions as they actually appear in the image, including static and vendored libraries the build system does not list.</span></div>
+      <div><b>3. CVE match against this image.</b><span>Which advisories apply, whether the component is reachable, and whether the vulnerable path is compiled in at all.</span></div>
+      <div><b>4. Keys and credentials.</b><span>Passwords, private keys, API tokens, debug accounts, test certificates &mdash; with the offset where each was found.</span></div>
+      <div><b>5. Secure boot and the chain of trust.</b><span>Whether a root of trust is wired in, whether every stage is verified, and where the chain can be skipped.</span></div>
+      <div><b>6. Update path.</b><span>Signature verification, whether an older signed image is accepted, what a power loss mid-write leaves behind. Where no device or test environment is supplied, this control is marked untested in the report, with what is needed to test it.</span></div>
+      <div><b>7. SBOM versus build.</b><span>Whether the declared component list matches the bytes in the image &mdash; the check that catches a file signed off two releases ago.</span></div>
+    </div>
+    <div class="fw-two" style="margin-top:22px;">
+      <div class="fw-box">
+        <h4>What arrives with it</h4>
+        <ul style="font-size:14px; line-height:1.7; color:var(--txt-2); padding-left:18px; margin:0;">
+          <li>Report as PDF plus editable source, on your template and under your name.</li>
+          <li>One-page summary for management: risk, decision, priorities.</li>
+          <li>Evidence list: SHA-256 of the image and every partition, tool output, file offsets.</li>
+          <li>What was not checked, and what would be needed to check it.</li>
+        </ul>
+      </div>
+      <div class="fw-box">
+        <h4>What stays outside</h4>
+        <ul style="font-size:14px; line-height:1.7; color:var(--txt-2); padding-left:18px; margin:0;">
+          <li>Teardown, chip-off, decapping, physical SPI flash dump.</li>
+          <li>Side-channel and fault injection, radio and EMC testing.</li>
+          <li>Mobile app and cloud backend, exploit development, full device pentest.</li>
+          <li>Certification &mdash; we are not a notified body and issue no certificates.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fw-box" style="margin-top:22px;">
+      <h4>Worked example, not a claim</h4>
+      <p>A 25 MB appliance image we build ourselves, audited on 24.11.2026 with syft 1.57.2 and grype 0.122.1 against the Alpine advisory feed:</p>
+      <ul style="font-size:14px; line-height:1.7; color:var(--txt-2); padding-left:18px; margin:0 0 10px;">
+        <li>16 packages declared in the package database, 67 in the SPDX file &mdash; the build recipe understates the image by 51 entries &mdash; kernel modules and an application binary no package manager tracks.</li>
+        <li>164 findings, 82 unique CVEs, 13 critical. Twelve of the criticals are one OpenSSL 3.5.0 build shipped under two package names; the thirteenth is zlib. All have an upstream fix.</li>
+        <li>No listening socket, root password locked, no login service &mdash; so the reachable path is the outbound TLS client, not a remote listener. That distinction is what turns a scanner count into a decision.</li>
+      </ul>
+      <p><a href="/assets/firmware-sample-report.pdf">Read the sample extract (PDF, 3 pages)</a> &mdash; image hash, tool output, one finding expanded with its evidence, and the list of what we did not check.</p>
+    </div>
+    <p style="text-align:center; font-size:13.5px; line-height:1.6; color:var(--txt-3); margin:22px auto 0; max-width:700px;">
+      If you resell it, the client sees your document, your contact and your price. We are named in the NDA and in nothing else. <a href="mailto:business@hartwell-labs.pl?subject=Firmware%20evidence%20pack%20%E2%80%94%20partner%20engagement">Ask for a partner scope</a>.
+    </p>
+  </div>
+</section>
+
 <section>
   <div class="container">
     <h2 class="fw-title" style="font-size:24px; margin-bottom:18px;">Where the line is</h2>

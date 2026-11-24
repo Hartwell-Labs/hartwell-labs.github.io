@@ -7,7 +7,7 @@ page_type: product
 description: "Four Rust security tools — port scanner, web scanner, hash cracker, packet analyzer. Tokio async core, used in our own pentest labs."
 source_html: https://hartwell-labs.pl/CyberForge/
 markdown_twin: https://hartwell-labs.pl/CyberForge.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

@@ -7,7 +7,7 @@ page_type: product
 description: "Terms for Hartwell Edu: scope, acceptable use, content, availability and liability."
 source_html: https://hartwell-labs.pl/terms/edu/
 markdown_twin: https://hartwell-labs.pl/terms/edu.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

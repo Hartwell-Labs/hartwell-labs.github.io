@@ -7,7 +7,7 @@ page_type: product
 description: "Behavioral ransomware detection with instant response for Linux fleets. eBPF-based, ~280k events/sec, seccomp and Landlock self-sandboxing, one static binary. $50 per machine per year; $30 from 10 machines."
 source_html: https://hartwell-labs.pl/talus-process-monitor/
 markdown_twin: https://hartwell-labs.pl/talus-process-monitor.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

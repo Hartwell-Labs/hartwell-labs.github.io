@@ -7,7 +7,7 @@ page_type: catalog
 description: "Complete map of Hartwell Labs products: corporate product sites, source repositories and machine-readable registry."
 source_html: https://hartwell-labs.pl/catalog/
 markdown_twin: https://hartwell-labs.pl/catalog.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

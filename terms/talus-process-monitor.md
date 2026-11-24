@@ -7,7 +7,7 @@ page_type: product
 description: "Terms for Talus Process Monitor: MIT licence, permitted use, support, liability and risk."
 source_html: https://hartwell-labs.pl/terms/talus-process-monitor/
 markdown_twin: https://hartwell-labs.pl/terms/talus-process-monitor.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 

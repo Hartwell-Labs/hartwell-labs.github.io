@@ -7,7 +7,7 @@ page_type: security
 description: "Hartwell Labs security policy: coordinated vulnerability disclosure (CVD), 48-hour acknowledgment SLA, severity classification, supported versions, safe harbor for security researchers and ENISA SRP reporting."
 source_html: https://hartwell-labs.pl/security/
 markdown_twin: https://hartwell-labs.pl/security.md
-last_generated: 2026-11-20
+last_generated: 2026-11-24
 generator: tools/build-ai-pages.py
 ---
 
