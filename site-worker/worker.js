@@ -91,10 +91,31 @@ const SECURITY_HEADERS = {
 // strona woli wolac z JS.
 const CONNECT_EXTRA = "https://lic.hartwell-labs.pl https://partners.hartwell-labs.pl";
 
-function cspForHtml(html) {
-  const hashes = [...new Set(html.match(/sha256-[A-Za-z0-9+/=]+/g) || [])];
-  const scriptSrc = ["'self'", ...hashes.map((h) => `'${h}'`)].join(" ");
+// Meta CSP w stronach zostaje po dawnych skryptach: hash deklarowany w HTML
+// nie odpowiada juz zadnemu skryptowi, wiec przegladarka blokuje to, co strona
+// ma uruchomic (m.in. obsluge przycisku kupna). Zamiast ufac meta, liczymy
+// hashe z realnych tresci skryptow, a nieaktualny meta usuwamy — inaczej obie
+// polityki sie przecinaja i wygrywa ta przestarzala.
+async function cspForHtml(html) {
+  const hashes = [];
+  const re = /<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    const attrs = m[1] || "";
+    const code = m[2] || "";
+    if (!code.trim()) continue;
+    // Dane strukturalne (ld+json) nie sa wykonywane, wiec CSP ich nie dotyczy.
+    if (/application\/(ld\+json|json)/i.test(attrs)) continue;
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(code));
+    const b64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+    hashes.push(`'sha256-${b64}'`);
+  }
+  const scriptSrc = ["'self'", ...new Set(hashes)].join(" ");
   return CSP_REPLACE(scriptSrc);
+}
+
+function stripMetaCsp(html) {
+  return html.replace(/<meta[^>]+http-equiv=["']Content-Security-Policy["'][^>]*>/gi, "");
 }
 
 function secure(res) {
@@ -228,10 +249,10 @@ async function respond(request, path, body, ctx) {
   const isHtml = extOf(path) === ".html" || extOf(path) === ".htm";
   headers.set("cache-control", isHtml ? "public, max-age=120, must-revalidate" : "public, max-age=600");
   if (isHtml) {
-    const html = request.method === "HEAD" ? "" : await body.text();
-    headers.set("content-security-policy", cspForHtml(html));
-    const htmlRes = new Response(request.method === "HEAD" ? null : html, { status: 200, headers });
-    return htmlRes;
+    const raw = request.method === "HEAD" ? "" : await body.text();
+    headers.set("content-security-policy", await cspForHtml(raw));
+    const html = request.method === "HEAD" ? "" : stripMetaCsp(raw);
+    return new Response(request.method === "HEAD" ? null : html, { status: 200, headers });
   }
   const res = new Response(request.method === "HEAD" ? null : body.body, { status: 200, headers });
   // HTML never enters the Workers cache: the cache key only changes on a worker
